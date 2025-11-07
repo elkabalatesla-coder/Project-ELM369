@@ -1,4 +1,10 @@
-# Project-ELM369
+To Do:
+  - Build ELM core interface
+  - Refactor quantum drift module
+In Progress:
+  - Sandbox testing loop
+Done:
+  - ELM login system# Project-ELM369
 Visioning advanced Technology of Today and the future and pre-developing programming code for it in advance and coming up with our own intellectual designs
 
 Category / Subcomponent                        Completion
