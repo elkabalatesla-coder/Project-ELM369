@@ -1,0 +1,20 @@
+# 0) sanity
+git status
+git pull --rebase origin main
+
+# 1) create a full-project PR branch
+git checkout -b pr/elm369-full-integration-2026-01-12
+
+# 2) stage everything (entire project)
+git add -A
+
+# 3) commit (use a strong message)
+git commit -m "ELM369: full-project integration snapshot (2026-01-12)"
+
+# 4) push branch to GitHub
+git push -u origin pr/elm369-full-integration-2026-01-12git reset HEAD~1   # undo the big commit, keep changes staged/unstaged
+git add docs/ README* && git commit -m "Docs: update ELM369 documentation"
+git add src/ tests/ && git commit -m "Code: core implementation updates"
+git add scripts/ infra/ && git commit -m "Ops: scripts and infrastructure updates"
+git add -A && git commit -m "Repo: remaining tracked changes"
+git push -f
