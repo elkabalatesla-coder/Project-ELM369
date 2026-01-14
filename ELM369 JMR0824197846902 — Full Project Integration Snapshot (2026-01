@@ -44,4 +44,12 @@ git push -u origin pr/elm369-full-integration-2026-01-12
 # git add src/ tests/ && git commit -m "Code: core implementation updates"
 # git add scripts/ infra/ && git commit -m "Ops: scripts and infrastructure updates"
 # git add -A && git commit -m "Repo: remaining tracked changes"
-# git push -f
+# git push -f ELM369/
+JMR0824197846902/
+sources/chatgpt/
+sources/grok/
+sources/gemini/
+sources/copilot/
+sources/meta/
+sources/perplexity/
+sources/claude/
