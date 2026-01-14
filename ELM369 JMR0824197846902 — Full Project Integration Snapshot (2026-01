@@ -52,4 +52,6 @@ sources/gemini/
 sources/copilot/
 sources/meta/
 sources/perplexity/
-sources/claude/
+sources/claude/ git add -A
+git commit -m "ELM369: vault intake structure + safe integration scripts"
+git push -u origin pr/elm369-vault-intake-2026-01-14
