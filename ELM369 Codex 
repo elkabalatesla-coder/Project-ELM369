@@ -1,0 +1,14 @@
+{
+  "artifact_id": "ART-YYYYMMDD-XXXX",
+  "title": "",
+  "type": "code|doc|image|model|dataset|policy|log",
+  "version": "vMAJOR.MINOR.PATCH",
+  "created_at": "ISO-8601 UTC",
+  "created_by": "ELM369",
+  "lineage": [],
+  "sources": [],
+  "checksums": {
+    "sha256": ""
+  },
+  "owner_tag": "JMR0824197846902"
+}S(t+1) = normalize(S(t) + η · Δ(t))L = ln(1 + (C + αR + βX) / (ε + γP))F(t+1) = F(t)(1 + r_net) + p·T − W
