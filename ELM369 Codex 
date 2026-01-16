@@ -11,4 +11,14 @@
     "sha256": ""
   },
   "owner_tag": "JMR0824197846902"
-}S(t+1) = normalize(S(t) + η · Δ(t))L = ln(1 + (C + αR + βX) / (ε + γP))F(t+1) = F(t)(1 + r_net) + p·T − W
+}S(t+1) = normalize(S(t) + η · Δ(t))L = ln(1 + (C + αR + βX) / (ε + γP))F(t+1) = F(t)(1 + r_net) + p·T − WE = (uncertainty > θ₁) 
+    AND (confidence < θ₂)
+    AND (risk_class ≠ forbidden)
+    AND (circuit_breaker = false){
+  "artifact_type": "entropy_seed",
+  "seed_hash": "",
+  "generation_method": "commit-reveal",
+  "timestamp": "",
+  "scope": "RP"
+}accept if ≥ h approvals
+default h = 3rp_canary = true
