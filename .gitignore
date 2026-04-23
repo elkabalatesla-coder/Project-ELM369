@@ -1,0 +1,15 @@
+# Node.js
+node_modules/
+
+# TypeScript
+*.ts
+*.tsx
+*.js
+*.jsx
+*.d.ts
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
