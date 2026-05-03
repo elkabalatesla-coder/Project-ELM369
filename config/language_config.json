@@ -1,0 +1,70 @@
+{
+  "language_policy": {
+    "version": "2.0.0",
+    "timestamp": "2026-05-03T14:42:00-05:00",
+    "location": {
+      "city": "Kokomo",
+      "state": "Indiana",
+      "country": "USA",
+      "postal_code": "46902",
+      "latitude": 40.4831,
+      "longitude": -86.1637,
+      "timezone": "America/Indiana/Knox"
+    },
+    "primary_language": "en-US",
+    "supported_languages": ["en-US"],
+    "enforcement_level": "STRICT",
+    "strict_mode": true
+  },
+  "language_codes": {
+    "en-US": {
+      "name": "English (United States)",
+      "native_name": "English",
+      "regional_format": "en_US",
+      "bcp_47": "en-US",
+      "locale": "en_US.UTF-8",
+      "enabled": true,
+      "required": true
+    }
+  },
+  "regional_settings": {
+    "currency": "USD",
+    "currency_symbol": "$",
+    "date_format": "MM/DD/YYYY",
+    "time_format": "12-hour",
+    "am_pm": true,
+    "decimal_separator": ".",
+    "thousands_separator": ",",
+    "timezone": "America/Indiana/Knox",
+    "timezone_offset": "-05:00",
+    "dst_enabled": true,
+    "measurement_system": "imperial",
+    "temperature_unit": "Fahrenheit"
+  },
+  "encoding": {
+    "default": "UTF-8",
+    "fallback": "ASCII",
+    "bom_handling": "ignore",
+    "normalization": "NFC"
+  },
+  "restrictions": {
+    "allow_machine_translation": false,
+    "allow_language_switching": false,
+    "allow_multilingual_ui": false,
+    "allow_non_en_us_content": false,
+    "allow_rtl_languages": false,
+    "allow_cjk_languages": false,
+    "reject_unknown_locale": true
+  },
+  "fallback_behavior": {
+    "missing_translation": "use_english",
+    "unsupported_locale": "reject_with_403",
+    "invalid_encoding": "reject_with_400"
+  },
+  "compliance": {
+    "enforce_on_startup": true,
+    "audit_language_requests": true,
+    "log_locale_mismatches": true,
+    "alert_on_violation": true
+  }
+}
