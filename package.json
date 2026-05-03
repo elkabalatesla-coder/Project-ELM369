@@ -1,1 +1,46 @@
-{\n  "name": "project-elm369",\n  "version": "0.65.0",\n  "description": "Visioning advanced Technology of Today and the future and pre-developing programming code for it in advance and coming up with our own intellectual designs",\n  "main": "dist/index.js",\n  "types": "dist/index.d.ts",\n  "scripts": {\n    "build": "tsc",\n    "dev": "tsc --watch",\n    "lint": "eslint src --ext .ts,.tsx",\n    "lint:fix": "eslint src --ext .ts,.tsx --fix",\n    "format": "prettier --write \\"src/**/*.{ts,tsx,json,md}\"",\n    "format:check": "prettier --check \\"src/**/*.{ts,tsx,json,md}\"",\n    "test": "jest",\n    "test:watch": "jest --watch",\n    "test:coverage": "jest --coverage",\n    "clean": "rm -rf dist node_modules"\n  },\n  "devDependencies": {\n    "@types/jest": "^29.5.11",\n    "@types/node": "^20.10.6",\n    "@typescript-eslint/eslint-plugin": "^6.16.0",\n    "@typescript-eslint/parser": "^6.16.0",\n    "eslint": "^8.56.0",\n    "eslint-config-prettier": "^9.1.0",\n    "eslint-plugin-prettier": "^5.1.2",\n    "husky": "^8.0.3",\n    "jest": "^29.7.0",\n    "prettier": "^3.1.1",\n    "ts-jest": "^29.1.1",\n    "typescript": "^5.3.3"\n  },\n  "engines": {\n    "node": ">=18.0.0",\n    "npm": ">=9.0.0"\n  }\n}
+{
+  "name": "project-elm369",
+  "version": "0.1.0",
+  "description": "Advanced Technology Visioning and Pre-Development with Quantum Computing, VR/AR, and Metaphysical Integration",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "quantum-computing",
+    "vr-ar",
+    "metaphysical-integration",
+    "provenance",
+    "artifacts",
+    "ledger",
+    "elm369"
+  ],
+  "author": "elkabalatesla-coder",
+  "license": "Other",
+  "dependencies": {
+    "fastify": "^4.24.3",
+    "uuid": "^9.0.0",
+    "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "@types/jest": "^29.5.3",
+    "typescript": "^5.1.6",
+    "ts-node": "^10.9.1",
+    "jest": "^29.6.2",
+    "ts-jest": "^29.1.1",
+    "eslint": "^8.45.0",
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
