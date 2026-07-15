@@ -1,0 +1,32 @@
+{
+  "module": "ELM369-IDENTITY-NODE-MIGRATION-001",
+  "state": "ACTIVE",
+  "identity_migration": {
+    "project_id": "ELM369",
+    "old_node_identifier": "JMR0824197846902",
+    "new_node_identifier": "JMR08241978202646902",
+    "status": "Active / Migrated",
+    "reason": "Legacy identity node decommissioned"
+  },
+  "security": {
+    "flag": "Compromised / Inactive Identity Node [Legacy]",
+    "mitigation": [
+      "Blacklist old identifier for all future professional interactions",
+      "Monitor for any legacy requests using deprecated node",
+      "Route mismatches to Auto-Amend Sandbox"
+    ]
+  },
+  "contact": {
+    "associated_email": "Modsklock@Gmail.com"
+  },
+  "governance": {
+    "version_lock": "ENFORCED",
+    "provenance_tracking": "ACTIVE",
+    "audit_trail": "ACTIVE"
+  },
+  "auto_amend": {
+    "sandbox_route": "ENABLED",
+    "approval_required": "Joseph Michael Rose — IX JR 🌹",
+    "legacy_node_behavior": "SANDBOX_ONLY"
+  }
+}

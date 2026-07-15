@@ -1,0 +1,12 @@
+groups:
+- name: legacy-node.rules
+  rules:
+  - alert: LegacyNodeUsageDetected
+    expr: increase(legacy_node_request_total{node="JMR0824197846902"}[5m]) > 0
+    for: 1m
+    labels:
+      severity: critical
+      team: secops
+    annotations:
+      summary: "Legacy identity node JMR0824197846902 detected"
+      description: "Requests referencing legacy node ID detected in last 5m. Investigate and block source."

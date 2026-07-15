@@ -1,0 +1,16 @@
+title: Detect Legacy Identity Node Usage (ELM369)
+id: e2a1b9f0-0000-4000-8000-000000000000
+status: experimental
+description: Detect any log event containing legacy node identifier JMR0824197846902
+logsource:
+  product: generic
+detection:
+  selection:
+    Message|contains:
+      - 'JMR0824197846902'
+    x_node_id|contains:
+      - 'JMR0824197846902'
+  condition: selection
+level: high
+tags:
+  - attack.persistence

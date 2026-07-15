@@ -1,0 +1,16 @@
+name: Check for legacy identity node
+on: [push, pull_request]
+jobs:
+  check_legacy_id:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Search for legacy node ID
+        run: |
+          if git grep -n "JMR0824197846902" >/dev/null; then
+            echo "::error file=repo::Legacy node identifier JMR0824197846902 found. Replace with JMR08241978202646902 or mask.";
+            git grep -n "JMR0824197846902"
+            exit 1
+          else
+            echo "No legacy node ID found."
+          fi

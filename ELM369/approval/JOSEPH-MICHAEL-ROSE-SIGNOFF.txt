@@ -1,0 +1,6 @@
+Joseph Michael Rose — IX JR 🌹
+Approval: I confirm governed migration of identity node for project ELM369.
+Timestamp: 2026-07-15T00:00:00Z
+Scope: Migrate JMR0824197846902 -> JMR08241978202646902; legacy ID blacklisted; Auto-Amend Sandbox enabled.
+Signature: Joseph Michael Rose — IX JR 🌹
+Notes: Non-cryptographic attestation line for audit and PR sign-off.

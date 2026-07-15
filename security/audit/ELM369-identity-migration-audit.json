@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-07-15T00:00:00Z",
+  "module": "ELM369-IDENTITY-NODE-MIGRATION-001",
+  "action": "migrate_and_blacklist",
+  "project_id": "ELM369",
+  "old_node_identifier": "JMR0824197846902",
+  "new_node_identifier": "JMR08241978202646902",
+  "status": "Active/Migrated",
+  "reason": "Legacy identity node decommissioned",
+  "performed_by": "Joseph Michael Rose — IX JR 🌹",
+  "notes": "Old identifier blacklisted; monitoring rules enabled; route mismatches to Auto-Amend Sandbox"
+}
