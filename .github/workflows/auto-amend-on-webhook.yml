@@ -1,0 +1,20 @@
+name: Auto-Amend: create PR on approved draft
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [auto-amend-approved]
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create PR from draft
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "This step expects a pre-approved draft file under auto-amend/drafts/*.md"
+          DRAFT=$(ls auto-amend/drafts | head -n1)
+          if [ -z "$DRAFT" ]; then echo "No draft found"; exit 1; fi
+          TITLE=$(head -n1 auto-amend/drafts/$DRAFT | sed 's/# //')
+          gh pr create --title "$TITLE" --body-file auto-amend/drafts/$DRAFT || true
