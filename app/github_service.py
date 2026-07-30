@@ -1,5 +1,6 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Any, Dict, Optional
+from zoneinfo import ZoneInfo
 import uuid
 import logging
 
@@ -15,9 +16,11 @@ class GitHubRepositoryService:
         self.github = github_client
         # If the client exposes a custom exception class, capture it to avoid broad excepts.
         self._client_exc = getattr(github_client, "RepositoryError", None)
+        # Use Kokomo, Indiana local time (Eastern) for timestamps. This respects DST.
+        self._tz = ZoneInfo("America/Indiana/Indianapolis")
 
     def _now_iso(self) -> str:
-        return datetime.now(timezone.utc).isoformat()
+        return datetime.now(self._tz).isoformat()
 
     def _validate_name(self, name: str, field: str = "name", max_len: int = 255) -> None:
         if not isinstance(name, str) or not name.strip():
