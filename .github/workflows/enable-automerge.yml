@@ -2,7 +2,7 @@ name: Enable auto-merge for Dependabot and automated-fix PRs
 
 on:
   pull_request_target:
-    types: [opened, labeled, ready_for_review]
+    types: [opened, labeled, ready_for_review, synchronize]
 
 jobs:
   enable-automerge:
@@ -18,8 +18,24 @@ jobs:
 
     steps:
       - name: Enable Pull Request Auto-Merge
+        id: enable
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify auto-merge enabled and comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = await github.rest.pulls.get({ owner: context.repo.owner, repo: context.repo.repo, pull_number: context.payload.pull_request.number });
+            const number = pr.data.number;
+            if (pr.data.auto_merge) {
+              await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: number, body: 'Auto-merge has been enabled by the automation. ✅' });
+              core && core.info && core.info('Auto-merge enabled');
+            } else {
+              await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: number, body: 'Attempt to enable auto-merge failed. Please check Actions workflow permissions (Settings → Actions → General → Workflow permissions) and branch protection rules. If your organization restricts the GITHUB_TOKEN, consider adding a PAT in repository secrets and switching this workflow to use it.' });
+              throw new Error('Auto-merge not enabled');
+            }

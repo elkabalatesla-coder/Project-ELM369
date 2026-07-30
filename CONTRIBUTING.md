@@ -6,12 +6,13 @@ To allow auto-merge for Dependabot or automated-fix PRs:
   - Settings → Merge button → enable "Allow auto-merge" for the repository.
 - Workflow permissions:
   - GitHub Actions workflows that programmatically enable auto-merge must run with a token that has write permission for pull requests.
-  - Go to Settings → Actions → General → Workflow permissions and ensure "Read and write permissions" is set for workflows that need to modify pull requests, or use a PAT stored in repository secrets with repo scope.
+  - Go to Settings → Actions → General → Workflow permissions and ensure "Read and write permissions" is set for workflows that need to modify pull requests.
+  - If your organization restricts the default GITHUB_TOKEN, you can create a Personal Access Token (PAT) with `repo` scope and add it to repository secrets (recommended secret name: `AUTO_MERGE_PAT`).
 - Branch protection:
   - Branch protection rules may block auto-merge if required checks or approvals are missing. Make sure required status checks are configured and stable.
   - If you want automated dependency updates to auto-merge, consider creating an exception for Dependabot or allowing specific required checks to be skipped for dependabot PRs where appropriate.
 - Dependabot PRs and automated-fix PRs:
-  - Dependabot PRs are created by dependabot[bot]. This repository enables an Action to attempt auto-merging Dependabot and PRs labelled `auto-fix` or `dependabot` when they are opened or labeled.
+  - Dependabot PRs are created by dependabot[bot]. This repository enables an Action to attempt auto-merging Dependabot and PRs labelled `auto-fix` or `dependabot` when they are opened, labeled, or updated.
   - Maintainership: maintainers should still review dependency updates. The workflow only attempts to enable auto-merge when PRs meet the author/label criteria; it will not bypass branch protection or required checks.
 
 Notes about this repository
