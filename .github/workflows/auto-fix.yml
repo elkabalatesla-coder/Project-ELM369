@@ -1,0 +1,36 @@
+name: Auto Fix and PR
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 3 * * 1' # Weekly on Monday at 03:00 UTC
+
+jobs:
+  autofix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black isort
+      - name: Run formatters
+        run: |
+          ruff format . || true
+          black . || true
+          isort . || true
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(format): apply automatic code style fixes"
+          branch: "auto/format-fixes"
+          title: "chore(format): automatic code style fixes"
+          body: |
+            This PR applies automatic formatting and lint fixes (ruff/black/isort).

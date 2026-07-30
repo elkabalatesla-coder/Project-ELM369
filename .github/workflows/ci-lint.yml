@@ -1,0 +1,27 @@
+name: Lint
+
+on:
+  push:
+    branches: [ 'main', 'elm369/github-service-hardening' ]
+  pull_request:
+    branches: [ 'main' ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black isort
+      - name: Ruff check
+        run: ruff check .
+      - name: Black check
+        run: black --check .
+      - name: isort check
+        run: isort --check-only .
