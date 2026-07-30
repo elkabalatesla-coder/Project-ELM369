@@ -1,0 +1,3 @@
+# Optional Python dependencies for Project-ELM369
+
+backports.zoneinfo>=0.2; python_version < "3.9"
