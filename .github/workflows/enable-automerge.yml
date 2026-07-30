@@ -1,0 +1,25 @@
+name: Enable auto-merge for Dependabot and automated-fix PRs
+
+on:
+  pull_request_target:
+    types: [opened, labeled, ready_for_review]
+
+jobs:
+  enable-automerge:
+    # Only run when the PR author is dependabot[bot] or the PR has the label 'auto-fix' or 'dependabot'
+    if: |
+      github.event.pull_request.user.login == 'dependabot[bot]' ||
+      contains(github.event.pull_request.labels.*.name, 'auto-fix') ||
+      contains(github.event.pull_request.labels.*.name, 'dependabot')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Enable Pull Request Auto-Merge
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+          token: ${{ secrets.GITHUB_TOKEN }}
