@@ -12,14 +12,19 @@ class GitHubRepositoryService:
     Repository Management Service (hardened)
     """
 
+    # IANA timezone used for Kokomo, Indiana (no separate IANA zone exists for Kokomo)
+    _IANA_TZ = "America/Indiana/Indianapolis"
+    _LOCAL_LOCATION = "Kokomo, IN 46902"
+
     def __init__(self, github_client):
         self.github = github_client
         # If the client exposes a custom exception class, capture it to avoid broad excepts.
         self._client_exc = getattr(github_client, "RepositoryError", None)
         # Use Kokomo, Indiana local time (Eastern) for timestamps. This respects DST.
-        self._tz = ZoneInfo("America/Indiana/Indianapolis")
+        self._tz = ZoneInfo(self._IANA_TZ)
 
     def _now_iso(self) -> str:
+        # Returns ISO8601 timestamp localized to Kokomo, IN
         return datetime.now(self._tz).isoformat()
 
     def _validate_name(self, name: str, field: str = "name", max_len: int = 255) -> None:
@@ -249,6 +254,7 @@ class GitHubRepositoryService:
             "user": user,
             "details": details,
             "timestamp": self._now_iso(),
+            "location": self._LOCAL_LOCATION,
         }
 
     ####################################################
@@ -261,4 +267,5 @@ class GitHubRepositoryService:
             "status": "ONLINE",
             "version": "0.7.1",
             "timestamp": self._now_iso(),
+            "location": self._LOCAL_LOCATION,
         }
