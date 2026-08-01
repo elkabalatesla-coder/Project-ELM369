@@ -1,0 +1,70 @@
+{
+  "tracking_code": "JMR08241978202646902",
+  "project_id": "ELM369",
+  "target_platform": "Termux (Android)",
+  "description": "Bootstrap and run initial Project-ELM369 tasks on Termux. Designed for interactive execution in Termux shell.",
+  "prerequisites": [
+    "Termux app installed",
+    "Network connectivity (internet)",
+    "User familiarity with Termux shell"
+  ],
+  "recommended_packages": [
+    "git",
+    "python",
+    "python-dev",
+    "clang",
+    "openssh",
+    "curl",
+    "rsync",
+    "ntpdate"
+  ],
+  "setup_steps": [
+    { "order": 1, "cmd": "pkg update -y && pkg upgrade -y", "note": "Update Termux package lists" },
+    { "order": 2, "cmd": "pkg install -y git python clang openssh curl rsync", "note": "Install required packages" },
+    { "order": 3, "cmd": "python -m pip install --upgrade pip setuptools wheel", "note": "Upgrade pip tooling" },
+    { "order": 4, "cmd": "git clone https://github.com/elkabalatesla-coder/Project-ELM369.git", "note": "Clone project repository" },
+    { "order": 5, "cmd": "cd Project-ELM369 && python -m venv .venv || true", "note": "Create virtualenv (if supported)" },
+    { "order": 6, "cmd": "source Project-ELM369/.venv/bin/activate || true", "note": "Activate virtualenv when available" }
+  ],
+  "tasks": [
+    {
+      "id": "TERMUX-01",
+      "order": 10,
+      "name": "Initial Integrity Check",
+      "description": "Verify cloned repo files and compute checksums for important files.",
+      "cmd": "cd Project-ELM369 && sha256sum README.md PROJECT_METADATA.json > termux_initial_checksums.txt"
+    },
+    {
+      "id": "TERMUX-02",
+      "order": 20,
+      "name": "NTP Sync (Geo-NTP Precision Sync)",
+      "description": "Sync device clock to reliable NTP (may require root on some devices).",
+      "cmd": "ntpdate pool.ntp.org || (curl -s --head https://google.com | head)"
+    },
+    {
+      "id": "TERMUX-03",
+      "order": 30,
+      "name": "Install runtime Python deps",
+      "description": "Install minimal Python packages used by the orchestrator and QA tools.",
+      "cmd": "cd Project-ELM369 && pip install -r requirements-termux.txt || pip install requests cryptography psutil"
+    },
+    {
+      "id": "TERMUX-04",
+      "order": 40,
+      "name": "Run lightweight diagnostics",
+      "description": "Run a quick diagnostics script shipped in the repo (if present).",
+      "cmd": "cd Project-ELM369 && python scripts/termux_diagnostics.py || echo 'No diagnostics script found. Skipping.'"
+    },
+    {
+      "id": "TERMUX-05",
+      "order": 50,
+      "name": "Stage local vault logger snapshot",
+      "description": "Create a local signed snapshot of key metadata files.",
+      "cmd": "cd Project-ELM369 && tar -czf elm369_snapshot.tar.gz README.md PROJECT_METADATA.json && echo 'Signed-by: Esign Joseph Michael Rose 🌹' > snapshot.sig"
+    }
+  ],
+  "safety": {
+    "warning": "Commands in this JSON may modify the local Termux environment. Review commands before executing. Committing personal data to public repos is irreversible without history rewrite.",
+    "recommendation": "Run commands interactively, validate each step, and backup device data before major operations."
+  }
+}
