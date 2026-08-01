@@ -1,0 +1,27 @@
+{
+  "project": "Project-ELM369",
+  "orchestrator": "elm_orchestrator.py",
+  "python": {
+    "version": "3.11",
+    "venv": "venv",
+    "install_command": "pip install -r requirements.txt",
+    "dependencies": [
+      "requests",
+      "pydantic"
+    ]
+  },
+  "entrypoint": "scripts/run_app.py",
+  "env": {
+    "ELM_ENV": "production",
+    "ELM_LOG_LEVEL": "INFO"
+  },
+  "scripts": {
+    "setup": [
+      "python -m venv {{venv}}",
+      "{{install_command}}"
+    ],
+    "run": [
+      "python {{entrypoint}}"
+    ]
+  }
+}
