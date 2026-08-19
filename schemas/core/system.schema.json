@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "elm369://schema/core/system/1.0.0",
+  "title": "ELM369 Universal System",
+  "type": "object",
+  "required": ["system_id", "system_type", "domain", "identity", "configuration", "topology", "components", "state", "health", "security", "safety", "authority", "provenance"],
+  "properties": {
+    "system_id": {"type": "string"},
+    "system_type": {"type": "string"},
+    "domain": {"type": "string"},
+    "identity": {"type": "object"},
+    "configuration": {"type": "object"},
+    "topology": {"type": "object"},
+    "components": {"type": "array"},
+    "state": {"type": "object"},
+    "health": {"type": "object"},
+    "security": {"type": "object"},
+    "safety": {"type": "object"},
+    "authority": {"type": "object"},
+    "provenance": {"type": "object"}
+  },
+  "additionalProperties": true
+}
