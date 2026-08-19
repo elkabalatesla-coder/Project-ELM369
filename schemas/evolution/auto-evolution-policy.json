@@ -1,0 +1,45 @@
+{
+  "$schema": "elm369://schema/evolution/auto-evolution-policy/1.0.0",
+  "policy_id": "ELM369-POL-AUTO-EVOLUTION-001",
+  "project_id": "ELM369_JMR08241978202646902",
+  "operations": {
+    "amend": true,
+    "update": true,
+    "organize": true,
+    "optimize": true,
+    "upgrade": true,
+    "correct": true,
+    "repair": true,
+    "fix": true,
+    "integrate": true
+  },
+  "gates": [
+    "snapshot",
+    "schema_validation",
+    "unit_tests",
+    "integration_tests",
+    "security_validation",
+    "safety_validation",
+    "provenance",
+    "rollback_available",
+    "authorization"
+  ],
+  "lifecycle": [
+    "DISCOVERED",
+    "PROPOSED",
+    "SANDBOX",
+    "TESTING",
+    "VALIDATING",
+    "CANARY",
+    "APPROVED",
+    "DEPLOYED",
+    "MONITORED",
+    "PROMOTED"
+  ],
+  "safety_boundary": {
+    "production_mutation": "gated",
+    "physical_actuation": "domain_governed",
+    "destructive_change": "authorized_only",
+    "credential_change": "authorized_only"
+  }
+}
