@@ -1,0 +1,59 @@
+name: ELM369 Evolution Validation
+
+on:
+  push:
+    branches: [main, 'elm369/**']
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Compile Python sources
+        run: |
+          python -m compileall -q .
+
+      - name: Validate JSON documents
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          errors = []
+          for path in Path('.').rglob('*.json'):
+              if any(part in {'.git', 'node_modules', '__pycache__'} for part in path.parts):
+                  continue
+              try:
+                  json.loads(path.read_text(encoding='utf-8'))
+              except Exception as exc:
+                  errors.append(f'{path}: {exc}')
+          if errors:
+              print('\n'.join(errors))
+              raise SystemExit(1)
+          print('All discovered JSON documents are syntactically valid.')
+          PY
+
+      - name: Validate automated evolution policy instance
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('schemas/evolution/auto-evolution-policy.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          required = {'amend','update','organize','optimize','upgrade','correct','repair','fix','integrate'}
+          assert data['project_id'] == 'ELM369_JMR08241978202646902'
+          assert required == set(data['operations'])
+          assert all(data['operations'].values())
+          assert data['safety_boundary']['destructive_change'] == 'authorized_only'
+          assert data['safety_boundary']['credential_change'] == 'authorized_only'
+          print('ELM369 automated evolution policy: PASS')
+          PY
