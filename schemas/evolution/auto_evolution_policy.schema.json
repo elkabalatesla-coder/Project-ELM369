@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "elm369://schema/evolution/auto-evolution-policy/1.0.0",
+  "title": "ELM369 Automated Evolution Policy",
+  "type": "object",
+  "required": ["policy_id", "project_id", "operations", "gates", "lifecycle", "safety_boundary"],
+  "properties": {
+    "policy_id": {"type": "string"},
+    "project_id": {"const": "ELM369_JMR08241978202646902"},
+    "operations": {
+      "type": "object",
+      "required": ["amend", "update", "organize", "optimize", "upgrade", "correct", "repair", "fix", "integrate"],
+      "properties": {
+        "amend": {"const": true},
+        "update": {"const": true},
+        "organize": {"const": true},
+        "optimize": {"const": true},
+        "upgrade": {"const": true},
+        "correct": {"const": true},
+        "repair": {"const": true},
+        "fix": {"const": true},
+        "integrate": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "gates": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 8
+    },
+    "lifecycle": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 10
+    },
+    "safety_boundary": {
+      "type": "object",
+      "required": ["production_mutation", "physical_actuation", "destructive_change", "credential_change"],
+      "properties": {
+        "production_mutation": {"enum": ["gated", "authorized_only"]},
+        "physical_actuation": {"enum": ["authorized_only", "domain_governed"]},
+        "destructive_change": {"const": "authorized_only"},
+        "credential_change": {"const": "authorized_only"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
