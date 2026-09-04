@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "elm369://schema/core/observation/1.0.0",
+  "title": "ELM369 Universal Observation",
+  "type": "object",
+  "required": ["object_type", "observation_id", "system_id", "domain", "source_id", "timestamp", "value", "confidence", "provenance", "integrity_status"],
+  "properties": {
+    "object_type": {"const": "observation"},
+    "observation_id": {"type": "string", "minLength": 1},
+    "system_id": {"type": "string", "minLength": 1},
+    "domain": {"type": "string", "minLength": 1},
+    "source_id": {"type": "string", "minLength": 1},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "value": {},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "provenance": {
+      "type": "object",
+      "required": ["sensor", "model"],
+      "properties": {
+        "sensor": {"type": "string"},
+        "model": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "integrity_status": {"enum": ["VALID", "INVALID", "UNKNOWN"]}
+  },
+  "additionalProperties": true
+}
