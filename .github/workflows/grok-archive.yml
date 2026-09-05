@@ -1,0 +1,28 @@
+name: Grok Archive Tests
+
+on:
+  push:
+    paths:
+      - 'tools/grok_archive/**'
+      - 'vault/**'
+      - '.github/workflows/grok-archive.yml'
+  pull_request:
+    paths:
+      - 'tools/grok_archive/**'
+      - 'vault/**'
+      - '.github/workflows/grok-archive.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Unit tests
+        run: python -m unittest discover -s tools/grok_archive/tests -v
+      - name: Demo ingest sample
+        run: python -m tools.grok_archive ingest --path vault/ELM369/JMR08241978202646902/sources/grok/raw

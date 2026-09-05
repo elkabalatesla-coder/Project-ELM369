@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 4 — full live tool inventory).
+Last updated: 2026-09-04 (round 5 — grok vault + orchestrator).
 
 ## Active / keep
 
@@ -18,6 +18,8 @@ Last updated: 2026-09-04 (round 4 — full live tool inventory).
 | DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize | `python3 -m tools.dax_memory store "…" --kind fact` |
 | QBIT / QSTATE | `tools/qbit/` | Decision evidence scoring (never bypasses safety) | `python3 -m tools.qbit score L M R H` |
 | Liquid-3D prompting | `tools/liquid3d_prompting/` | Visual/audio/animation prompt composer | `python3 -m tools.liquid3d_prompting compose --mode visual --subject "…"` |
+| Grok archive intake | `tools/grok_archive/` + `vault/.../sources/grok/` | Ingest Grok discussions; extract design/dev backlog | `python3 -m tools.grok_archive ingest --path …/sources/grok/raw` |
+| ELM orchestrator | `tools/elm_orchestrator/` | Diag / vault-log / gated heal scaffolds | `python3 -m tools.elm_orchestrator diag` |
 
 ### Schedules & related docs
 
