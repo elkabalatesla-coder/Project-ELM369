@@ -1,0 +1,220 @@
+
+const ELM_CYAN = "#00FFE5";
+const ELM_DARK = "#050A0E";
+const ELM_PANEL = "#0A1520";
+const ELM_BORDER = "#0D2535";
+const ELM_WARN = "#FFB300";
+const ELM_ERROR = "#FF3B3B";
+const ELM_SUCCESS = "#00FF88";
+const ELM_MUTED = "#3A5A6A";
+
+const PROJECT_ID = "JMR0824197846902";
+const IDENTITY = "1550e4d5-9ee3-49cd-8af8-7c9d630f84ad";
+
+const MOCK_APPS = [
+  { name: "com.android.chrome", label: "Chrome", version: "120.0.1", sdk: 34, size: "142MB", perms: 18, status: "ok" },
+  { name: "com.facebook.katana", label: "Facebook", version: "450.0", sdk: 33, size: "98MB", perms: 32, status: "warn" },
+  { name: "com.google.android.gms", label: "Play Services", version: "24.02", sdk: 34, size: "210MB", perms: 44, status: "warn" },
+  { name: "com.elm369.project", label: "ELM369 App", version: "3.6.9", sdk: 34, size: "22MB", perms: 8, status: "ok" },
+  { name: "com.tiktok.android", label: "TikTok", version: "33.5.2", sdk: 31, size: "175MB", perms: 27, status: "error" },
+  { name: "com.whatsapp", label: "WhatsApp", version: "2.24.3", sdk: 33, size: "56MB", perms: 22, status: "ok" },
+  { name: "com.malware.test", label: "UnknownApp_x", version: "1.0", sdk: 28, size: "3MB", perms: 51, status: "error" },
+];
+
+const MOCK_DEVICE = {
+  model: "Android Device",
+  os: "Android 14",
+  sdk: 34,
+  ram: "8GB",
+  ramUsed: "5.4GB",
+  battery: 67,
+  cpu: 38,
+  storage: "128GB",
+  storageUsed: "89GB",
+  adbEnabled: true,
+  devMode: true,
+  rootStatus: "Not Rooted",
+  securityPatch: "2024-01-05",
+  buildType: "user",
+  bootloader: "locked",
+};
+
+const ADB_COMMANDS = [
+  { label: "List Packages", cmd: "adb shell pm list packages" },
+  { label: "Logcat (errors)", cmd: "adb logcat *:E" },
+  { label: "Dump Battery", cmd: "adb shell dumpsys battery" },
+  { label: "Memory Info", cmd: "adb shell dumpsys meminfo" },
+  { label: "CPU Info", cmd: "adb shell dumpsys cpuinfo" },
+  { label: "ANR Traces", cmd: "adb pull /data/anr/traces.txt" },
+  { label: "Clear App Cache", cmd: "adb shell pm clear [package]" },
+  { label: "Force Stop App", cmd: "adb shell am force-stop [package]" },
+  { label: "Uninstall App", cmd: "adb uninstall [package]" },
+  { label: "Screen Record", cmd: "adb shell screenrecord /sdcard/record.mp4" },
+];
+
+const MOCK_CRASHES = [
+  { id: "CRX001", app: "TikTok", type: "ANR", time: "2026-04-07 08:14:22", thread: "main", msg: "Input dispatching timed out", severity: "critical" },
+  { id: "CRX002", app: "Facebook", type: "NullPointerException", time: "2026-04-07 07:55:10", thread: "AsyncTask", msg: "Attempt to invoke on null object", severity: "high" },
+  { id: "CRX003", app: "UnknownApp_x", type: "SecurityException", time: "2026-04-07 06:30:01", thread: "binder", msg: "Permission denied: READ_CONTACTS without grant", severity: "critical" },
+  { id: "CRX004", app: "Play Services", type: "OutOfMemoryError", time: "2026-04-07 05:12:44", thread: "GCM", msg: "Failed to allocate 48MB for bitmap", severity: "high" },
+];
+
+const TABS = ["Dashboard", "App Scanner", "Crash Logs", "ADB Console", "AI Fix Engine", "Security Log"];
+
+function ts() {
+  return new Date().toISOString().replace("T", " ").slice(0, 19);
+}
+
+function severityColor(s) {
+  if (s === "critical") return ELM_ERROR;
+  if (s === "high") return ELM_WARN;
+  return ELM_CYAN;
+}
+
+function statusColor(s) {
+  if (s === "error") return ELM_ERROR;
+  if (s === "warn") return ELM_WARN;
+  return ELM_SUCCESS;
+}
+
+function Tag({ color, children }) {
+  return (
+    <span style={{
+      background: color + "22",
+      color,
+      border: `1px solid ${color}55`,
+      borderRadius: 4,
+      padding: "2px 8px",
+      fontSize: 11,
+      fontFamily: "monospace",
+      letterSpacing: 1,
+    }}>{children}</span>
+  );
+}
+
+function Panel({ title, children, style = {} }) {
+  return (
+    <div style={{
+      background: ELM_PANEL,
+      border: `1px solid ${ELM_BORDER}`,
+      borderRadius: 10,
+      padding: 18,
+      marginBottom: 16,
+      ...style
+    }}>
+      {title && <div style={{ color: ELM_CYAN, fontFamily: "monospace", fontSize: 12, letterSpacing: 2, marginBottom: 12, textTransform: "uppercase", borderBottom: `1px solid ${ELM_BORDER}`, paddingBottom: 8 }}>{title}</div>}
+      {children}
+    </div>
+  );
+}
+
+function Meter({ value, max = 100, color = ELM_CYAN }) {
+  const pct = Math.min(100, (value / max) * 100);
+  return (
+    <div style={{ background: "#0D2535", borderRadius: 4, height: 6, width: "100%", overflow: "hidden" }}>
+      <div style={{ width: pct + "%", height: "100%", background: color, transition: "width 1s ease", borderRadius: 4 }} />
+    </div>
+  );
+}
+
+function Stat({ label, value, sub, color = ELM_CYAN }) {
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+        <span style={{ color: ELM_MUTED, fontSize: 11, fontFamily: "monospace" }}>{label}</span>
+        <span style={{ color, fontSize: 12, fontFamily: "monospace" }}>{value}</span>
+      </div>
+      {sub && <Meter value={sub.used} max={sub.total} color={color} />}
+    </div>
+  );
+}
+
+// \u2500\u2500 DASHBOARD \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+function Dashboard({ onTicket }) {
+  const critCount = MOCK_CRASHES.filter(c => c.severity === "critical").length;
+  const errorApps = MOCK_APPS.filter(a => a.status === "error").length;
+  const score = Math.max(0, 100 - critCount * 15 - errorApps * 10 - 5);
+
+  return (
+    <div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 12, marginBottom: 16 }}>
+        {[
+          { label: "Security Score", val: score + "/100", color: score > 70 ? ELM_SUCCESS : ELM_WARN },
+          { label: "Critical Issues", val: critCount, color: ELM_ERROR },
+          { label: "Flagged Apps", val: errorApps, color: ELM_WARN },
+          { label: "Device Health", val: MOCK_DEVICE.battery + "%", color: ELM_CYAN },
+        ].map(({ label, val, color }) => (
+          <Panel key={label} style={{ textAlign: "center", marginBottom: 0 }}>
+            <div style={{ color, fontSize: 28, fontFamily: "monospace", fontWeight: 700 }}>{val}</div>
+            <div style={{ color: ELM_MUTED, fontSize: 11, marginTop: 4 }}>{label}</div>
+          </Panel>
+        ))}
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <Panel title="Device Status">
+          <Stat label="Model" value={MOCK_DEVICE.model} />
+          <Stat label="OS" value={MOCK_DEVICE.os} />
+          <Stat label="RAM" value={`${MOCK_DEVICE.ramUsed} / ${MOCK_DEVICE.ram}`} sub={{ used: 5.4, total: 8 }} color={ELM_WARN} />
+          <Stat label="Storage" value={`${MOCK_DEVICE.storageUsed} / ${MOCK_DEVICE.storage}`} sub={{ used: 89, total: 128 }} color={ELM_ERROR} />
+          <Stat label="Battery" value={`${MOCK_DEVICE.battery}%`} sub={{ used: MOCK_DEVICE.battery, total: 100 }} color={ELM_SUCCESS} />
+          <Stat label="CPU Load" value={`${MOCK_DEVICE.cpu}%`} sub={{ used: MOCK_DEVICE.cpu, total: 100 }} />
+          <Stat label="Security Patch" value={MOCK_DEVICE.securityPatch} />
+          <Stat label="Root" value={MOCK_DEVICE.rootStatus} color={ELM_SUCCESS} />
+        </Panel>
+
+        <Panel title="Recent Crashes">
+          {MOCK_CRASHES.map(c => (
+            <div key={c.id} style={{ borderBottom: `1px solid ${ELM_BORDER}`, paddingBottom: 8, marginBottom: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#fff", fontSize: 12, fontFamily: "monospace" }}>{c.app}</span>
+                <Tag color={severityColor(c.severity)}>{c.severity.toUpperCase()}</Tag>
+              </div>
+              <div style={{ color: ELM_MUTED, fontSize: 11, marginTop: 2 }}>{c.type} \u2014 {c.msg.slice(0, 40)}...</div>
+              <div style={{ color: ELM_MUTED, fontSize: 10, marginTop: 2 }}>{c.time}</div>
+            </div>
+          ))}
+          <button onClick={() => onTicket("dashboard")} style={btnStyle(ELM_CYAN)}>
+            \u2b06 Generate All Tickets \u2192 ELM369
+          </button>
+        </Panel>
+      </div>
+    </div>
+  );
+}
+
+// \u2500\u2500 APP SCANNER \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+function AppScanner({ onTicket }) {
+  const [selected, setSelected] = useState(null);
+  const [scanning, setScanning] = useState(false);
+  const [scanDone, setScanDone] = useState(false);
+  const [scanProgress, setScanProgress] = useState(0);
+
+  const scan = () => {
+    setScanning(true); setScanDone(false); setScanProgress(0);
+    let p = 0;
+    const iv = setInterval(() => {
+      p += Math.random() * 12;
+      setScanProgress(Math.min(100, p));
+      if (p >= 100) { clearInterval(iv); setScanning(false); setScanDone(true); }
+    }, 120);
+  };
+
+  return (
+    <div>
+      <Panel title="APK / App Scanner">
+        <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+          <button onClick={scan} style={btnStyle(ELM_CYAN)} disabled={scanning}>
+            {scanning ? `Scanning... ${Math.floor(scanProgress)}%` : "\u25b6 Run Full APK Scan"}
+          </button>
+          {scanDone && <Tag color={ELM_SUCCESS}>SCAN COMPLETE</Tag>}
+        </div>
+        {scanning && <Meter value={scanProgress} color={ELM_CYAN} />}
+      </Panel>
+
+      <Panel title="Installed Applications">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px,1fr))", gap: 10 }}>
+          {MOCK_APPS.map(app => (
+            <div
+              key={app.name}
+              onClick

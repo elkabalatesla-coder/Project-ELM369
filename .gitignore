@@ -5,7 +5,13 @@ node_modules/
 *.ts
 *.tsx
 *.js
+# *.jsx ignored except under artifacts/
 *.jsx
+!artifacts/
+!artifacts/**/
+!artifacts/**/*.jsx
+!artifacts/**/*.jsx
+!artifacts/**/*.jsx.txt
 *.d.ts
 
 # IDEs

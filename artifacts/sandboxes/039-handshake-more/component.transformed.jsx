@@ -1,0 +1,247 @@
+
+const DOC_ID = "ELM369-DOC-TOS-20260411-001";
+const OPERATOR = "JMR0824197846902";
+const UUID = "1550e4d5-9ee3-49cd-8af8-7c9d630f84ad";
+const TIMESTAMP = "2026-04-11T00:00:00-05:00";
+const LOCATION = "Kokomo, IN";
+
+const platforms = [
+  {
+    id: "google",
+    name: "Google Search / YouTube",
+    icon: "\ud83d\udd0d",
+    color: "#4285F4",
+    encryption: {
+      rating: "STRONG",
+      summary: "Google explicitly mandates HTTPS/TLS across all services. Their Enterprise Terms specify TLS via ephemeral elliptic curve Diffie-Hellman (ECDSA/RSA) with Perfect Forward Secrecy (PFS). Data is encrypted at rest and in transit between all facilities.",
+      flags: ["TLS 1.2/1.3 enforced", "PFS active", "Encrypted at rest", "AES-256 standard"],
+    },
+    dataCollection: {
+      rating: "EXTENSIVE",
+      summary: "Google collects device data, location, search behavior, browsing history, preferences, and account-linked activity across all signed-in services. Even signed-out users are tracked via unique device/browser identifiers.",
+      flags: ["Cross-service tracking", "Device fingerprinting", "Location data (GPS+IP)", "Behavioral profiling"],
+    },
+    api: {
+      rating: "RESTRICTED",
+      summary: "Google API access requires OAuth 2.0, affirmative user consent before data collection, and disclosure of all data use. Restricted scopes require a CASA security assessment and a Letter of Assessment from a Google-designated third party. Selling or sharing API data to advertisers is explicitly prohibited.",
+      flags: ["OAuth 2.0 required", "CASA security audit", "No data reselling", "Disclosure required"],
+    },
+    consent: {
+      rating: "IMPLIED + EXPLICIT",
+      summary: "Google states that using their services constitutes consent to data collection as described in their Privacy Policy. For sensitive data and API access, affirmative consent (tap/click/verbal) is required. Auto-dismissal does NOT count as consent.",
+      flags: ["Use = consent for standard data", "Explicit consent for sensitive data", "Opt-out tools available", "GDPR extra rights in EU"],
+    },
+    redflags: ["Google retains encrypted backups even after deletion", "RBM messages NOT end-to-end encrypted \u2014 Google can inspect them for policy compliance"],
+  },
+  {
+    id: "meta",
+    name: "Meta (Facebook / Instagram)",
+    icon: "\ud83d\udcd8",
+    color: "#0082FB",
+    encryption: {
+      rating: "PARTIAL",
+      summary: "Meta uses TLS for all connections. Messenger and WhatsApp are end-to-end encrypted by default (since Dec 2023). However, group chats, Marketplace chats, and business chats are NOT E2E encrypted \u2014 Meta can read those.",
+      flags: ["TLS standard enforced", "Messenger: E2E encrypted", "Group/business chats: NOT E2E", "Meta can read non-E2E messages"],
+    },
+    dataCollection: {
+      rating: "VERY EXTENSIVE",
+      summary: "Meta's Dec 2025 privacy policy update expanded AI training rights over user content. They collect location (even when disabled in some cases), device data, app lists, browsing activity off-platform via Meta Pixel, and data from third-party advertisers about your off-platform behavior.",
+      flags: ["Off-platform tracking via Pixel", "Location even if disabled", "AI training on your content", "Cross-platform data merging (FB+IG+WA)"],
+    },
+    api: {
+      rating: "CONTROLLED",
+      summary: "The Meta Pixel must not load before user consent. Developers must sign a Data Processing Agreement. SHA-256 hashing is required for personal data (email, phone) before transmission. Violations have resulted in multi-million euro fines across Europe.",
+      flags: ["DPA required", "SHA-256 hashing mandatory", "Pixel requires consent first", "Server-side Conversions API alternative"],
+    },
+    consent: {
+      rating: "CONTESTED",
+      summary: "Meta claims using the platform constitutes consent. However, EU regulators have fined Meta \u20ac479M for consent manipulation. The Dec 2025 policy update \u2014 despite viral misinformation \u2014 did NOT change DM access; it only covered AI interactions with Meta AI.",
+      flags: ["Use = consent (US)", "GDPR requires explicit consent (EU)", "\u20ac479M fine for consent manipulation", "AI data use expanded in 2025"],
+    },
+    redflags: ["Meta reserves the right to use your photos, videos, and text to train AI", "Biometric data collected with 'consent' but storage practices unclear"],
+  },
+  {
+    id: "x",
+    name: "X (Twitter)",
+    icon: "\ud83d\udc26",
+    color: "#1DA1F2",
+    encryption: {
+      rating: "PARTIAL",
+      summary: "X uses TLS for all connections. However, their privacy policy explicitly states they collect 'metadata related to Encrypted Messages' \u2014 meaning even in encrypted DMs, metadata (who, when, frequency) is collected. No full E2E encryption is offered.",
+      flags: ["TLS enforced", "Encrypted DM metadata collected", "No true E2E encryption", "IP and browser data collected"],
+    },
+    dataCollection: {
+      rating: "AGGRESSIVE",
+      summary: "X's 2023 policy (still in force) allows collection of biometric data (with consent), job history, apps installed on your device, address book (if shared), and DM contents. Amnesty International flagged this as risking mass surveillance. All data may be used to train X's AI (Grok).",
+      flags: ["Biometric data (consent-based)", "Apps installed on device", "Address book access", "DM contents + metadata", "AI training use"],
+    },
+    api: {
+      rating: "HEAVILY RESTRICTED",
+      summary: "X API access costs increased 9,900% for enterprise since 2022. Developers must get express consent before storing DMs or taking actions on users' behalf. Authentication alone does not constitute consent. Scraping is explicitly prohibited without written permission.",
+      flags: ["Express consent required for DMs", "No unauthorized scraping", "Auth \u2260 consent", "Confidential data protection required"],
+    },
+    consent: {
+      rating: "USE = CONSENT",
+      summary: "X's TOS states that by using the service, you consent to data collection and transfer to the US, Ireland, and other countries. Users can manage some consent settings but cannot fully opt out of data collection while using the platform.",
+      flags: ["Use = consent to data transfer", "Consent withdrawal = stop using platform", "DAA opt-out available for interest-based ads", "Class action waiver in TOS"],
+    },
+    redflags: ["Metadata of encrypted messages collected", "Biometric storage practices not clearly disclosed", "Class action rights waived upon use"],
+  },
+  {
+    id: "tiktok",
+    name: "TikTok",
+    icon: "\ud83c\udfb5",
+    color: "#FF0050",
+    encryption: {
+      rating: "ADVANCED",
+      summary: "TikTok has implemented post-quantum cryptographic solutions based on NIST standards. They use envelope encryption (unique DEK per device), AEAD (Authenticated Encryption with Associated Data), and Diffie-Hellman IES/HPKE for key delivery. Zero-trust infrastructure with strong cryptographic enforcement.",
+      flags: ["Post-quantum cryptography deployed", "Envelope encryption (DEK/KEK)", "Zero-trust infrastructure", "TLS + device-level encryption"],
+    },
+    dataCollection: {
+      rating: "VERY EXTENSIVE",
+      summary: "TikTok collects content even before you post it (pre-upload scanning), AI interaction data, messages to sellers, location, device data, and browsing activity. They received a \u20ac530M GDPR fine in 2025 for illegal data transfers to China.",
+      flags: ["Pre-upload content scanning", "AI prompt data collected", "Location tracking", "\u20ac530M GDPR fine (2025)", "Data transferred to China (disputed)"],
+    },
+    api: {
+      rating: "LICENSED",
+      summary: "TikTok API access requires a formal license. Automated data collection is only permitted via authorized TikTok Developer Services. Scraping, bots, and reverse engineering are explicitly prohibited without written consent. Research API access requires eligibility approval.",
+      flags: ["License required", "No scraping without consent", "Research API approval needed", "Data cannot be resold or transferred"],
+    },
+    consent: {
+      rating: "LAYERED",
+      summary: "TikTok uses contractual necessity, legitimate interest, and explicit consent depending on data type. For EU users, full GDPR consent framework applies. For US users, consent is implied through use but sensitive data (health, biometrics, financials) is explicitly prohibited from collection through business tools.",
+      flags: ["Contractual necessity basis", "EU: GDPR full consent", "US: Use = consent", "Sensitive data prohibited from business tools"],
+    },
+    redflags: ["Pre-upload scanning happens before you decide to post", "\u20ac530M fine for China data transfers", "No opt-out of AI training on interactions"],
+  },
+  {
+    id: "microsoft",
+    name: "Microsoft / Bing",
+    icon: "\ud83e\ude9f",
+    color: "#00A4EF",
+    encryption: {
+      rating: "STRONG",
+      summary: "Microsoft enforces TLS/HTTPS across all Bing and services. Sign-in cookies store unique IDs in encrypted form. The NAP cookie stores an encrypted version of your country, postal code, age, gender, language, and occupation. Data at rest and in transit is encrypted.",
+      flags: ["TLS enforced", "Encrypted session cookies", "Encrypted profile data in cookies", "HTTPS everywhere"],
+    },
+    dataCollection: {
+      rating: "EXTENSIVE",
+      summary: "Microsoft collects Bing search queries, location (GPS/IP/cell towers/Wi-Fi), device data, browsing behavior, and biometric data (with consent) on applicable products. Advertisers on UET (Bing Ads) were required to implement Consent Mode by May 5, 2025 or lose conversion tracking.",
+      flags: ["Search query logging", "Location (GPS+Wi-Fi+cell towers)", "Biometric data (consent)", "UET Consent Mode mandatory May 2025"],
+    },
+    api: {
+      rating: "CONTROLLED",
+      summary: "Bing Search APIs require compliance with all applicable privacy laws, written consent for redistribution, and prohibit use for benchmarking or competitive analysis. Bing Maps imagery has specific commercial restrictions. Developers must provide privacy policies.",
+      flags: ["Privacy policy required", "No competitive benchmarking via API", "Maps redistribution restricted", "Consent required for EU users"],
+    },
+    consent: {
+      rating: "LAYERED",
+      summary: "Microsoft states that by agreeing to their Terms, users consent to data collection as described in their Privacy Policy. In some cases, separate notice and consent is provided. Microsoft respects the Global Privacy Control (GPC) browser signal as a valid opt-out in applicable states.",
+      flags: ["Agreement = consent", "Separate notice for some uses", "GPC signal recognized", "Opt-out tools available"],
+    },
+    redflags: ["Copilot Search (formerly Bing Chat) data practices are still being updated", "NAP cookie encodes personal profile data in every session"],
+  },
+  {
+    id: "utility",
+    name: "Utility Companies",
+    icon: "\u26a1",
+    color: "#FFB300",
+    encryption: {
+      rating: "MANDATORY",
+      summary: "As critical infrastructure, energy and water utilities are now subject to NIS2 (EU) and NERC CIP (US) requirements mandating encryption of all customer data at rest and in transit. PCI DSS 4.0 (March 2025) requires encryption for payment data. Non-compliance risks significant civil and criminal penalties.",
+      flags: ["NIS2 mandatory (EU)", "NERC CIP (US energy)", "PCI DSS 4.0 encryption required", "AES-256 + TLS 1.3 standard"],
+    },
+    dataCollection: {
+      rating: "MODERATE",
+      summary: "Utilities collect billing data, usage patterns, smart meter readings (time-of-use), and payment information. Some utilities share this with third-party analytics partners. The DOJ's Data Security Program (effective April 8, 2025) restricts bulk sensitive data transfers to countries of concern.",
+      flags: ["Smart meter usage data", "Payment and billing data", "Third-party analytics sharing", "DOJ DSP restrictions on bulk data transfers"],
+    },
+    api: {
+      rating: "REGULATED",
+      summary: "Utility API access (where available) is governed by state PUC regulations and federal NERC/FERC standards. Consumer data access through Green Button / utility APIs requires explicit customer authorization. No blanket automated access.",
+      flags: ["State PUC regulated", "Green Button / customer authorization", "FERC/NERC compliance", "No unauthorized automated access"],
+    },
+    consent: {
+      rating: "CONTRACT-BASED",
+      summary: "Utility service agreements are contracts. Consent to data collection is embedded in the service contract. For smart meter opt-outs, some states allow customers to opt out of real-time data collection. Sensitive usage data sharing with third parties requires explicit consent under CPRA and similar laws.",
+      flags: ["Service contract = consent", "Smart meter opt-out (state-dependent)", "Third-party sharing requires explicit consent", "CPRA applies in California"],
+    },
+    redflags: ["Smart meter data can reveal daily behavior patterns", "Third-party energy analytics companies may not be clearly disclosed in TOS"],
+  },
+  {
+    id: "ecommerce",
+    name: "E-Commerce (General Web)",
+    icon: "\ud83d\uded2",
+    color: "#00C853",
+    encryption: {
+      rating: "REQUIRED",
+      summary: "PCI DSS 4.0 (March 2025) mandates TLS encryption for all cardholder data in transit. HTTPS is required for any site collecting payment data. Failure to comply risks loss of payment processing privileges. All major e-commerce platforms (Shopify, WooCommerce, Magento) enforce HTTPS by default.",
+      flags: ["PCI DSS 4.0 mandatory", "HTTPS required for payments", "TLS for all transaction data", "Encryption at rest required for card data"],
+    },
+    dataCollection: {
+      rating: "VARIES WIDELY",
+      summary: "E-commerce sites collect purchase history, browsing behavior, device data, location, and often share with ad platforms (Meta Pixel, Google Analytics). By 2025, 20 US states have comprehensive privacy laws. Sensitive data (health, biometrics, precise geolocation) now requires opt-in consent in many states.",
+      flags: ["Purchase history and browsing", "Ad pixel tracking (pre-consent required)", "20 US state privacy laws", "Opt-in required for sensitive data"],
+    },
+    api: {
+      rating: "CONSENT-GATED",
+      summary: "Loading tracking pixels (Meta Pixel, Google Tags) before user consent is a violation enforced by multiple regulators. Consent Management Platforms (CMPs) are now required for cross-jurisdiction compliance. Data Processing Agreements (DPAs) with all vendors are mandated under most state laws.",
+      flags: ["CMP required for multi-jurisdiction", "DPA with all vendors mandatory", "Pixel must load after consent", "GDPR fines for pre-consent loading"],
+    },
+    consent: {
+      rating: "EXPLICIT REQUIRED",
+      summary: "E-commerce is under the most active regulatory scrutiny. As of 2026, 8 US states require Global Privacy Control (GPC) signal recognition. GDPR requires a one-click reject option equal in prominence to accept. Class action lawsuits are expanding under CIPA for tracking without consent.",
+      flags: ["GPC recognition required (8 states)", "One-click reject = one-click accept (EU)", "Annual privacy policy review required", "CIPA litigation expanding"],
+    },
+    redflags: ["Consent banners with 'dark patterns' are actively targeted by regulators", "Third-party cookie alternatives (fingerprinting) still raise compliance issues"],
+  },
+];
+
+const RATINGS = {
+  STRONG: { color: "#00e5ff", label: "STRONG" },
+  ADVANCED: { color: "#00ffb3", label: "ADVANCED" },
+  PARTIAL: { color: "#ffe600", label: "PARTIAL" },
+  EXTENSIVE: { color: "#ff9800", label: "EXTENSIVE" },
+  "VERY EXTENSIVE": { color: "#ff5722", label: "VERY EXTENSIVE" },
+  AGGRESSIVE: { color: "#f44336", label: "AGGRESSIVE" },
+  RESTRICTED: { color: "#ffe600", label: "RESTRICTED" },
+  "HEAVILY RESTRICTED": { color: "#ff9800", label: "HEAVILY RESTRICTED" },
+  LICENSED: { color: "#ffe600", label: "LICENSED" },
+  CONTROLLED: { color: "#ffe600", label: "CONTROLLED" },
+  REGULATED: { color: "#00e5ff", label: "REGULATED" },
+  "CONSENT-GATED": { color: "#ffe600", label: "CONSENT-GATED" },
+  MANDATORY: { color: "#00ffb3", label: "MANDATORY" },
+  REQUIRED: { color: "#00ffb3", label: "REQUIRED" },
+  MODERATE: { color: "#8bc34a", label: "MODERATE" },
+  "VARIES WIDELY": { color: "#ff9800", label: "VARIES WIDELY" },
+  "IMPLIED + EXPLICIT": { color: "#ffe600", label: "IMPLIED + EXPLICIT" },
+  CONTESTED: { color: "#f44336", label: "CONTESTED" },
+  "USE = CONSENT": { color: "#ff5722", label: "USE = CONSENT" },
+  LAYERED: { color: "#ffe600", label: "LAYERED" },
+  "CONTRACT-BASED": { color: "#8bc34a", label: "CONTRACT-BASED" },
+  "EXPLICIT REQUIRED": { color: "#00e5ff", label: "EXPLICIT REQUIRED" },
+};
+
+const categories = [
+  { id: "encryption", label: "\ud83d\udd10 Encryption" },
+  { id: "dataCollection", label: "\ud83d\udcca Data Collection" },
+  { id: "api", label: "\u2699\ufe0f API Access" },
+  { id: "consent", label: "\u270d\ufe0f Consent" },
+];
+
+function TOSAnalysis() {
+const App = TOSAnalysis;
+  const [activePlatform, setActivePlatform] = useState("google");
+  const [activeCategory, setActiveCategory] = useState("encryption");
+
+  const platform = platforms.find((p) => p.id === activePlatform);
+  const catData = platform?.[activeCategory];
+  const rating = RATINGS[catData?.rating] || { color: "#888", label: catData?.rating };
+
+  return (
+    <div style={{ background: "#060a0f", minHeight: "100vh", fontFamily: "'Courier New', monospace", color: "#c8d8e8" }}>
+      {/* Header */}
+      <div style={{ borderBottom: "1px solid #00e5ff22", padding: "20px 24px 14px", background: "linear-gradient(180deg,#0a1520,#060a0f)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 4 }}>
+          <div>
+            <div style={{ color: "#00e5ff", fontSize: 9, letter
