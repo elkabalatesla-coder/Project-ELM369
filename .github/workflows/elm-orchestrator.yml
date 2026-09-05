@@ -1,0 +1,24 @@
+name: ELM Orchestrator Tests
+
+on:
+  push:
+    paths:
+      - 'tools/elm_orchestrator/**'
+      - '.github/workflows/elm-orchestrator.yml'
+  pull_request:
+    paths:
+      - 'tools/elm_orchestrator/**'
+      - '.github/workflows/elm-orchestrator.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Unit tests
+        run: python -m unittest discover -s tools/elm_orchestrator/tests -v
