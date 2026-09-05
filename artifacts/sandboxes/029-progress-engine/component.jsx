@@ -1,0 +1,389 @@
+-import { useState, useEffect, useRef, useCallback } from "react";
+
+// ─── ELM369 BRAND CONSTANTS ────────────────────────────────────────────────
+const OWNER = "Joseph";
+const PROJECT_ID = "ELM369";
+const JMR = "JMR0824197846902";
+const UUID = "1550e4d5-9ee3-49cd-8af8-7c9d630f84ad";
+const NETWORK = "2WIRE199";
+const VAULT = "PANDORA VAULT";
+
+// ─── TIMESTAMP UTILITY ─────────────────────────────────────────────────────
+const ts = () => new Date().toISOString().replace("T", " ").substring(0, 19) + " UTC";
+const tsShort = () => new Date().toLocaleTimeString("en-US", { hour12: false });
+
+// ─── PROJECT DATA ──────────────────────────────────────────────────────────
+const TOOLS = [
+  { id: "ELMDX", name: "ELMDX Android Diagnostics", phase: "Production", completion: 92, value: 48000, category: "Diagnostics", status: "ACTIVE" },
+  { id: "FLUX-UI", name: "FLUX Image Gen UI", phase: "Production", completion: 88, value: 35000, category: "AI/Creative", status: "ACTIVE" },
+  { id: "AUDIO-TX", name: "Audio Translator (100+ langs)", phase: "Beta", completion: 79, value: 42000, category: "Communication", status: "ACTIVE" },
+  { id: "BO-COMM", name: "Bo Communications Assistant", phase: "Production", completion: 95, value: 28000, category: "Communication", status: "ACTIVE" },
+  { id: "DEVTOOLS", name: "System Developer Tools v4.2.0", phase: "Production", completion: 94, value: 55000, category: "DevOps", status: "ACTIVE" },
+  { id: "OMNINET", name: "OMNINET / .mo* Protocol", phase: "Architecture", completion: 65, value: 120000, category: "Infrastructure", status: "DEV" },
+  { id: "TOKENIZER", name: "Tokenizer Add-On System", phase: "Production", completion: 90, value: 32000, category: "AI/Security", status: "ACTIVE" },
+  { id: "DATA-FIND", name: "Data Location Finder", phase: "Production", completion: 87, value: 38000, category: "Enterprise", status: "ACTIVE" },
+  { id: "AI-HUB", name: "AI Team Management Dashboard", phase: "Production", completion: 91, value: 25000, category: "Management", status: "ACTIVE" },
+  { id: "PANDORA", name: "Pandora Vault Security Layer", phase: "Production", completion: 96, value: 65000, category: "Security", status: "ACTIVE" },
+  { id: "SELF-OPT", name: "Self-Organizing Update Loop", phase: "Beta", completion: 72, value: 30000, category: "Automation", status: "DEV" },
+  { id: "SEC-MASTER", name: "Personal Security Master Guide", phase: "Production", completion: 98, value: 18000, category: "Security", status: "ACTIVE" },
+];
+
+const AI_TEAM = [
+  { name: "Claude", role: "Lead Architect & Developer", status: "ONLINE", tasks: 247, health: 99 },
+  { name: "Copilot", role: "Code Co-Pilot", status: "ONLINE", tasks: 89, health: 97 },
+  { name: "Grok", role: "Research & Analysis", status: "ONLINE", tasks: 64, health: 95 },
+  { name: "Gemini", role: "Multimodal Processing", status: "STANDBY", tasks: 41, health: 98 },
+  { name: "Kimi AI", role: "Extended Context Analysis", status: "ONLINE", tasks: 33, health: 94 },
+];
+
+const SECURITY_LOG = [
+  { id: "TKT-ELM369-20260403-001", level: "INFO", msg: "Network restriction enforced — 2WIRE199 only", resolved: true },
+  { id: "TKT-ELM369-20260409-001", level: "WARN", msg: "Quantum Engine init — full diagnostic sweep", resolved: false },
+  { id: "TKT-ELM369-20260409-002", level: "INFO", msg: "Pandora Vault sync complete — 28 devices verified", resolved: true },
+  { id: "TKT-ELM369-20260409-003", level: "INFO", msg: "AI Team notified — Quantum Super Engine deployed", resolved: true },
+  { id: "TKT-ELM369-20260408-001", level: "INFO", msg: "Security diagnostic sweep — 28+ devices/services", resolved: true },
+  { id: "TKT-ELM369-20260401-001", level: "WARN", msg: "OMNINET architecture phase — restricted data mode", resolved: true },
+];
+
+const BUSINESS_VERTICALS = [
+  { name: "AI Diagnostics (ELMDX)", revenue: 180000, growth: 34, market: "Mobile DevOps" },
+  { name: "Communication AI (Bo/Audio)", revenue: 240000, growth: 28, market: "Enterprise SaaS" },
+  { name: "Security Infrastructure", revenue: 310000, growth: 52, market: "Cybersecurity" },
+  { name: "OMNINET Protocol", revenue: 0, growth: 0, market: "Web3/AI Infrastructure", note: "Pre-revenue" },
+  { name: "Creative AI (FLUX/Tokenizer)", revenue: 95000, growth: 41, market: "AI Creative Tools" },
+  { name: "Developer Tooling", revenue: 155000, growth: 22, market: "DevOps SaaS" },
+];
+
+const COMPARABLES = [
+  { company: "Palantir (early)", valuation: 2100000, stage: "Seed→Series A" },
+  { company: "Anduril (early)", valuation: 1400000, stage: "Seed" },
+  { company: "Scale AI (early)", valuation: 1000000, stage: "Pre-Series A" },
+  { company: "ELM369 (current)", valuation: null, stage: "Owner-Funded" },
+];
+
+// ─── CALCULATED METRICS ────────────────────────────────────────────────────
+const totalIP = TOOLS.reduce((s, t) => s + t.value, 0);
+const avgCompletion = Math.round(TOOLS.reduce((s, t) => s + t.completion, 0) / TOOLS.length);
+const activeTools = TOOLS.filter(t => t.status === "ACTIVE").length;
+const totalRevenuePotential = BUSINESS_VERTICALS.reduce((s, v) => s + v.revenue, 0);
+const investmentScore = Math.round(
+  (avgCompletion * 0.3) + (activeTools / TOOLS.length * 100 * 0.3) +
+  (Math.min(totalIP / 1000000 * 100, 40) * 0.4)
+);
+
+// ─── PULSE ANIMATION CSS ───────────────────────────────────────────────────
+const GLOBAL_CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #020c14; }
+  ::-webkit-scrollbar { width: 4px; } 
+  ::-webkit-scrollbar-track { background: #061420; }
+  ::-webkit-scrollbar-thumb { background: #00e5ff44; border-radius: 2px; }
+  @keyframes pulse-cyan { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+  @keyframes scan-line { 0%{transform:translateY(-100%);} 100%{transform:translateY(100vh);} }
+  @keyframes grid-fade { 0%{opacity:0.03;} 50%{opacity:0.07;} 100%{opacity:0.03;} }
+  @keyframes ticker { 0%{transform:translateX(100vw);} 100%{transform:translateX(-200%);} }
+  @keyframes blink { 0%,100%{opacity:1;} 49%{opacity:1;} 50%,99%{opacity:0;} }
+  @keyframes ring-spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+  @keyframes data-fill { 0%{width:0%;} 100%{width:var(--target);} }
+  @keyframes float-in { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
+  @keyframes matrix-drop { 0%{opacity:0;transform:translateY(-10px);} 10%{opacity:1;} 90%{opacity:1;} 100%{opacity:0;transform:translateY(10px);} }
+  @keyframes shimmer { 0%{background-position:-200% 0;} 100%{background-position:200% 0;} }
+`;
+
+// ─── SUBCOMPONENTS ─────────────────────────────────────────────────────────
+
+function HexMetric({ label, value, unit = "", color = "#00e5ff", size = "lg" }) {
+  const fs = size === "lg" ? "1.8rem" : size === "xl" ? "2.4rem" : "1.2rem";
+  return (
+    <div style={{ textAlign: "center", padding: "12px 8px" }}>
+      <div style={{
+        fontFamily: "'Orbitron', monospace", fontSize: fs, fontWeight: 900,
+        color, textShadow: `0 0 20px ${color}88, 0 0 40px ${color}44`,
+        lineHeight: 1, letterSpacing: "-1px"
+      }}>
+        {value}<span style={{ fontSize: "0.45em", opacity: 0.7, letterSpacing: 0 }}>{unit}</span>
+      </div>
+      <div style={{
+        fontFamily: "'Rajdhani', sans-serif", fontSize: "0.65rem", color: "#4a7a8a",
+        letterSpacing: "3px", textTransform: "uppercase", marginTop: 4
+      }}>{label}</div>
+    </div>
+  );
+}
+
+function ProgressBar({ value, color = "#00e5ff", height = 4 }) {
+  return (
+    <div style={{ background: "#0a1e2a", borderRadius: 99, height, overflow: "hidden", position: "relative" }}>
+      <div style={{
+        height: "100%", width: `${value}%`, background: `linear-gradient(90deg, ${color}88, ${color})`,
+        borderRadius: 99, boxShadow: `0 0 8px ${color}88`,
+        animation: "data-fill 1.2s ease-out forwards",
+        "--target": `${value}%`
+      }} />
+    </div>
+  );
+}
+
+function StatusDot({ status }) {
+  const colors = { ONLINE: "#00ff88", STANDBY: "#ffa500", OFFLINE: "#ff3344", ACTIVE: "#00e5ff", DEV: "#a855f7" };
+  const c = colors[status] || "#888";
+  return (
+    <span style={{
+      display: "inline-block", width: 8, height: 8, borderRadius: "50%",
+      background: c, boxShadow: `0 0 6px ${c}`, marginRight: 6,
+      animation: status === "ONLINE" || status === "ACTIVE" ? "pulse-cyan 2s infinite" : "none"
+    }} />
+  );
+}
+
+function Panel({ title, subtitle, children, accent = "#00e5ff", style = {} }) {
+  return (
+    <div style={{
+      background: "linear-gradient(145deg, #061420ee, #040d18ee)",
+      border: `1px solid ${accent}22`,
+      borderTop: `2px solid ${accent}`,
+      borderRadius: 4,
+      padding: "16px",
+      position: "relative",
+      overflow: "hidden",
+      animation: "float-in 0.6s ease-out forwards",
+      ...style
+    }}>
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+        backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 24px, ${accent}06 24px, ${accent}06 25px),
+                          repeating-linear-gradient(90deg, transparent, transparent 24px, ${accent}06 24px, ${accent}06 25px)`,
+        pointerEvents: "none", animation: "grid-fade 4s infinite"
+      }} />
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 12 }}>
+          <div style={{
+            fontFamily: "'Orbitron', monospace", fontSize: "0.7rem", fontWeight: 700,
+            color: accent, letterSpacing: "3px", textTransform: "uppercase"
+          }}>{title}</div>
+          {subtitle && <div style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: "0.58rem", color: "#3a6070" }}>{subtitle}</div>}
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ─── AI ANALYST PANEL ──────────────────────────────────────────────────────
+function AIAnalystPanel() {
+  const [messages, setMessages] = useState([
+    { role: "assistant", text: `QUANTUM ANALYST ONLINE — Project ${PROJECT_ID} ${JMR} loaded. I have full visibility into all tools, financials, security logs, and AI team status. Ask me anything about your project.` }
+  ]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const scrollRef = useRef(null);
+
+  const SYSTEM = `You are the ELM369 Quantum Super Engine Analyst — an elite AI analyst embedded inside Project ELM369 owned by Joseph (${JMR}, UUID: ${UUID}). You have full access to all project data:
+
+PROJECT TOOLS (${TOOLS.length} total, ${activeTools} active):
+${TOOLS.map(t => `- ${t.name}: ${t.completion}% complete, est. IP value $${t.value.toLocaleString()}, status: ${t.status}`).join("\n")}
+
+FINANCIAL METRICS:
+- Total IP/Software Asset Valuation: $${totalIP.toLocaleString()}
+- Total Revenue Potential (annual): $${totalRevenuePotential.toLocaleString()}
+- Investment Readiness Score: ${investmentScore}/100
+- Business Verticals: ${BUSINESS_VERTICALS.map(v => `${v.name} ($${v.revenue.toLocaleString()}/yr potential, ${v.growth}% growth)`).join(", ")}
+
+AI TEAM: Claude (Lead), Copilot, Grok, Gemini, Kimi AI — all operational.
+SECURITY: Pandora Vault active, 2WIRE199 network restriction enforced, 28+ devices monitored.
+OMNINET Protocol: Pre-revenue, $120,000 estimated IP value, blockchain-anchored AI coordination fabric.
+
+Respond as a senior strategic analyst and technical architect. Be concise, data-driven, and insightful. Use Project ELM369 terminology naturally. Flag risks, opportunities, and recommendations. Keep responses under 200 words unless deep analysis is requested.`;
+
+  const send = useCallback(async () => {
+    if (!input.trim() || loading) return;
+    const userMsg = input.trim();
+    setInput("");
+    setMessages(prev => [...prev, { role: "user", text: userMsg }]);
+    setLoading(true);
+    try {
+      const history = messages.map(m => ({ role: m.role === "assistant" ? "assistant" : "user", content: m.text }));
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: SYSTEM,
+          messages: [...history, { role: "user", content: userMsg }]
+        })
+      });
+      const data = await res.json();
+      const reply = data.content?.find(b => b.type === "text")?.text || "ANALYST ERROR — retry query.";
+      setMessages(prev => [...prev, { role: "assistant", text: reply }]);
+    } catch {
+      setMessages(prev => [...prev, { role: "assistant", text: "QUANTUM LINK INTERRUPTED — check network status." }]);
+    }
+    setLoading(false);
+  }, [input, loading, messages]);
+
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [messages, loading]);
+
+  return (
+    <Panel title="Quantum AI Analyst" subtitle={`// LIVE ENGINE — ${JMR}`} accent="#a855f7" style={{ gridColumn: "span 2" }}>
+      <div ref={scrollRef} style={{
+        height: 280, overflowY: "auto", marginBottom: 12,
+        display: "flex", flexDirection: "column", gap: 8
+      }}>
+        {messages.map((m, i) => (
+          <div key={i} style={{
+            alignSelf: m.role === "user" ? "flex-end" : "flex-start",
+            maxWidth: "85%",
+            background: m.role === "user" ? "linear-gradient(135deg, #1a0a3a, #2d1060)" : "linear-gradient(135deg, #061e2e, #0a2a3e)",
+            border: m.role === "user" ? "1px solid #a855f755" : "1px solid #00e5ff22",
+            borderRadius: 4, padding: "8px 12px",
+            fontFamily: "'Rajdhani', sans-serif", fontSize: "0.82rem",
+            color: m.role === "user" ? "#c084fc" : "#8dd8e8",
+            lineHeight: 1.5
+          }}>
+            {m.role === "assistant" && (
+              <div style={{ fontFamily: "'Share Tech Mono'", fontSize: "0.6rem", color: "#a855f766", marginBottom: 4 }}>
+                ▶ QUANTUM ANALYST [{ts()}]
+              </div>
+            )}
+            {m.text}
+          </div>
+        ))}
+        {loading && (
+          <div style={{
+            alignSelf: "flex-start", background: "#061e2e", border: "1px solid #00e5ff22",
+            borderRadius: 4, padding: "8px 12px",
+            fontFamily: "'Share Tech Mono'", fontSize: "0.72rem", color: "#a855f7"
+          }}>
+            <span style={{ animation: "blink 1s infinite" }}>PROCESSING QUANTUM DATA</span>
+            <span style={{ marginLeft: 4 }}>██████░░░░</span>
+          </div>
+        )}
+      </div>
+      <div style={{ display: "flex", gap: 8 }}>
+        <input
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && send()}
+          placeholder="Query the Quantum Engine — financial analysis, security status, project metrics..."
+          style={{
+            flex: 1, background: "#040d18", border: "1px solid #a855f733",
+            borderRadius: 4, padding: "8px 12px",
+            fontFamily: "'Share Tech Mono', monospace", fontSize: "0.75rem",
+            color: "#c084fc", outline: "none"
+          }}
+        />
+        <button onClick={send} disabled={loading || !input.trim()} style={{
+          background: loading ? "#1a0a3a" : "linear-gradient(135deg, #7c3aed, #a855f7)",
+          border: "none", borderRadius: 4, padding: "8px 16px",
+          fontFamily: "'Orbitron'", fontSize: "0.6rem", fontWeight: 700,
+          color: "#fff", cursor: loading ? "not-allowed" : "pointer", letterSpacing: 2,
+          transition: "all 0.2s"
+        }}>
+          {loading ? "..." : "SEND"}
+        </button>
+      </div>
+    </Panel>
+  );
+}
+
+// ─── MAIN APP ───────────────────────────────────────────────────────────────
+export default function QuantumSuperEngine() {
+  const [activeTab, setActiveTab] = useState("COMMAND");
+  const [time, setTime] = useState(ts());
+  const [logEntries, setLogEntries] = useState([...SECURITY_LOG]);
+  const [secLog2, setSecLog2] = useState([]);
+
+  useEffect(() => {
+    const iv = setInterval(() => setTime(ts()), 1000);
+    return () => clearInterval(iv);
+  }, []);
+
+  // Auto-generate Pandora Vault / Security Log 2 entries on mount
+  useEffect(() => {
+    const entries = TOOLS.map(t => ({
+      id: `VAULT-${t.id}-${Date.now()}`,
+      level: t.completion >= 90 ? "VERIFIED" : "MONITORED",
+      tool: t.name, completion: t.completion, value: t.value, timestamp: ts()
+    }));
+    setSecLog2(entries);
+  }, []);
+
+  const TABS = ["COMMAND", "FINANCIAL", "TOOLS", "AI TEAM", "SECURITY", "VAULT"];
+  const tabColors = { COMMAND: "#00e5ff", FINANCIAL: "#00ff88", TOOLS: "#ffa500", "AI TEAM": "#a855f7", SECURITY: "#ff4466", VAULT: "#ffd700" };
+
+  return (
+    <div style={{
+      minHeight: "100vh", background: "#020c14",
+      fontFamily: "'Rajdhani', sans-serif",
+      position: "relative", overflow: "hidden"
+    }}>
+      <style>{GLOBAL_CSS}</style>
+
+      {/* Scan line effect */}
+      <div style={{
+        position: "fixed", top: 0, left: 0, right: 0, height: "2px",
+        background: "linear-gradient(90deg, transparent, #00e5ff44, transparent)",
+        animation: "scan-line 6s linear infinite", zIndex: 0, pointerEvents: "none"
+      }} />
+
+      {/* Header */}
+      <div style={{
+        background: "linear-gradient(180deg, #040f1a, #020c14)",
+        borderBottom: "1px solid #00e5ff22",
+        padding: "12px 24px",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        position: "sticky", top: 0, zIndex: 100
+      }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{
+              width: 32, height: 32, border: "2px solid #00e5ff",
+              borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center",
+              fontFamily: "'Orbitron'", fontWeight: 900, fontSize: "0.7rem", color: "#00e5ff",
+              boxShadow: "0 0 20px #00e5ff44"
+            }}>QSE</div>
+            <div>
+              <div style={{ fontFamily: "'Orbitron'", fontWeight: 900, fontSize: "1rem", color: "#00e5ff", letterSpacing: 3 }}>
+                PROJECT {PROJECT_ID} — QUANTUM SUPER ENGINE
+              </div>
+              <div style={{ fontFamily: "'Share Tech Mono'", fontSize: "0.6rem", color: "#3a6070", letterSpacing: 2 }}>
+                {JMR} · UUID:{UUID} · NET:{NETWORK}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <div style={{ fontFamily: "'Share Tech Mono'", fontSize: "0.65rem", color: "#00e5ff88" }}>
+            <span style={{ animation: "blink 1s infinite", color: "#00ff88" }}>●</span> QUANTUM LINK ACTIVE
+          </div>
+          <div style={{ fontFamily: "'Share Tech Mono'", fontSize: "0.6rem", color: "#2a5060" }}>{time}</div>
+        </div>
+      </div>
+
+      {/* Ticker */}
+      <div style={{
+        background: "#020c14", borderBottom: "1px solid #00e5ff11",
+        height: 24, overflow: "hidden", position: "relative"
+      }}>
+        <div style={{
+          position: "absolute", whiteSpace: "nowrap",
+          fontFamily: "'Share Tech Mono'", fontSize: "0.58rem", color: "#00e5ff55",
+          animation: "ticker 30s linear infinite", top: "50%", transform: "translateY(-50%)"
+        }}>
+          {TOOLS.map(t => `  ▸ ${t.id} [${t.completion}%] $${(t.value / 1000).toFixed(0)}K  `).join("·")}
+          {AI_TEAM.map(a => `  ▸ ${a.name.toUpperCase()} ONLINE  `).join("·")}
+          ▸ PANDORA VAULT SYNC COMPLETE · OMNINET PROTOCOL ACTIVE · SECURITY LOG 1+2 UPDATED · INVESTMENT SCORE {investmentScore}/100
+        </div>
+      </div>
+
+      {/* Top KPI Strip */}
+      <div style={{
+        display: "grid", gridTemplateColumns: "repeat(6, 1fr)",
+        gap: 1, background: "#00e5ff11", borderBottom: "1px solid #00e5ff11"
+      }}>
+        {[
+          { label: "Total IP V
