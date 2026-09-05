@@ -96,6 +96,22 @@ def run_daily(
                     items=items,
                 )
             )
+        elif kind == "github_issues_sync":
+            try:
+                from tools.github_issues.sync import sync as issues_sync
+                payload = issues_sync()
+                results.append(
+                    TaskResult(
+                        task["id"],
+                        task["name"],
+                        "ok",
+                        f"{payload.get('issues_fetched', 0)} issues → {payload.get('backlog_items', 0)} backlog items",
+                    )
+                )
+            except Exception as exc:  # noqa: BLE001
+                results.append(
+                    TaskResult(task["id"], task["name"], "noted", f"skipped/unavailable: {exc}")
+                )
         elif kind == "vault_backlog":
             root = Path(task["sources_root"]) if task.get("sources_root") else None
             payload = backlog_report(root)

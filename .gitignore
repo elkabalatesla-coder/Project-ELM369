@@ -23,3 +23,7 @@ tools/elm_orchestrator/data/
 tools/elm_evolution/data/
 
 tools/dax_memory/data/
+
+tools/pandora_vault/data/
+tools/elm_offline/data/cache/
+tools/elm_offline/data/manifest.json

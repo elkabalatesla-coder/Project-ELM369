@@ -34,6 +34,12 @@
       "name": "Vault design/dev backlog counts",
       "kind": "vault_backlog",
       "enabled": true
+    },
+    {
+      "id": "github_issues_sync",
+      "name": "Sync GitHub issues into vault",
+      "kind": "github_issues_sync",
+      "enabled": true
     }
   ]
 }
