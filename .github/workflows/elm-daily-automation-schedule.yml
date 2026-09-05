@@ -1,0 +1,27 @@
+name: ELM Daily Automation Schedule
+
+on:
+  schedule:
+    # 13:00 UTC ≈ 9:00 AM America/Indiana/Indianapolis (EDT)
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Run daily automation (live outage probes)
+        run: python -m tools.elm_daily_automation run
+      - name: Upload run log artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: elm-daily-run-log
+          path: tools/elm_daily_automation/data/daily_runs.jsonl
+          if-no-files-found: warn

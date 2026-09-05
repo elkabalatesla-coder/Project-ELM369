@@ -1,13 +1,31 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 2).
+Last updated: 2026-09-04 (round 3 — live tools).
 
 ## Active / keep
 
 | Repo | Visibility | Role |
 |------|------------|------|
-| [Project-ELM369](https://github.com/elkabalatesla-coder/Project-ELM369) | public | **Only repo with real code** — vision, schemas, docs, CI, evolution layer |
+| [Project-ELM369](https://github.com/elkabalatesla-coder/Project-ELM369) | public | **Only repo with real code** — vision, schemas, docs, CI, tools |
+
+## Live tools (in this repo)
+
+| Tool | Path | Purpose |
+|------|------|---------|
+| AI outage monitor | `tools/ai_outage_monitor/` | Probe AI service status pages; JSONL history |
+| Daily automation | `tools/elm_daily_automation/` | Maintenance/security checklist + outage probe |
+| DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize |
+
+Scheduled: `.github/workflows/elm-daily-automation-schedule.yml` runs daily at 13:00 UTC (≈ 9am Indianapolis). Also triggerable via **Actions → workflow_dispatch**.
+
+Quick start (from repo root):
+
+```bash
+python3 -m tools.ai_outage_monitor check --dry-run
+python3 -m tools.elm_daily_automation run --dry-run
+python3 -m tools.dax_memory store "note" --kind note
+```
 
 ## Archived stubs (intent preserved here)
 
