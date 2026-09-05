@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROJECT ELM369 \u2014 COMMAND CENTER</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --elm-cyan: #00FFD4;
+    --elm-cyan2: #00C8A8;
+    --elm-dark: #020E0C;
+    --elm-panel: #041A16;
+    --elm-border: #0A3D32;
+    --elm-red: #FF2D4E;
+    --elm-amber: #FFB800;
+    --elm-green: #00FF88;
+    --elm-purple: #A855F7;
+    --elm-gray: #1A3530;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-display: 'Orbitron', monospace;
+    --font-body: 'Rajdhani', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--elm-dark);
+    color: var(--elm-cyan);
+    font-family: var(--font-mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,255,212,0.08) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,255,212,0.03) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,255,212,0.03) 40px);
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 20px 24px 0;
+    border-bottom: 1px solid var(--elm-border);
+    position: relative;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .logo-block h1 {
+    font-family: var(--font-display);
+    font-size: clamp(18px, 4vw, 32px);
+    font-weight: 900;
+    color: var(--elm-cyan);
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(0,255,212,0.6), 0 0 40px rgba(0,255,212,0.3);
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%,100% { text-shadow: 0 0 20px rgba(0,255,212,0.6), 0 0 40px rgba(0,255,212,0.3); }
+    50% { text-shadow: 0 0 30px rgba(0,255,212,0.9), 0 0 60px rgba(0,255,212,0.5), 0 0 80px rgba(0,255,212,0.2); }
+  }
+
+  .logo-block .subtitle {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: rgba(0,255,212,0.5);
+    letter-spacing: 3px;
+    margin-top: 4px;
+  }
+
+  .header-meta {
+    text-align: right;
+    font-size: 11px;
+    color: rgba(0,255,212,0.5);
+    line-height: 1.8;
+  }
+
+  .header-meta .id-badge {
+    background: rgba(0,255,212,0.08);
+    border: 1px solid var(--elm-border);
+    padding: 4px 10px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--elm-cyan);
+    margin-bottom: 4px;
+    display: inline-block;
+    border-radius: 2px;
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    gap: 2px;
+    margin-top: 16px;
+    overflow-x: auto;
+    padding-bottom: 1px;
+  }
+
+  .tab {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: transparent;
+    color: rgba(0,255,212,0.4);
+    transition: all 0.2s;
+    white-space: nowrap;
+    position: relative;
+    top: 1px;
+  }
+
+  .tab:hover { color: var(--elm-cyan); background: rgba(0,255,212,0.05); }
+
+  .tab.active {
+    color: var(--elm-cyan);
+    background: var(--elm-panel);
+    border-color: var(--elm-border);
+    border-bottom-color: var(--elm-panel);
+  }
+
+  .tab .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-right: 6px;
+    background: currentColor;
+    animation: blink 1.5s step-end infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* PANELS */
+  .content {
+    padding: 24px;
+    display: none;
+  }
+  .content.active { display: block; }
+
+  /* PANEL

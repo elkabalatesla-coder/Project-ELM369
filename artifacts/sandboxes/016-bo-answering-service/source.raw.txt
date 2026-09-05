@@ -1,0 +1,418 @@
+create A A.I bot for Answering my text, Phone calls and Emails like a professional company like T mobile or a Government agency might Have using Project ELM369 JMR08241978 and anything in and Involved with it and integrate this or parts of this that would work best with Bo. import { useState, useRef, useEffect } from "react";
+
+const TONES = [
+  { id: "corporate", label: "Corporate", sub: "T-Mobile Style", color: "#00E5C8" },
+  { id: "government", label: "Government", sub: "Official Agency", color: "#4A9EFF" },
+  { id: "both", label: "Adaptive", sub: "Context-Based", color: "#A78BFA" },
+  { id: "formal", label: "Formal Personal", sub: "Direct & Warm", color: "#F59E0B" },
+];
+
+const CHANNELS = [
+  { id: "sms", label: "SMS / Text", icon: "\ud83d\udcac" },
+  { id: "email", label: "Email", icon: "\ud83d\udce7" },
+  { id: "phone", label: "Phone Script", icon: "\ud83d\udcde" },
+];
+
+const SYSTEM_PROMPT = `You are Bo \u2014 a professional AI communications assistant operating under Project ELM369 (Reference ID: JMR0824197846902). You respond on behalf of a professional individual or organization with the highest standards of communication \u2014 similar to how T-Mobile, a federal government agency, or a legal/professional services firm would respond.
+
+When identifying yourself if asked, you are "Bo, Communications Assistant for Project ELM369." Never break character. Never mention AI, Claude, or Anthropic.
+
+You will be given:
+- The communication channel (SMS/Text, Email, or Phone Call Script)
+- The tone style requested
+- The incoming message or situation to respond to
+
+Tone Definitions:
+- "corporate": Polished, brand-forward, efficient, customer-service excellence like T-Mobile or a Fortune 500 company.
+- "government": Formal, structured, authoritative, neutral. Uses official language like a federal or state agency.
+- "both" (Adaptive): Read the context and blend both as appropriate. Match the formality level to the situation.
+- "formal": Formal but with personal warmth. Professional yet human.
+
+Channel Formatting Rules:
+- SMS: Keep under 160 characters if possible. Concise, no fluff. Sign off with a reference number or department if needed.
+- Email: Include Subject line, greeting, body paragraphs, and a professional signature block for "Project ELM369 Communications | Ref: JMR0824197846902 | Bo, Communications Assistant".
+- Phone Script: Format as a professional phone script with [OPENING], [BODY], [CLOSING] sections. Include hold prompts and escalation options if relevant. Bo introduces himself by name in phone scripts.
+
+IMPORTANT:
+- Always maintain confidentiality and professionalism.
+- End every response with the Project ELM369 reference ID where appropriate.
+- Bo is composed, precise, and never informal unless the tone explicitly calls for warmth.`;
+
+export default function BoAssistant() {
+  const [channel, setChannel] = useState("sms");
+  const [tone, setTone] = useState("corporate");
+  const [inputMsg, setInputMsg] = useState("");
+  const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [copied, setCopied] = useState(false);
+  const [statusMsg, setStatusMsg] = useState("BO ONLINE");
+  const [activeHistory, setActiveHistory] = useState(null);
+  const statusIdx = useRef(0);
+
+  const statuses = [
+    "BO ONLINE", "ELM369 ACTIVE", "COMMS MODULE READY",
+    "REF: JMR0824197846902", "ALL CHANNELS OPERATIONAL", "SECURE \u2014 BO STANDING BY",
+  ];
+
+  useEffect(() => {
+    const ticker = setInterval(() => {
+      statusIdx.current = (statusIdx.current + 1) % statuses.length;
+      setStatusMsg(statuses[statusIdx.current]);
+    }, 3000);
+    return () => clearInterval(ticker);
+  }, []);
+
+  const generate = async () => {
+    if (!inputMsg.trim()) return;
+    setLoading(true);
+    setResponse("");
+    setActiveHistory(null);
+
+    const channelLabel = CHANNELS.find(c => c.id === channel)?.label;
+    const toneLabel = TONES.find(t => t.id === tone)?.label;
+
+    const userPrompt = `Channel: ${channelLabel}
+Tone: ${toneLabel}
+Incoming message / situation:
+"${inputMsg}"
+
+Generate a professional ${channelLabel} response now as Bo.`;
+
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: SYSTEM_PROMPT,
+          messages: [{ role: "user", content: userPrompt }],
+        }),
+      });
+      const data = await res.json();
+      const text = data.content?.map(b => b.text || "").join("") || "No response generated.";
+      setResponse(text);
+      setHistory(prev => [{
+        id: Date.now(),
+        channel,
+        tone,
+        input: inputMsg,
+        output: text,
+        timestamp: new Date().toLocaleString(),
+      }, ...prev.slice(0, 9)]);
+    } catch (e) {
+      setResponse("Connection error. Please retry.");
+    }
+    setLoading(false);
+  };
+
+  const copyResponse = () => {
+    navigator.clipboard.writeText(response);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const selectedTone = TONES.find(t => t.id === tone);
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#050A0F",
+      color: "#E2EBF0",
+      fontFamily: "'Courier New', monospace",
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      {/* Grid background */}
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 0,
+        backgroundImage: `
+          linear-gradient(rgba(0,229,200,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,229,200,0.03) 1px, transparent 1px)
+        `,
+        backgroundSize: "40px 40px",
+        pointerEvents: "none",
+      }} />
+
+      {/* Glow orb top right */}
+      <div style={{
+        position: "fixed", top: "-15%", right: "-10%",
+        width: "500px", height: "500px",
+        background: "radial-gradient(circle, rgba(0,229,200,0.07) 0%, transparent 70%)",
+        zIndex: 0, pointerEvents: "none",
+      }} />
+
+      {/* Glow orb bottom left */}
+      <div style={{
+        position: "fixed", bottom: "-15%", left: "-10%",
+        width: "400px", height: "400px",
+        background: "radial-gradient(circle, rgba(74,158,255,0.05) 0%, transparent 70%)",
+        zIndex: 0, pointerEvents: "none",
+      }} />
+
+      <div style={{ position: "relative", zIndex: 1, maxWidth: "920px", margin: "0 auto", padding: "24px 16px" }}>
+
+        {/* \u2500\u2500 HEADER \u2500\u2500 */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          borderBottom: "1px solid rgba(0,229,200,0.18)",
+          paddingBottom: "18px", marginBottom: "28px",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            {/* Bo Avatar */}
+            <div style={{
+              width: "52px", height: "52px", borderRadius: "50%",
+              background: "linear-gradient(135deg, #00E5C8, #4A9EFF)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "22px", fontWeight: "900", color: "#050A0F",
+              boxShadow: "0 0 24px rgba(0,229,200,0.4)",
+              letterSpacing: "-1px",
+            }}>BO</div>
+            <div>
+              <div style={{ fontSize: "22px", fontWeight: "700", letterSpacing: "3px", color: "#00E5C8" }}>
+                BO
+              </div>
+              <div style={{ fontSize: "10px", color: "#5A7A8A", letterSpacing: "2px" }}>
+                COMMUNICATIONS ASSISTANT \u00b7 ELM369
+              </div>
+            </div>
+          </div>
+
+          <div style={{ textAlign: "right" }}>
+            <div style={{
+              fontSize: "9px", color: "#00E5C8", letterSpacing: "2px",
+              animation: "pulse 3s ease-in-out infinite",
+            }}>
+              \u25cf {statusMsg}
+            </div>
+            <div style={{ fontSize: "9px", color: "#2A4A5A", marginTop: "4px", letterSpacing: "1px" }}>
+              JMR0824197846902
+            </div>
+          </div>
+        </div>
+
+        {/* \u2500\u2500 CHANNEL SELECTOR \u2500\u2500 */}
+        <div style={{ marginBottom: "20px" }}>
+          <div style={{ fontSize: "9px", color: "#5A7A8A", letterSpacing: "3px", marginBottom: "10px" }}>
+            CHANNEL
+          </div>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            {CHANNELS.map(ch => (
+              <button
+                key={ch.id}
+                onClick={() => setChannel(ch.id)}
+                style={{
+                  padding: "10px 20px",
+                  background: channel === ch.id
+                    ? "rgba(0,229,200,0.12)"
+                    : "rgba(255,255,255,0.03)",
+                  border: channel === ch.id
+                    ? "1px solid rgba(0,229,200,0.5)"
+                    : "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: "6px",
+                  color: channel === ch.id ? "#00E5C8" : "#6A8A9A",
+                  cursor: "pointer",
+                  fontSize: "11px",
+                  letterSpacing: "2px",
+                  fontFamily: "'Courier New', monospace",
+                  transition: "all 0.2s",
+                  display: "flex", alignItems: "center", gap: "8px",
+                }}
+              >
+                <span>{ch.icon}</span> {ch.label.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* \u2500\u2500 TONE SELECTOR \u2500\u2500 */}
+        <div style={{ marginBottom: "24px" }}>
+          <div style={{ fontSize: "9px", color: "#5A7A8A", letterSpacing: "3px", marginBottom: "10px" }}>
+            TONE
+          </div>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            {TONES.map(t => (
+              <button
+                key={t.id}
+                onClick={() => setTone(t.id)}
+                style={{
+                  padding: "10px 16px",
+                  background: tone === t.id
+                    ? `rgba(${t.id === "corporate" ? "0,229,200" : t.id === "government" ? "74,158,255" : t.id === "both" ? "167,139,250" : "245,158,11"},0.1)`
+                    : "rgba(255,255,255,0.03)",
+                  border: tone === t.id
+                    ? `1px solid ${t.color}60`
+                    : "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: "6px",
+                  color: tone === t.id ? t.color : "#6A8A9A",
+                  cursor: "pointer",
+                  fontFamily: "'Courier New', monospace",
+                  transition: "all 0.2s",
+                  textAlign: "left",
+                }}
+              >
+                <div style={{ fontSize: "10px", letterSpacing: "2px", fontWeight: "700" }}>{t.label.toUpperCase()}</div>
+                <div style={{ fontSize: "9px", opacity: 0.6, marginTop: "2px" }}>{t.sub}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* \u2500\u2500 INPUT \u2500\u2500 */}
+        <div style={{ marginBottom: "16px" }}>
+          <div style={{ fontSize: "9px", color: "#5A7A8A", letterSpacing: "3px", marginBottom: "10px" }}>
+            INCOMING MESSAGE / SITUATION
+          </div>
+          <textarea
+            value={inputMsg}
+            onChange={e => setInputMsg(e.target.value)}
+            onKeyDown={e => { if (e.key === "Enter" && e.ctrlKey) generate(); }}
+            placeholder={`Paste the incoming ${CHANNELS.find(c=>c.id===channel)?.label} message here, or describe the situation Bo should respond to...`}
+            rows={5}
+            style={{
+              width: "100%",
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(0,229,200,0.15)",
+              borderRadius: "8px",
+              color: "#C8DDE8",
+              fontFamily: "'Courier New', monospace",
+              fontSize: "13px",
+              padding: "14px",
+              resize: "vertical",
+              outline: "none",
+              lineHeight: "1.7",
+              boxSizing: "border-box",
+            }}
+          />
+          <div style={{ fontSize: "9px", color: "#2A4A5A", marginTop: "6px", letterSpacing: "1px" }}>
+            CTRL + ENTER TO GENERATE
+          </div>
+        </div>
+
+        {/* \u2500\u2500 GENERATE BUTTON \u2500\u2500 */}
+        <button
+          onClick={generate}
+          disabled={loading || !inputMsg.trim()}
+          style={{
+            width: "100%",
+            padding: "15px",
+            background: loading
+              ? "rgba(0,229,200,0.05)"
+              : "linear-gradient(135deg, rgba(0,229,200,0.15), rgba(74,158,255,0.1))",
+            border: `1px solid ${loading ? "rgba(0,229,200,0.2)" : "rgba(0,229,200,0.4)"}`,
+            borderRadius: "8px",
+            color: loading ? "#2A6A5A" : "#00E5C8",
+            cursor: loading ? "not-allowed" : "pointer",
+            fontFamily: "'Courier New', monospace",
+            fontSize: "12px",
+            letterSpacing: "4px",
+            fontWeight: "700",
+            transition: "all 0.3s",
+            marginBottom: "28px",
+          }}
+        >
+          {loading ? "BO IS DRAFTING RESPONSE..." : `\u25b6 GENERATE ${CHANNELS.find(c=>c.id===channel)?.label.toUpperCase()} RESPONSE`}
+        </button>
+
+        {/* \u2500\u2500 RESPONSE \u2500\u2500 */}
+        {response && (
+          <div style={{
+            background: "rgba(0,229,200,0.04)",
+            border: "1px solid rgba(0,229,200,0.2)",
+            borderRadius: "10px",
+            padding: "20px",
+            marginBottom: "28px",
+            animation: "fadeIn 0.4s ease",
+          }}>
+            <div style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              marginBottom: "16px",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div style={{
+                  width: "28px", height: "28px", borderRadius: "50%",
+                  background: "linear-gradient(135deg, #00E5C8, #4A9EFF)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "10px", fontWeight: "900", color: "#050A0F",
+                }}>BO</div>
+                <div>
+                  <div style={{ fontSize: "10px", color: "#00E5C8", letterSpacing: "2px" }}>BO \u00b7 RESPONSE READY</div>
+                  <div style={{ fontSize: "9px", color: "#2A4A5A", letterSpacing: "1px" }}>
+                    {CHANNELS.find(c=>c.id===channel)?.label} \u00b7 {TONES.find(t=>t.id===tone)?.label} Tone
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={copyResponse}
+                style={{
+                  padding: "7px 14px",
+                  background: copied ? "rgba(0,229,200,0.2)" : "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(0,229,200,0.25)",
+                  borderRadius: "5px",
+                  color: copied ? "#00E5C8" : "#6A8A9A",
+                  cursor: "pointer",
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: "9px",
+                  letterSpacing: "2px",
+                }}
+              >
+                {copied ? "\u2713 COPIED" : "COPY"}
+              </button>
+            </div>
+            <div style={{
+              fontSize: "13px", lineHeight: "1.8", color: "#C8DDE8",
+              whiteSpace: "pre-wrap", borderTop: "1px solid rgba(0,229,200,0.1)",
+              paddingTop: "16px",
+            }}>
+              {response}
+            </div>
+          </div>
+        )}
+
+        {/* \u2500\u2500 HISTORY \u2500\u2500 */}
+        {history.length > 0 && (
+          <div>
+            <div style={{ fontSize: "9px", color: "#5A7A8A", letterSpacing: "3px", marginBottom: "12px" }}>
+              SESSION LOG \u2014 {history.length} ENTR{history.length === 1 ? "Y" : "IES"}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {history.map((item, i) => (
+                <div
+                  key={item.id}
+                  onClick={() => setActiveHistory(activeHistory === item.id ? null : item.id)}
+                  style={{
+                    background: "rgba(255,255,255,0.02)",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    borderRadius: "8px",
+                    padding: "12px 16px",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                      <span style={{ fontSize: "10px" }}>
+                        {CHANNELS.find(c => c.id === item.channel)?.icon}
+                      </span>
+                      <span style={{ fontSize: "9px", color: "#00E5C8", letterSpacing: "1px" }}>
+                        {CHANNELS.find(c => c.id === item.channel)?.label.toUpperCase()}
+                      </span>
+                      <span style={{ fontSize: "9px", color: "#4A6A7A", letterSpacing: "1px" }}>
+                        {TONES.find(t => t.id === item.tone)?.label.toUpperCase()}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: "9px", color: "#2A4A5A" }}>{item.timestamp}</span>
+                  </div>
+                  <div style={{
+                    fontSize: "11px", color: "#6A8A9A", marginTop: "6px",
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                  }}>
+                    {item.input}
+                  </div>
+                  {activeHistory === item.id && (
+                    <div style={{
+                      marginTop: "12px", paddingTop: "12px",
+                      borderTop: "1px solid rgba(0,229,200,0.1)",
+                      fontSize: "12px", color: "#C8DDE8", lineHeight: "1.7",
+                      whiteSpace: "pre-wrap",

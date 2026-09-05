@@ -82,3 +82,7 @@ Source: open GitHub issues synced into `vault/.../sources/github-issues`.
 ## Open cluster (this sweep)
 
 ELMDX, FLUX, OMNINET, tokenizer, data-finder scaffolds + extracted HTML artifacts.
+
+## Artifacts / sandboxes
+
+All recoverable HTML/React/JSON issue sandboxes extracted under `artifacts/sandboxes/` with gallery `artifacts/index.html`.

@@ -1,0 +1,236 @@
+{
+  "generated_at": "2026-09-05T03:43:35.554192+00:00",
+  "project_id": "ELM369_JMR08241978202646902",
+  "artifacts": [
+    {
+      "issue": 11,
+      "title": "Project ELM369 Security & Integrated Architecture Dash Board. ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/11",
+      "kind": "html",
+      "bytes": 20096,
+      "files": [
+        "source.raw.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/011-security-dashboard/index.html"
+    },
+    {
+      "issue": 16,
+      "title": "Bo My Answering Service AI for Project ELM369 ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/16",
+      "kind": "react",
+      "bytes": 18200,
+      "files": [
+        "source.raw.txt",
+        "component.jsx",
+        "component.transformed.jsx",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/016-bo-answering-service/index.html"
+    },
+    {
+      "issue": 18,
+      "title": "New for elm ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/18",
+      "kind": "html",
+      "bytes": 21034,
+      "files": [
+        "source.raw.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/018-conversation-archive-alt/index.html"
+    },
+    {
+      "issue": 19,
+      "title": "new to elm369 ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/19",
+      "kind": "html",
+      "bytes": 21034,
+      "files": [
+        "source.raw.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/019-conversation-archive/index.html"
+    },
+    {
+      "issue": 22,
+      "title": "Claude's help.",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/22",
+      "kind": "html",
+      "bytes": 4087,
+      "files": [
+        "source.raw.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/022-claude-help/index.html"
+    },
+    {
+      "issue": 24,
+      "title": "ELM369 Dev Tools. ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/24",
+      "kind": "html",
+      "bytes": 20190,
+      "files": [
+        "source.raw.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/024-devtools/index.html"
+    },
+    {
+      "issue": 25,
+      "title": "Translator ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/25",
+      "kind": "html",
+      "bytes": 20057,
+      "files": [
+        "source.raw.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/025-translator/index.html"
+    },
+    {
+      "issue": 26,
+      "title": "Fix OS for android and Apps",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/26",
+      "kind": "react",
+      "bytes": 10184,
+      "files": [
+        "source.raw.txt",
+        "component.jsx",
+        "component.transformed.jsx",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/026-android-diagnostics/index.html"
+    },
+    {
+      "issue": 27,
+      "title": "Integration Artifact. ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/27",
+      "kind": "html",
+      "bytes": 9659,
+      "files": [
+        "source.raw.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/027-tokenizer-integration/index.html"
+    },
+    {
+      "issue": 28,
+      "title": "ELM369 Connection ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/28",
+      "kind": "react",
+      "bytes": 8904,
+      "files": [
+        "source.raw.txt",
+        "component.jsx",
+        "component.transformed.jsx",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/028-flux-connection/index.html"
+    },
+    {
+      "issue": 29,
+      "title": "Progress engine. ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/29",
+      "kind": "react",
+      "bytes": 20988,
+      "files": [
+        "source.raw.txt",
+        "component.jsx",
+        "component.transformed.jsx",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/029-progress-engine/index.html"
+    },
+    {
+      "issue": 38,
+      "title": "the hand shake explained. ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/38",
+      "kind": "react",
+      "bytes": 9255,
+      "files": [
+        "source.raw.txt",
+        "component.jsx",
+        "component.transformed.jsx",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/038-handshake-explained/index.html"
+    },
+    {
+      "issue": 39,
+      "title": "more on hand shake. ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/39",
+      "kind": "react",
+      "bytes": 18131,
+      "files": [
+        "source.raw.txt",
+        "component.jsx",
+        "component.transformed.jsx",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/039-handshake-more/index.html"
+    },
+    {
+      "issue": 40,
+      "title": "money shot. ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/40",
+      "kind": "html",
+      "bytes": 1004,
+      "files": [
+        "source.raw.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/040-money-shot/index.html"
+    },
+    {
+      "issue": 47,
+      "title": "Lock",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/47",
+      "kind": "markdown",
+      "bytes": 4252,
+      "files": [
+        "source.raw.txt",
+        "notes.md",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/047-lock/index.html"
+    },
+    {
+      "issue": 52,
+      "title": "A.I Tool install for Business ",
+      "url": "https://github.com/elkabalatesla-coder/Project-ELM369/issues/52",
+      "kind": "json",
+      "bytes": 20000,
+      "files": [
+        "source.raw.txt",
+        "data.json.txt",
+        "index.html",
+        "README.md"
+      ],
+      "runnable": "artifacts/sandboxes/052-ai-business-install/index.html"
+    }
+  ],
+  "legacy_from_issues": [
+    "security-dashboard.html",
+    "conversation-archive.html",
+    "devtools.html",
+    "tokenizer-integration.html",
+    "translator.html",
+    "README.md"
+  ]
+}

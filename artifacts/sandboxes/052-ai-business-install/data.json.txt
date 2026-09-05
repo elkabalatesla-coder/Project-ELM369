@@ -1,0 +1,781 @@
+{
+  "project": {
+    "id": "ELM369-JMR0824197846902",
+    "name": "ELM369 AI Business Operating System",
+    "version": "0.1.0",
+    "owner": "ELM369 Federation",
+    "description": "Reference architecture and pattern library for installing and operating AI tools across business operations."
+  },
+  "principles": {
+    "upward_motion": {
+      "description": "Every AI capability must push a measurable value vector upward.",
+      "value_dimensions": [
+        "revenue",
+        "cost_savings",
+        "risk_reduction",
+        "customer_experience",
+        "employee_experience",
+        "safety_compliance"
+      ]
+    },
+    "imperfect_to_perfect": {
+      "description": "Start with safe, imperfect copilots and progressively harden toward automation.",
+      "stages": [
+        "sandbox_advisory_only",
+        "suggest_with_human_approval",
+        "auto_execute_with_random_audit",
+        "fully_integrated_continuous_monitoring"
+      ]
+    },
+    "quantum_fractal_logic": {
+      "description": "Small set of reusable AI patterns composed fractally across domains.",
+      "composition_rules": [
+        "chain",
+        "branch",
+        "loop",
+        "gate"
+      ]
+    },
+    "governance_lattice": {
+      "description": "No model or tool exists outside a governance node.",
+      "required_metadata": [
+        "owner",
+        "risk_tier",
+        "data_lineage",
+        "evaluation_suite",
+        "deployment_status",
+        "retirement_criteria"
+      ]
+    }
+  },
+  "architecture": {
+    "layers": [
+      {
+        "id": "business_strategy",
+        "name": "Business & Strategy",
+        "responsibilities": [
+          "Define AI vision and portfolio",
+          "Map AI use cases to value metrics",
+          "Maintain AI use-case intake and prioritization pipeline",
+          "Track KPIs per use case"
+        ],
+        "artifacts": [
+          "ai_vision_document",
+          "use_case_backlog",
+          "value_scorecards"
+        ]
+      },
+      {
+        "id": "governance_risk",
+        "name": "Governance & Risk",
+        "responsibilities": [
+          "Define AI policies and risk tiers",
+          "Manage lifecycle gates from idea to retirement",
+          "Run model risk and compliance reviews"
+        ],
+        "roles": [
+          "ai_steering_committee",
+          "model_risk_owner",
+          "data_protection_lead"
+        ],
+        "artifacts": [
+          "policy_register",
+          "risk_tier_catalog",
+          "lifecycle_gate_checklists"
+        ]
+      },
+      {
+        "id": "data_knowledge",
+        "name": "Data & Knowledge",
+        "responsibilities": [
+          "Provide unified data fabric",
+          "Maintain semantic business entities",
+          "Prepare RAG-ready knowledge bases"
+        ],
+        "components": [
+          "data_lake_or_warehouse",
+          "event_streams",
+          "semantic_layer",
+          "document_store",
+          "embedding_index"
+        ]
+      },
+      {
+        "id": "platform_infrastructure",
+        "name": "Platform & Infrastructure",
+        "responsibilities": [
+          "Host AI services and models",
+          "Provide core ML/LLM platform capabilities",
+          "Ensure observability and reliability"
+        ],
+        "components": [
+          "feature_store",
+          "model_registry",
+          "experiment_tracker",
+          "pipeline_orchestrator",
+          "api_gateway",
+          "container_or_serverless_runtime",
+          "logging_metrics_tracing_stack"
+        ]
+      },
+      {
+        "id": "mlops_llmops",
+        "name": "MLOps & LLMOps",
+        "responsibilities": [
+          "Manage data-to-model lifecycle",
+          "Version datasets, models, prompts, and configs",
+          "Operate deployment and rollback strategies",
+          "Implement guardrails and red-teaming"
+        ],
+        "pipelines": [
+          "data_preparation",
+          "training_fine_tuning",
+          "evaluation",
+          "deployment",
+          "monitoring"
+        ],
+        "guardrails": [
+          "safety_filters",
+          "policy_checks",
+          "rate_limits",
+          "red_team_harness"
+        ]
+      },
+      {
+        "id": "applications_integrations",
+        "name": "Applications & Integrations",
+        "responsibilities": [
+          "Deliver AI into business workflows",
+          "Integrate with core business systems",
+          "Expose AI as APIs and UI components"
+        ],
+        "patterns": [
+          "copilot_in_ui",
+          "workflow_automation",
+          "decision_support",
+          "recommendation_services"
+        ],
+        "connectors": [
+          "crm",
+          "erp",
+          "ticketing",
+          "email",
+          "chat",
+          "ivr",
+          "custom_lob_apps"
+        ]
+      },
+      {
+        "id": "people_change",
+        "name": "People, Skills & Change",
+        "responsibilities": [
+          "Define AI roles and responsibilities",
+          "Run enablement and training programs",
+          "Manage change and adoption"
+        ],
+        "roles": [
+          "ai_product_owner",
+          "ml_engineer",
+          "prompt_engineer",
+          "ai_champion_business_unit"
+        ],
+        "artifacts": [
+          "ai_playbooks",
+          "prompt_libraries",
+          "training_curriculum"
+        ]
+      }
+    ]
+  },
+  "pattern_library": {
+    "knowledge_copilots": [
+      {
+        "id": "K1",
+        "name": "Retrieval-Augmented Copilot",
+        "use_cases": [
+          "customer_support_qa",
+          "internal_policy_qa",
+          "it_helpdesk",
+          "hr_knowledge"
+        ],
+        "inputs": [
+          "user_query",
+          "embedding_index",
+          "policy_constraints"
+        ],
+        "outputs": [
+          "answer",
+          "citations",
+          "confidence_score"
+        ],
+        "core_algorithms": [
+          "text_embedding",
+          "vector_search_knn_ann",
+          "reranking",
+          "llm_generation_with_system_prompt"
+        ],
+        "governance": {
+          "requirements": [
+            "citation_required",
+            "hallucination_tests",
+            "red_team_prompt_suite"
+          ],
+          "risk_tier_default": "medium"
+        }
+      },
+      {
+        "id": "K2",
+        "name": "Workflow Copilot",
+        "use_cases": [
+          "crm_task_automation",
+          "ticket_triage_and_updates",
+          "erp_record_updates"
+        ],
+        "inputs": [
+          "user_instruction",
+          "system_context",
+          "available_tools"
+        ],
+        "outputs": [
+          "tool_calls",
+          "execution_plan",
+          "status_summary"
+        ],
+        "core_algorithms": [
+          "intent_classification",
+          "tool_selection_and_parameter_extraction",
+          "plan_and_execute_loop_with_guardrails"
+        ],
+        "governance": {
+          "requirements": [
+            "action_logging",
+            "approval_flows_for_high_risk_actions"
+          ],
+          "risk_tier_default": "high"
+        }
+      }
+    ],
+    "prediction_scoring": [
+      {
+        "id": "P1",
+        "name": "Propensity / Risk Scoring",
+        "use_cases": [
+          "churn_prediction",
+          "upsell_propensity",
+          "credit_risk",
+          "fraud_risk"
+        ],
+        "inputs": [
+          "feature_vector",
+          "historical_labels"
+        ],
+        "outputs": [
+          "score",
+          "risk_bucket",
+          "explanations"
+        ],
+        "core_algorithms": [
+          "gradient_boosting",
+          "logistic_regression_baseline",
+          "probability_calibration"
+        ],
+        "governance": {
+          "requirements": [
+            "fairness_metrics",
+            "stability_tests",
+            "challenger_model_comparisons"
+          ],
+          "risk_tier_default": "high"
+        }
+      },
+      {
+        "id": "P2",
+        "name": "Time-Series Forecasting",
+        "use_cases": [
+          "demand_forecasting",
+          "inventory_planning",
+          "staffing_forecasts",
+          "energy_usage"
+        ],
+        "inputs": [
+          "time_series",
+          "covariates"
+        ],
+        "outputs": [
+          "forecast_values",
+          "prediction_intervals"
+        ],
+        "core_algorithms": [
+          "arima_ets",
+          "tree_based_forecasting",
+          "deep_forecasting_models_where_justified"
+        ],
+        "governance": {
+          "requirements": [
+            "backtesting",
+            "scenario_analysis"
+          ],
+          "risk_tier_default": "medium"
+        }
+      }
+    ],
+    "optimization_planning": [
+      {
+        "id": "O1",
+        "name": "Resource & Schedule Optimizer",
+        "use_cases": [
+          "workforce_scheduling",
+          "vehicle_routing",
+          "production_planning"
+        ],
+        "inputs": [
+          "constraints",
+          "demand_forecasts",
+          "resource_availability"
+        ],
+        "outputs": [
+          "optimized_schedule",
+          "route_plan",
+          "utilization_metrics"
+        ],
+        "core_algorithms": [
+          "mixed_integer_programming",
+          "metaheuristics",
+          "llm_plan_generator_with_solver_refinement"
+        ],
+        "governance": {
+          "requirements": [
+            "constraint_validation",
+            "stress_tests"
+          ],
+          "risk_tier_default": "medium"
+        }
+      },
+      {
+        "id": "O2",
+        "name": "Recommendation & Ranking",
+        "use_cases": [
+          "product_recommendations",
+          "case_routing",
+          "lead_prioritization"
+        ],
+        "inputs": [
+          "user_profile",
+          "item_features",
+          "interaction_history"
+        ],
+        "outputs": [
+          "ranked_list",
+          "scores"
+                 "Operate deployment and rollback strategies",
+          "Implement guardrails and red-teaming"
+        ],
+        "pipelines": [
+          "data_preparation",
+          "training_fine_tuning",
+          "evaluation",
+          "deployment",
+          "monitoring"
+        ],
+        "guardrails": [
+          "safety_filters",
+          "policy_checks",
+          "rate_limits",
+          "red_team_harness"
+        ]
+      },
+      {
+        "id": "applications_integrations",
+        "name": "Applications & Integrations",
+        "responsibilities": [
+          "Deliver AI into business workflows",
+          "Integrate with core business systems",
+          "Expose AI as APIs and UI components"
+        ],
+        "patterns": [
+          "copilot_in_ui",
+          "workflow_automation",
+          "decision_support",
+          "recommendation_services"
+        ],
+        "connectors": [
+          "crm",
+          "erp",
+          "ticketing",
+          "email",
+          "chat",
+          "ivr",
+          "custom_lob_apps"
+        ]
+      },
+      {
+        "id": "people_change",
+        "name": "People, Skills & Change",
+        "responsibilities": [
+          "Define AI roles and responsibilities",
+          "Run enablement and training programs",
+          "Manage change and adoption"
+        ],
+        "roles": [
+          "ai_product_owner",
+          "ml_engineer",
+          "prompt_engineer",
+          "ai_champion_business_unit"
+        ],
+        "artifacts": [
+          "ai_playbooks",
+          "prompt_libraries",
+          "training_curriculum"
+        ]
+      }
+    ]
+  },
+  "pattern_library": {
+    "knowledge_copilots": [
+      {
+        "id": "K1",
+        "name": "Retrieval-Augmented Copilot",
+        "use_cases": [
+          "customer_support_qa",
+          "internal_policy_qa",
+          "it_helpdesk",
+          "hr_knowledge"
+        ],
+        "inputs": [
+          "user_query",
+          "embedding_index",
+          "policy_constraints"
+        ],
+        "outputs": [
+          "answer",
+          "citations",
+          "confidence_score"
+        ],
+        "core_algorithms": [
+          "text_embedding",
+          "vector_search_knn_ann",
+          "reranking",
+          "llm_generation_with_system_prompt"
+        ],
+        "governance": {
+          "requirements": [
+            "citation_required",
+            "hallucination_tests",
+            "red_team_prompt_suite"
+          ],
+          "risk_tier_default": "medium"
+        }
+      },
+      {
+        "id": "K2",
+        "name": "Workflow Copilot",
+        "use_cases": [
+          "crm_task_automation",
+          "ticket_triage_and_updates",
+          "erp_record_updates"
+        ],
+        "inputs": [
+          "user_instruction",
+          "system_context",
+          "available_tools"
+        ],
+        "outputs": [
+          "tool_calls",
+          "execution_plan",
+          "status_summary"
+        ],
+        "core_algorithms": [
+          "intent_classification",
+          "tool_selection_and_parameter_extraction",
+          "plan_and_execute_loop_with_guardrails"
+        ],
+        "governance": {
+          "requirements": [
+            "action_logging",
+            "approval_flows_for_high_risk_actions"
+          ],
+          "risk_tier_default": "high"
+        }
+      }
+    ],
+    "prediction_scoring": [
+      {
+        "id": "P1",
+        "name": "Propensity / Risk Scoring",
+        "use_cases": [
+          "churn_prediction",
+          "upsell_propensity",
+          "credit_risk",
+          "fraud_risk"
+        ],
+        "inputs": [
+          "feature_vector",
+          "historical_labels"
+        ],
+        "outputs": [
+          "score",
+          "risk_bucket",
+          "explanations"
+        ],
+        "core_algorithms": [
+          "gradient_boosting",
+          "logistic_regression_baseline",
+          "probability_calibration"
+        ],
+        "governance": {
+          "requirements": [
+            "fairness_metrics",
+            "stability_tests",
+            "challenger_model_comparisons"
+          ],
+          "risk_tier_default": "high"
+        }
+      },
+      {
+        "id": "P2",
+        "name": "Time-Series Forecasting",
+        "use_cases": [
+          "demand_forecasting",
+          "inventory_planning",
+          "staffing_forecasts",
+          "energy_usage"
+        ],
+        "inputs": [
+          "time_series",
+          "covariates"
+        ],
+        "outputs": [
+          "forecast_values",
+          "prediction_intervals"
+        ],
+        "core_algorithms": [
+          "arima_ets",
+          "tree_based_forecasting",
+          "deep_forecasting_models_where_justified"
+        ],
+        "governance": {
+          "requirements": [
+            "backtesting",
+            "scenario_analysis"
+          ],
+          "risk_tier_default": "medium"
+        }
+      }
+    ],
+    "optimization_planning": [
+      {
+        "id": "O1",
+        "name": "Resource & Schedule Optimizer",
+        "use_cases": [
+          "workforce_scheduling",
+          "vehicle_routing",
+          "production_planning"
+        ],
+        "inputs": [
+          "constraints",
+          "demand_forecasts",
+          "resource_availability"
+        ],
+        "outputs": [
+          "optimized_schedule",
+          "route_plan",
+          "utilization_metrics"
+        ],
+        "core_algorithms": [
+          "mixed_integer_programming",
+          "metaheuristics",
+          "llm_plan_generator_with_solver_refinement"
+        ],
+        "governance": {
+          "requirements": [
+            "constraint_validation",
+            "stress_tests"
+          ],
+          "risk_tier_default": "medium"
+        }
+      },
+      {
+        "id": "O2",
+        "name": "Recommendation & Ranking",
+        "use_cases": [
+          "product_recommendations",
+          "case_routing",
+          "lead_prioritization"
+        ],
+        "inputs": [
+          "user_profile",
+          "item_features",
+          "interaction_history"
+        ],
+        "outputs": [
+          "ranked_list",
+          "scores"
+        ],
+        "core_algorithms": [
+          "collaborative_filtering",
+          "learning_to_rank",
+          "llm_reranking_for_context"
+        ],
+        "governance": {
+          "requirements": [
+            "bias_checks",
+            "performance_monitoring"
+          ],
+          "risk_tier_default": "medium"
+        }
+      }
+    ],
+    "perception_extraction": [
+      {
+        "id": "E1",
+        "name": "Document Understanding",
+        "use_cases": [
+          "invoice_processing",
+          "contract_analysis",
+          "claims_intake",
+          "form_digitization"
+        ],
+        "inputs": [
+          "document_image_or_pdf"
+        ],
+        "outputs": [
+          "structured_fields",
+          "document_summary",
+          "validation_flags"
+        ],
+        "core_algorithms": [
+          "ocr_layout_models",
+          "ner_and_key_value_extraction",
+          "llm_based_validation_and_normalization"
+        ],
+        "governance": {
+          "requirements": [
+            "field_accuracy_benchmarks",
+            "manual_review_for_high_value_docs"
+          ],
+          "risk_tier_default": "medium"
+        }
+      },
+      {
+        "id": "E2",
+        "name": "Voice & Call Intelligence",
+        "use_cases": [
+          "call_center_quality_assurance",
+          "sales_coaching",
+          "compliance_monitoring"
+        ],
+        "inputs": [
+          "audio_stream_or_recording"
+        ],
+        "outputs": [
+          "transcript",
+          "call_summary",
+          "quality_scores",
+          "action_items"
+        ],
+        "core_algorithms": [
+          "automatic_speech_recognition",
+          "topic_and_intent_detection",
+          "sentiment_analysis",
+          "llm_summarization_and_action_extraction"
+        ],
+        "governance": {
+          "requirements": [
+            "pii_redaction",
+            "consent_and_recording_policies"
+          ],
+          "risk_tier_default": "high"
+        }
+      }
+    ],
+    "safety_monitoring_meta": [
+      {
+        "id": "G1",
+        "name": "Policy & Safety Filter",
+        "use_cases": [
+          "guardrails_for_all_llm_calls"
+        ],
+        "inputs": [
+          "prompt",
+          "candidate_response"
+        ],
+        "outputs": [
+          "approved_response",
+          "blocked_flag",
+          "policy_violation_tags"
+        ],
+        "core_algorithms": [
+          "toxicity_classification",
+          "pii_detection",
+          "rule_based_filters",
+          "llm_as_judge_for_borderline_cases"
+        ],
+        "governance": {
+          "requirements": [
+            "policy_mapping",
+            "regular_red_team_exercises"
+          ],
+          "risk_tier_default": "high"
+        }
+      },
+      {
+        "id": "G2",
+        "name": "Model & Data Drift Monitor",
+        "use_cases": [
+          "production_model_reliability"
+        ],
+        "inputs": [
+          "production_predictions",
+          "ground_truth_when_available",
+          "feature_distributions"
+        ],
+        "outputs": [
+          "drift_scores",
+          "performance_trends",
+          "alerts"
+        ],
+        "core_algorithms": [
+          "population_stability_index",
+          "distribution_shift_tests",
+          "performance_decay_tracking"
+        ],
+        "governance": {
+          "requirements": [
+            "alert_thresholds",
+            "escalation_playbooks"
+          ],
+          "risk_tier_default": "medium"
+        }
+      }
+    ]
+  },
+  "algorithm_grammar": {
+    "atomic_operators": {
+      "transformers": [
+        "tokenize",
+        "normalize",
+        "embed",
+        "encode",
+        "scale"
+      ],
+      "selectors": [
+        "filter",
+        "sample",
+        "rank",
+        "cluster"
+      ],
+      "deciders": [
+        "classify",
+        "regress",
+        "score",
+        "route"
+      ],
+      "generators": [
+        "generate_text",
+        "generate_code",
+        "generate_plan",
+        "generate_summary"
+      ],
+      "controllers": [
+        "threshold",
+        "multi_armed_bandit",
