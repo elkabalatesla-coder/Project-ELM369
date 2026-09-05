@@ -1,0 +1,11 @@
+{
+  "project_id": "ELM369_JMR08241978202646902",
+  "note": "Offline glossary scaffold — not a full audio/100-language engine.",
+  "entries": [
+    {"en": "hello", "es": "hola", "fr": "bonjour", "de": "hallo"},
+    {"en": "thank you", "es": "gracias", "fr": "merci", "de": "danke"},
+    {"en": "project", "es": "proyecto", "fr": "projet", "de": "projekt"},
+    {"en": "security", "es": "seguridad", "fr": "sécurité", "de": "sicherheit"},
+    {"en": "vault", "es": "bóveda", "fr": "coffre", "de": "tresor"}
+  ]
+}
