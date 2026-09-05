@@ -1,0 +1,33 @@
+{
+  "project_id": "ELM369_JMR08241978202646902",
+  "tasks": [
+    {
+      "id": "outage_probe",
+      "name": "AI service outage probe",
+      "kind": "outage_monitor",
+      "enabled": true
+    },
+    {
+      "id": "repo_hygiene",
+      "name": "Repo hygiene checklist",
+      "kind": "checklist",
+      "enabled": true,
+      "items": [
+        "Confirm REPO_MAP.md reflects active repos",
+        "Skim open PRs / Actions failures",
+        "Rotate any tokens that appeared in chat"
+      ]
+    },
+    {
+      "id": "security_notes",
+      "name": "Security reminders",
+      "kind": "checklist",
+      "enabled": true,
+      "items": [
+        "No secrets committed",
+        "Destructive changes stay authorized-only",
+        "Production mutation remains gated"
+      ]
+    }
+  ]
+}
