@@ -1,0 +1,468 @@
+<!-- ELM369 note: source issue body may have been truncated by GitHub; closing tags appended for sandbox preview. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELM369 — Audio Translator</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --elm-cyan: #00FFD1;
+    --elm-cyan2: #00C9A7;
+    --elm-dark: #040D0C;
+    --elm-panel: #071410;
+    --elm-border: #0a2e28;
+    --elm-mid: #0d1f1c;
+    --elm-glow: rgba(0,255,209,0.18);
+    --elm-glow2: rgba(0,255,209,0.06);
+    --elm-red: #FF4560;
+    --elm-yellow: #FFD060;
+    --elm-white: #e8fff9;
+    --radius: 14px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--elm-dark);
+    color: var(--elm-white);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  /* BG Grid */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,209,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,209,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none; z-index: 0;
+  }
+
+  .app { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* HEADER */
+  .header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 24px; margin-bottom: 28px;
+    background: var(--elm-panel);
+    border: 1px solid var(--elm-border);
+    border-radius: var(--radius);
+    box-shadow: 0 0 40px var(--elm-glow2);
+  }
+  .logo-mark {
+    width: 46px; height: 46px;
+    border: 2px solid var(--elm-cyan);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', monospace;
+    font-weight: 900; font-size: 13px;
+    color: var(--elm-cyan);
+    box-shadow: 0 0 16px var(--elm-glow), inset 0 0 8px var(--elm-glow2);
+    flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: 18px; font-weight: 700;
+    color: var(--elm-cyan);
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px var(--elm-glow);
+  }
+  .header-text p { font-size: 11px; color: #5a8f87; letter-spacing: 1px; margin-top: 2px; }
+  .header-badge {
+    margin-left: auto;
+    font-family: 'Orbitron', monospace;
+    font-size: 9px; letter-spacing: 1px;
+    color: var(--elm-cyan); background: var(--elm-glow2);
+    border: 1px solid var(--elm-border);
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* STATUS BAR */
+  .status-bar {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .status-pill {
+    font-size: 10px; font-family: 'Orbitron', monospace; letter-spacing: 1px;
+    padding: 5px 12px; border-radius: 20px;
+    border: 1px solid var(--elm-border); background: var(--elm-panel);
+    display: flex; align-items: center; gap: 6px; color: #5a8f87;
+  }
+  .status-pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #2a4a44;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .status-pill.active .dot { background: var(--elm-cyan); box-shadow: 0 0 8px var(--elm-cyan); }
+  .status-pill.active { color: var(--elm-cyan); border-color: var(--elm-cyan); }
+  .status-pill.error .dot { background: var(--elm-red); }
+  .status-pill.error { color: var(--elm-red); border-color: var(--elm-red); }
+
+  /* LANG ROW */
+  .lang-row {
+    display: grid; grid-template-columns: 1fr 48px 1fr; gap: 12px;
+    align-items: center; margin-bottom: 20px;
+  }
+  .lang-block { display: flex; flex-direction: column; gap: 6px; }
+  .lang-label { font-size: 10px; letter-spacing: 2px; color: #4a7a72; font-family: 'Orbitron', monospace; }
+  .lang-select {
+    background: var(--elm-panel); border: 1px solid var(--elm-border);
+    color: var(--elm-white); font-family: 'Syne', sans-serif; font-size: 14px;
+    padding: 10px 14px; border-radius: 10px; width: 100%;
+    appearance: none; cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300FFD1' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+    padding-right: 36px;
+  }
+  .lang-select:focus { outline: none; border-color: var(--elm-cyan); box-shadow: 0 0 10px var(--elm-glow); }
+  .swap-btn {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 1px solid var(--elm-cyan);
+    background: var(--elm-glow2);
+    color: var(--elm-cyan); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; transition: all 0.2s;
+    box-shadow: 0 0 12px var(--elm-glow2);
+    align-self: flex-end;
+  }
+  .swap-btn:hover { background: var(--elm-glow); transform: rotate(180deg); box-shadow: 0 0 20px var(--elm-glow); }
+
+  /* MAIN PANEL */
+  .main-panel {
+    background: var(--elm-panel); border: 1px solid var(--elm-border);
+    border-radius: var(--radius); padding: 24px; margin-bottom: 20px;
+    box-shadow: 0 0 30px var(--elm-glow2);
+  }
+  .panel-tabs { display: flex; gap: 4px; margin-bottom: 20px; }
+  .tab-btn {
+    flex: 1; padding: 9px 4px; border-radius: 8px;
+    border: 1px solid var(--elm-border);
+    background: transparent; color: #4a7a72;
+    font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--elm-glow); color: var(--elm-cyan);
+    border-color: var(--elm-cyan); box-shadow: 0 0 10px var(--elm-glow2);
+  }
+  .tab-btn:hover:not(.active) { color: var(--elm-white); border-color: #1a4a44; }
+
+  /* TEXT AREAS */
+  .text-areas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .text-areas { grid-template-columns: 1fr; } .lang-row { grid-template-columns: 1fr 40px 1fr; } }
+  .text-box {
+    background: var(--elm-mid); border: 1px solid var(--elm-border);
+    border-radius: 10px; padding: 16px; min-height: 160px; position: relative;
+  }
+  .text-box.output { border-color: rgba(0,255,209,0.15); background: rgba(0,255,209,0.03); }
+  .text-box-label {
+    font-size: 9px; font-family: 'Orbitron', monospace; letter-spacing: 2px;
+    color: #3a6a62; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .text-box-label span { color: var(--elm-cyan); font-size: 8px; }
+  textarea {
+    width: 100%; background: none; border: none; outline: none;
+    color: var(--elm-white); font-family: 'Syne', sans-serif; font-size: 15px;
+    resize: none; min-height: 120px; line-height: 1.6;
+  }
+  textarea::placeholder { color: #2a5a52; }
+  .output-text {
+    font-size: 15px; line-height: 1.7; color: var(--elm-white);
+    min-height: 120px; word-break: break-word;
+  }
+  .output-text.translating { color: var(--elm-cyan); opacity: 0.7; }
+  .output-text .placeholder { color: #2a5a52; font-style: italic; font-size: 14px; }
+
+  /* MIC / RECORD CONTROLS */
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; align-items: center; }
+  .ctrl-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 30px;
+    border: 1px solid var(--elm-border); background: var(--elm-mid);
+    color: var(--elm-white); font-family: 'Syne', sans-serif; font-size: 13px;
+    cursor: pointer; transition: all 0.2s; font-weight: 600;
+  }
+  .ctrl-btn.primary {
+    background: var(--elm-cyan); color: var(--elm-dark);
+    border-color: var(--elm-cyan);
+    box-shadow: 0 0 20px var(--elm-glow);
+  }
+  .ctrl-btn.primary:hover { box-shadow: 0 0 35px var(--elm-glow); transform: translateY(-1px); }
+  .ctrl-btn.danger { border-color: var(--elm-red); color: var(--elm-red); }
+  .ctrl-btn.danger:hover { background: rgba(255,69,96,0.1); }
+  .ctrl-btn:hover:not(.primary):not(.danger) { border-color: var(--elm-cyan); color: var(--elm-cyan); }
+  .ctrl-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .ctrl-btn .icon { font-size: 16px; }
+
+  /* PULSING MIC */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+  .mic-active { position: relative; }
+  .mic-active::after {
+    content: ''; position: absolute; inset: -4px; border-radius: 50%;
+    border: 2px solid var(--elm-red);
+    animation: pulse-ring 1.2s ease-out infinite;
+  }
+
+  /* TRANSLATE BTN */
+  .translate-btn {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 28px; border-radius: 30px;
+    background: linear-gradient(135deg, var(--elm-cyan), var(--elm-cyan2));
+    color: var(--elm-dark); border: none; cursor: pointer;
+    font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; transition: all 0.2s;
+    box-shadow: 0 0 20px var(--elm-glow);
+  }
+  .translate-btn:hover { box-shadow: 0 0 40px var(--elm-glow); transform: translateY(-1px); }
+  .translate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* WAVEFORM */
+  .waveform-container {
+    height: 50px; display: flex; align-items: center; gap: 2px;
+    padding: 0 4px; display: none;
+  }
+  .waveform-container.visible { display: flex; }
+  .wave-bar {
+    flex: 1; background: var(--elm-cyan); border-radius: 2px;
+    opacity: 0.7; height: 4px;
+    animation: wave 0.8s ease-in-out infinite;
+  }
+  @keyframes wave {
+    0%, 100% { height: 4px; }
+    50% { height: 32px; }
+  }
+  .wave-bar:nth-child(2n) { animation-delay: 0.1s; }
+  .wave-bar:nth-child(3n) { animation-delay: 0.2s; }
+  .wave-bar:nth-child(4n) { animation-delay: 0.3s; }
+  .wave-bar:nth-child(5n) { animation-delay: 0.15s; }
+
+  /* HISTORY */
+  .history-panel {
+    background: var(--elm-panel); border: 1px solid var(--elm-border);
+    border-radius: var(--radius); padding: 20px; margin-bottom: 20px;
+  }
+  .history-header {
+    font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 2px;
+    color: var(--elm-cyan); margin-bottom: 14px; display: flex; justify-content: space-between;
+  }
+  .history-header button {
+    background: none; border: none; color: #4a7a72; cursor: pointer;
+    font-size: 10px; font-family: 'Syne', sans-serif;
+    transition: color 0.2s;
+  }
+  .history-header button:hover { color: var(--elm-red); }
+  .history-list { display: flex; flex-direction: column; gap: 10px; max-height: 260px; overflow-y: auto; }
+  .history-list::-webkit-scrollbar { width: 4px; }
+  .history-list::-webkit-scrollbar-track { background: var(--elm-mid); border-radius: 2px; }
+  .history-list::-webkit-scrollbar-thumb { background: var(--elm-border); border-radius: 2px; }
+  .history-item {
+    background: var(--elm-mid); border: 1px solid var(--elm-border);
+    border-radius: 8px; padding: 12px 14px; cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .history-item:hover { border-color: var(--elm-cyan); }
+  .history-langs {
+    font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 1px;
+    color: var(--elm-cyan); margin-bottom: 6px;
+  }
+  .history-original { font-size: 13px; color: #8ab8b0; margin-bottom: 4px; }
+  .history-translated { font-size: 13px; color: var(--elm-white); }
+  .history-time { font-size: 10px; color: #3a5a52; margin-top: 6px; font-family: 'Orbitron', monospace; }
+  .no-history { text-align: center; color: #2a5a52; font-size: 13px; padding: 20px; }
+
+  /* TTS / SPEAK */
+  .speak-btn {
+    background: none; border: 1px solid var(--elm-border); border-radius: 8px;
+    color: #4a7a72; cursor: pointer; padding: 4px 10px; font-size: 11px;
+    display: flex; align-items: center; gap: 5px; transition: all 0.2s;
+    font-family: 'Syne', sans-serif;
+  }
+  .speak-btn:hover { border-color: var(--elm-cyan); color: var(--elm-cyan); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center; font-family: 'Orbitron', monospace;
+    font-size: 9px; letter-spacing: 2px; color: #2a5a52; margin-top: 30px;
+  }
+
+  /* SPINNER */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid rgba(0,255,209,0.2);
+    border-top-color: var(--elm-cyan); border-radius: 50%;
+    animation: spin 0.7s linear infinite; display: inline-block;
+  }
+
+  /* NOTIFICATION */
+  .notif {
+    position: fixed; top: 20px; right: 20px; z-index: 999;
+    background: var(--elm-panel); border: 1px solid var(--elm-cyan);
+    border-radius: 10px; padding: 12px 18px;
+    font-size: 13px; color: var(--elm-cyan);
+    box-shadow: 0 0 30px var(--elm-glow);
+    transform: translateX(120%); transition: transform 0.3s;
+    font-family: 'Syne', sans-serif; max-width: 280px;
+  }
+  .notif.show { transform: translateX(0); }
+  .notif.error { border-color: var(--elm-red); color: var(--elm-red); box-shadow: 0 0 20px rgba(255,69,96,0.2); }
+
+  /* RECORD MODE */
+  .record-section { display: none; }
+  .record-section.visible { display: block; }
+  .live-section { display: block; }
+  .live-section.hidden { display: none; }
+
+  .char-count { font-size: 10px; color: #3a5a52; }
+
+  /* BLUETOOTH INFO */
+  .bt-info {
+    background: var(--elm-mid); border: 1px solid var(--elm-border);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .bt-icon { font-size: 22px; flex-shrink: 0; }
+  .bt-text h4 { font-family: 'Orbitron', monospace; font-size: 11px; color: var(--elm-cyan); margin-bottom: 4px; letter-spacing: 1px; }
+  .bt-text p { font-size: 12px; color: #6a9a90; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-mark">ELM</div>
+    <div class="header-text">
+      <h1>AUDIO TRANSLATOR</h1>
+      <p>PROJECT ELM369 · JMR0824197846902 · ALL LANGUAGES</p>
+    </div>
+    <div class="header-badge">v1.0 · LIVE</div>
+  </div>
+
+  <!-- STATUS -->
+  <div class="status-bar">
+    <div class="status-pill active" id="pill-ai"><span class="dot"></span>AI ENGINE ONLINE</div>
+    <div class="status-pill" id="pill-mic"><span class="dot"></span>MICROPHONE</div>
+    <div class="status-pill" id="pill-tts"><span class="dot"></span>SPEAKER OUTPUT</div>
+    <div class="status-pill active" id="pill-bt"><span class="dot"></span>BLUETOOTH READY</div>
+  </div>
+
+  <!-- BLUETOOTH NOTE -->
+  <div class="bt-info">
+    <div class="bt-icon">📡</div>
+    <div class="bt-text">
+      <h4>BLUETOOTH / DEVICE OUTPUT</h4>
+      <p>Audio output routes through your system's default audio device — Bluetooth headphones, speakers, or car audio. Pair your Bluetooth device in your OS settings, then set it as the default audio output. This app will speak translated audio through whatever device is active.</p>
+    </div>
+  </div>
+
+  <!-- LANGUAGE ROW -->
+  <div class="lang-row">
+    <div class="lang-block">
+      <div class="lang-label">SOURCE LANGUAGE</div>
+      <select class="lang-select" id="srcLang"></select>
+    </div>
+    <button class="swap-btn" id="swapBtn" title="Swap languages">⇄</button>
+    <div class="lang-block">
+      <div class="lang-label">TARGET LANGUAGE</div>
+      <select class="lang-select" id="tgtLang"></select>
+    </div>
+  </div>
+
+  <!-- MAIN PANEL -->
+  <div class="main-panel">
+    <div class="panel-tabs">
+      <button class="tab-btn active" id="tabType" onclick="switchTab('type')">⌨ TYPE / PASTE</button>
+      <button class="tab-btn" id="tabSpeak" onclick="switchTab('speak')">🎙 SPEAK LIVE</button>
+      <button class="tab-btn" id="tabRecord" onclick="switchTab('record')">🔴 RECORD CLIP</button>
+    </div>
+
+    <!-- TYPE TAB -->
+    <div id="paneType">
+      <div class="text-areas">
+        <div class="text-box">
+          <div class="text-box-label">INPUT TEXT <span id="charCount">0 / 2000</span></div>
+          <textarea id="inputText" placeholder="Type or paste text to translate…" maxlength="2000"></textarea>
+        </div>
+        <div class="text-box output">
+          <div class="text-box-label">TRANSLATION
+            <button class="speak-btn" id="speakOutputBtn" onclick="speakOutput()" title="Speak translation">🔊 SPEAK</button>
+          </div>
+          <div class="output-text" id="outputText"><span class="placeholder">Translation will appear here…</span></div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="ctrl-btn" onclick="clearAll()">✕ CLEAR</button>
+        <button class="ctrl-btn" onclick="copyOutput()">⧉ COPY</button>
+        <button class="translate-btn" id="translateBtn" onclick="translateText()">
+          <span>TRANSLATE</span> →
+        </button>
+      </div>
+    </div>
+
+    <!-- SPEAK LIVE TAB -->
+    <div id="paneSpeak" style="display:none;">
+      <div class="waveform-container" id="waveform">
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div>
+      </div>
+      <div class="text-areas" style="margin-top:14px;">
+        <div class="text-box">
+          <div class="text-box-label">RECOGNIZED SPEECH</div>
+          <div class="output-text" id="speechInput" style="color:#8ab8b0;"><span class="placeholder">Speak after pressing START…</span></div>
+        </div>
+        <div class="text-box output">
+          <div class="text-box-label">LIVE TRANSLATION
+            <button class="speak-btn" onclick="speakLiveOutput()">🔊 SPEAK</button>
+          </div>
+          <div class="output-text" id="liveOutput"><span class="placeholder">Translation appears live…</span></div>
+        </div>
+      </div>
+      <div class="controls" style="margin-top:16px;">
+        <button class="ctrl-btn primary" id="micBtn" onclick="toggleMic()">🎙 START LISTENING</button>
+        <button class="ctrl-btn danger" id="stopMicBtn" onclick="stopMic()" style="display:none;">⏹ STOP</button>
+        <button class="ctrl-btn" onclick="clearLive()">✕ CLEAR</button>
+      </div>
+      <p style="font-size:11px; color:#3a6a62; margin-top:12px;">⚡ Uses your browser's Speech Recognition API. Chrome/Edge work best. Translate button fires after you stop speaking.</p>
+    </div>
+
+    <!-- RECORD TAB -->
+    <div id="paneRecord" style="display:none;">
+      <div class="text-areas">
+        <div class="text-box">
+          <div class="text-box-label">RECORDED SPEECH</div>
+          <div class="output-text" id="recordInput" style="color:#8ab8b0;"><span class="placeholder">Press REC, speak, then stop to transcribe…</span></div>
+        </div>
+        <div class="text-box output">
+          <div class="text-box-label">TRANSLATION
+            <button class="speak-btn" onclick="speakRecordOutput()">🔊 SPEAK</button>
+          </div>
+          <div class="output-text" id="recordOutput"><span class="placeholder">Translation will appear here…</span></div>
+        </div>
+      </div>
+      <div class="controls" style="margin-top:16px;">
+        <button class="ctrl-btn primary" id="recBtn" onclick="toggleRecord()">⏺ REC</button>
+        <button class="ctrl-btn" onclick="translateRecord()" id="recTranslateBtn">TRANSLATE ›</button>
+        <button class="ctrl-btn" onclick="clearRecord()">✕ CLEAR</button>
+      </div>
+      <p style="font-size:11px; color:#3a6a62; margin-top:12px;">📼 Records via microphone. After stopping, transcript is extracted and translated. Best in quiet environments.</p>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history-panel">
+    <div class="history-header">
+      TRANSLATION LOG
+      <button onclick="clearHistory()">CLEAR LOG
+</body>
+</html>

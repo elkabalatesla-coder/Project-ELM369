@@ -1,0 +1,131 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'/><title>Lock</title>
+<style>body{background:#050d12;color:#c0e8f0;font:16px/1.5 system-ui;padding:24px;max-width:900px;margin:auto}
+pre{white-space:pre-wrap;background:#0a1a22;padding:12px;border-radius:8px}</style></head>
+<body><h1>Lock</h1><p>Issue #47</p><pre>Design and Develop with Algorithms and logarthems  Groks own app lock. name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  android:
+    name: Android Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Run tests
+        run:./gradlew testDebugUnitTest --stacktrace
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-results
+          path: android/build/test-results/testDebugUnitTest/
+
+  ios:
+    name: iOS Unit Tests
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+      - name: Install CocoaPods
+        run: |
+          cd example/ios
+          pod install
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -workspace example/ios/Example.xcworkspace \
+            -scheme Example \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -only-testing:MetaAppLockTests \
+            -enableCodeCoverage YES
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-coverage
+          path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
+
+  js:
+    name: JS/TS Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install deps
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Jest
+        run: npm test -- --coverage
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: js-coverage
+          path: coverage/
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint # react-native-meta-app-lock
+
+Device-bound app lock for React Native with hardware-backed encryption, biometric unlock, logarithmic backoff, and trusted-location risk scoring.
+
+## Features
+
+| Feature | Implementation | Security Goal |
+| --- | --- | --- |
+| **PIN Storage** | PBKDF2-HMAC-SHA256, 120k iterations + salt, wrapped by AES-GCM key in Android Keystore / iOS Secure Enclave | Offline brute force resistance. Key cannot be exported or cloned. |
+| **Failed Attempt Lockout** | `lockout_sec = 5 * log₂(failed_attempts + 1)` | Scales penalty: 1 fail = 5s, 7 fails = 15s, 15 fails = 20s. Stops bots, not users. |
+| **Biometric** | `BiometricPrompt` / `LAContext.deviceOwnerAuthentication` | No face/fingerprint data leaves device. Falls back to device PIN. |
+| **Auto-lock** | `SystemClock.elapsedRealtime` / `processUptime` vs user timeout | Immune to device clock changes. |
+| **Trusted Location** | Risk = `log₁₀(wifi+1) + log₁₀(appSwitches+1) + log₁₀(hours+1) - 1.0 if SSID trusted` | Extends timeout at home, forces lock if risk > 1.3 |
+| **Wipe on 10 Fails** | Deletes Keystore/Keychain key + AsyncStorage + cookies + web data | Cloned app or offline attack yields nothing. |
+
+## Install
+
+```bash
+npm install react-native-meta-app-lock
+cd ios && pod install import { AppLock } from 'react-native-meta-app-lock';
+
+// Setup
+await AppLock.setupPin('123456');
+await AppLock.setAutoLockTimeout(1);
+await AppLock.setTrustedLocationConfig({
+  enabled: true,
+  ssids: ['Home_5G'],
+  riskThreshold: 1.3
+});
+
+// Check on app foreground
+if (await AppLock.shouldShowLock()) {
+  // show &lt;LockScreen />
+}  
+That gives you full CI + docs. Push this, tag `v1.0.0`, and Meta AI can import it.
+
+Want me to add a sample `example/` app so QA can test lock screens, or write the Detox E2E tests that simulate 10 wrong PINs and verify wipe?</pre></body></html>

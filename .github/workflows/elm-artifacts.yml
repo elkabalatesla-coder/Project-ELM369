@@ -1,0 +1,16 @@
+name: ELM Artifacts Tests
+on:
+  push:
+    paths: ["tools/elm_artifacts/**", "artifacts/**", ".github/workflows/elm-artifacts.yml"]
+  pull_request:
+    paths: ["tools/elm_artifacts/**", "artifacts/**", ".github/workflows/elm-artifacts.yml"]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 -m unittest discover -s tools/elm_artifacts/tests -v
+      - run: python3 -m tools.elm_artifacts verify

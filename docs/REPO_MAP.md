@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 10 — open cluster: elmdx/flux/omninet/tokenizer/data-finder).
+Last updated: 2026-09-04 (round 11 — all issue sandboxes extracted + gallery).
 
 ## Active / keep
 
@@ -26,6 +26,7 @@ Last updated: 2026-09-04 (round 10 — open cluster: elmdx/flux/omninet/tokenize
 | FLUX composer | `tools/elm_flux/` | FLUX prompt compose (no live API in CI) | `python3 -m tools.elm_flux compose "…"` |
 | OMNINET | `tools/omninet/` | `mo*://` namespace router | `python3 -m tools.omninet resolve "mo*://vault"` |
 | Tokenizer | `tools/elm_tokenizer/` | Tokenize + prompt framework score | `python3 -m tools.elm_tokenizer score "…"` |
+| Artifacts gallery | `artifacts/` + `tools/elm_artifacts/` | All issue sandboxes + index | `python3 -m tools.elm_artifacts list` |
 | Data finder | `tools/data_finder/` | Locate files/content in repo | `python3 -m tools.data_finder find "pandora"` |
 | Progress engine | `tools/elm_progress/` | Tool registry completion summary | `python3 -m tools.elm_progress summary` |
 | Pandora / security logs | `tools/pandora_vault/` | Security Log 1/2 + Pandora vault feeds | `python3 -m tools.pandora_vault sync --message "…"` |
