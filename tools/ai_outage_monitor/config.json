@@ -1,0 +1,29 @@
+{
+  "timeout_seconds": 8,
+  "services": [
+    {
+      "id": "openai",
+      "name": "OpenAI / ChatGPT",
+      "url": "https://status.openai.com/api/v2/status.json",
+      "kind": "statuspage_v2"
+    },
+    {
+      "id": "anthropic",
+      "name": "Anthropic / Claude",
+      "url": "https://status.anthropic.com/api/v2/status.json",
+      "kind": "statuspage_v2"
+    },
+    {
+      "id": "google-cloud",
+      "name": "Google Cloud (Gemini host)",
+      "url": "https://status.cloud.google.com/",
+      "kind": "http"
+    },
+    {
+      "id": "github",
+      "name": "GitHub / Copilot host",
+      "url": "https://www.githubstatus.com/api/v2/status.json",
+      "kind": "statuspage_v2"
+    }
+  ]
+}
