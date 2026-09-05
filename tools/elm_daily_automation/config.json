@@ -28,6 +28,12 @@
         "Destructive changes stay authorized-only",
         "Production mutation remains gated"
       ]
+    },
+    {
+      "id": "vault_backlog",
+      "name": "Vault design/dev backlog counts",
+      "kind": "vault_backlog",
+      "enabled": true
     }
   ]
 }

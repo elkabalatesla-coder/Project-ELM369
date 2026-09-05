@@ -22,3 +22,10 @@ Supports `.json`, `.jsonl`, and `.zip` (common Grok/X export shapes).
 ```bash
 python3 -m unittest discover -s tools/grok_archive/tests -v
 ```
+
+## Search index
+
+```bash
+python3 -m tools.grok_archive index
+python3 -m tools.grok_archive search "vault backlog"
+```

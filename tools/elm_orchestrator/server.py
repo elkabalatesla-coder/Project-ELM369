@@ -8,6 +8,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 from tools.elm_orchestrator.agents import PROJECT_ID, diagnose, heal_propose, vault_log
+from tools.elm_orchestrator.heal import list_proposals, simulate_apply
 from tools.elm_orchestrator.esign import watermark
 from tools.elm_orchestrator.optimizer import suggest
 from tools.elm_orchestrator.time_sync import sync_report
@@ -43,6 +44,9 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/v1/time/sync":
             self._json(200, sync_report())
             return
+        if path == "/v1/heal/proposals":
+            self._json(200, {"proposals": list_proposals()})
+            return
         self._json(404, {"error": "not_found", "path": path})
 
     def do_POST(self) -> None:  # noqa: N802
@@ -61,6 +65,13 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(400, {"error": "issue required"})
                 return
             self._json(200, heal_propose(issue))
+            return
+        if path == "/v1/heal/simulate":
+            pid = str(body.get("proposal_id") or "")
+            if not pid:
+                self._json(400, {"error": "proposal_id required"})
+                return
+            self._json(200, simulate_apply(pid, authorize=bool(body.get("authorize"))))
             return
         if path == "/v1/sign/watermark":
             payload = body.get("payload")

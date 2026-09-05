@@ -60,19 +60,6 @@ def vault_log(event: str, detail: dict[str, Any] | None = None) -> dict[str, Any
 
 def heal_propose(issue: str) -> dict[str, Any]:
     """Propose a gated self-heal action — never auto-applies."""
-    proposal = {
-        "agent": "ELM369-QBIT-REPAIR-02",
-        "project_id": PROJECT_ID,
-        "issue": issue,
-        "proposed_at": _now(),
-        "actions": [
-            "snapshot current state",
-            "generate additive patch candidate",
-            "run unit tests in sandbox",
-            "REQUEST_AUTHORIZATION before apply",
-        ],
-        "auto_apply": False,
-        "safety": "authorized_only",
-    }
-    vault_log("heal_proposal", proposal)
-    return proposal
+    from tools.elm_orchestrator.heal import propose
+
+    return propose(issue)

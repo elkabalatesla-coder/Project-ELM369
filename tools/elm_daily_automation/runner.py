@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
+from tools.elm_daily_automation.vault_backlog import backlog_report
+
 ROOT = Path(__file__).resolve().parent
 DEFAULT_CONFIG = ROOT / "config.json"
 DEFAULT_LOG = ROOT / "data" / "daily_runs.jsonl"
@@ -92,6 +94,21 @@ def run_daily(
                     "noted",
                     f"{len(items)} reminders",
                     items=items,
+                )
+            )
+        elif kind == "vault_backlog":
+            root = Path(task["sources_root"]) if task.get("sources_root") else None
+            payload = backlog_report(root)
+            results.append(
+                TaskResult(
+                    task["id"],
+                    task["name"],
+                    payload.get("status", "noted"),
+                    payload.get("detail", ""),
+                    items=[
+                        f"{src}: {counts.get('open', 0)} open / {counts.get('total', 0)} total"
+                        for src, counts in (payload.get("by_source") or {}).items()
+                    ],
                 )
             )
         else:

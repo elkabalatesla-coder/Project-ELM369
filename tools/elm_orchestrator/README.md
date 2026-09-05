@@ -22,3 +22,13 @@ python3 -m tools.elm_orchestrator serve --port 8769
 ```
 
 OpenAPI: `openapi/elm369-orchestrator.openapi.yaml`
+
+## Heal (QBIT-gated)
+
+```bash
+python3 -m tools.elm_orchestrator heal --issue "add missing test coverage"
+python3 -m tools.elm_orchestrator heal-list
+python3 -m tools.elm_orchestrator heal-simulate --proposal-id <id> --authorize
+```
+
+Simulate never mutates production files.

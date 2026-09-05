@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 5 — grok vault + orchestrator).
+Last updated: 2026-09-04 (round 6 — backlog counts, QBIT heal, grok index).
 
 ## Active / keep
 
@@ -14,19 +14,21 @@ Last updated: 2026-09-04 (round 5 — grok vault + orchestrator).
 | Tool | Path | Purpose | Run |
 |------|------|---------|-----|
 | AI outage monitor | `tools/ai_outage_monitor/` | Probe AI service status pages; JSONL history | `python3 -m tools.ai_outage_monitor check [--dry-run]` |
-| Daily automation | `tools/elm_daily_automation/` | Maintenance/security checklists + outage probe | `python3 -m tools.elm_daily_automation run [--dry-run]` |
+| Daily automation | `tools/elm_daily_automation/` | Outage probe + checklists + vault backlog counts | `python3 -m tools.elm_daily_automation run [--dry-run]` |
 | DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize | `python3 -m tools.dax_memory store "…" --kind fact` |
 | QBIT / QSTATE | `tools/qbit/` | Decision evidence scoring (never bypasses safety) | `python3 -m tools.qbit score L M R H` |
 | Liquid-3D prompting | `tools/liquid3d_prompting/` | Visual/audio/animation prompt composer | `python3 -m tools.liquid3d_prompting compose --mode visual --subject "…"` |
-| Grok archive intake | `tools/grok_archive/` + `vault/.../sources/grok/` | Ingest Grok discussions; extract design/dev backlog | `python3 -m tools.grok_archive ingest --path …/sources/grok/raw` |
-| ELM orchestrator | `tools/elm_orchestrator/` | Diag / vault-log / gated heal scaffolds | `python3 -m tools.elm_orchestrator diag` |
+| Grok archive intake | `tools/grok_archive/` + `vault/.../sources/grok/` | Ingest, backlog extract, inverted search | `python3 -m tools.grok_archive search "vault"` |
+| ELM orchestrator | `tools/elm_orchestrator/` | Diag / vault-log / QBIT-gated heal / OpenAPI serve / NTP / watermark / optimize | `python3 -m tools.elm_orchestrator diag` |
 
 ### Schedules & related docs
 
 - Daily automation schedule: `.github/workflows/elm-daily-automation-schedule.yml` (13:00 UTC ≈ 9am Indianapolis; also `workflow_dispatch`)
+- Remaining design inventory: `docs/architecture/ELM369_REMAINING_DESIGN_v0.1.0.md`
 - Evolution layer: `docs/architecture/ELM369_AUTOMATED_EVOLUTION_SPEC_v1.0.0.md` + `schemas/evolution/`
 - QBIT design: `docs/architecture/ELM369_QBIT_DESIGN_v0.1.0.md`
 - Liquid-3D prompting: `docs/architecture/ELM369_LIQUID3D_PROMPTING_v0.1.0.md`
+- OpenAPI: `openapi/elm369-orchestrator.openapi.yaml`
 - UI sketch: `Liquid3D Coloring ` (Artifact Registry React demo)
 
 ## Archived stubs (intent preserved here)
