@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 3 — live tools).
+Last updated: 2026-09-04 (round 4 — full live tool inventory).
 
 ## Active / keep
 
@@ -11,25 +11,25 @@ Last updated: 2026-09-04 (round 3 — live tools).
 
 ## Live tools (in this repo)
 
-| Tool | Path | Purpose |
-|------|------|---------|
-| AI outage monitor | `tools/ai_outage_monitor/` | Probe AI service status pages; JSONL history |
-| Daily automation | `tools/elm_daily_automation/` | Maintenance/security checklist + outage probe |
-| DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize |
+| Tool | Path | Purpose | Run |
+|------|------|---------|-----|
+| AI outage monitor | `tools/ai_outage_monitor/` | Probe AI service status pages; JSONL history | `python3 -m tools.ai_outage_monitor check [--dry-run]` |
+| Daily automation | `tools/elm_daily_automation/` | Maintenance/security checklists + outage probe | `python3 -m tools.elm_daily_automation run [--dry-run]` |
+| DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize | `python3 -m tools.dax_memory store "…" --kind fact` |
+| QBIT / QSTATE | `tools/qbit/` | Decision evidence scoring (never bypasses safety) | `python3 -m tools.qbit score L M R H` |
+| Liquid-3D prompting | `tools/liquid3d_prompting/` | Visual/audio/animation prompt composer | `python3 -m tools.liquid3d_prompting compose --mode visual --subject "…"` |
 
-Scheduled: `.github/workflows/elm-daily-automation-schedule.yml` runs daily at 13:00 UTC (≈ 9am Indianapolis). Also triggerable via **Actions → workflow_dispatch**.
+### Schedules & related docs
 
-Quick start (from repo root):
-
-```bash
-python3 -m tools.ai_outage_monitor check --dry-run
-python3 -m tools.elm_daily_automation run --dry-run
-python3 -m tools.dax_memory store "note" --kind note
-```
+- Daily automation schedule: `.github/workflows/elm-daily-automation-schedule.yml` (13:00 UTC ≈ 9am Indianapolis; also `workflow_dispatch`)
+- Evolution layer: `docs/architecture/ELM369_AUTOMATED_EVOLUTION_SPEC_v1.0.0.md` + `schemas/evolution/`
+- QBIT design: `docs/architecture/ELM369_QBIT_DESIGN_v0.1.0.md`
+- Liquid-3D prompting: `docs/architecture/ELM369_LIQUID3D_PROMPTING_v0.1.0.md`
+- UI sketch: `Liquid3D Coloring ` (Artifact Registry React demo)
 
 ## Archived stubs (intent preserved here)
 
-These repos were empty shells (README / LICENSE / `.gitignore` only, or templates with no product code). Archived 2026-09-04 after intent was recorded.
+These repos were empty shells. Archived 2026-09-04 after intent was recorded.
 
 ### Round 1
 
