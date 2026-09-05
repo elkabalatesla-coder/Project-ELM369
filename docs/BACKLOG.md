@@ -88,3 +88,4 @@ ELMDX, FLUX, OMNINET, tokenizer, data-finder scaffolds + extracted HTML artifact
 All recoverable HTML/React/JSON issue sandboxes extracted under `artifacts/sandboxes/` with gallery `artifacts/index.html`.
 
 Sandboxed issues marked DONE (2026-09-05): 11, 16, 18, 19, 22, 24, 25, 26, 27, 28, 29, 38, 39, 40, 47, 52. See `artifacts/FINISH_REPORT_2026-09-05.md`.
+

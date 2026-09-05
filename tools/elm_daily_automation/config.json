@@ -40,6 +40,12 @@
       "name": "Sync GitHub issues into vault",
       "kind": "github_issues_sync",
       "enabled": true
+    },
+    {
+      "id": "elm_status",
+      "name": "Unified ELM status",
+      "kind": "elm_status",
+      "enabled": true
     }
   ]
 }

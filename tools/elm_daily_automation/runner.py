@@ -96,6 +96,20 @@ def run_daily(
                     items=items,
                 )
             )
+        elif kind == "elm_status":
+            try:
+                from tools.elm_status.report import build as status_build
+                payload = status_build()
+                results.append(
+                    TaskResult(
+                        task["id"],
+                        task["name"],
+                        "ok" if payload.get("ok") else "attention",
+                        f"health={'OK' if payload.get('ok') else 'ATTENTION'}",
+                    )
+                )
+            except Exception as exc:  # noqa: BLE001
+                results.append(TaskResult(task["id"], task["name"], "noted", f"unavailable: {exc}"))
         elif kind == "github_issues_sync":
             try:
                 from tools.github_issues.sync import sync as issues_sync
