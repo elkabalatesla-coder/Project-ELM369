@@ -26,6 +26,7 @@ Derived from `PROJECT_METADATA.json` and vault Grok-archive intake.
 | Performance / O(log n) optimizer | DONE | `tools/elm_orchestrator/` (`optimize`) |
 | OpenAPI orchestrator surface | DONE | `openapi/elm369-orchestrator.openapi.yaml` + `serve` |
 | Geo-NTP sync | DONE | `tools/elm_orchestrator/` (`time-sync`) |
+| Controlled evolution loop | DONE | `tools/elm_evolution/` (`discover`/`propose`/`advance`) |
 | E-sign / watermark provenance | DONE | `tools/elm_orchestrator/` (`watermark`) — local hash watermark, not a CA |
 
 ## Still waiting on you

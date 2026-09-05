@@ -29,6 +29,7 @@ def diagnose(root: Path | None = None) -> dict[str, Any]:
         "docs.repo_map": (base / "docs/REPO_MAP.md").is_file(),
         "schemas.evolution": (base / "schemas/evolution").is_dir(),
         "openapi.orchestrator": (base / "openapi/elm369-orchestrator.openapi.yaml").is_file(),
+        "tools.elm_evolution": (base / "tools/elm_evolution").is_dir(),
     }
     missing = [k for k, ok in checks.items() if not ok]
     return {

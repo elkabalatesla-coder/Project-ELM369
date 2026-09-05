@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 6 — backlog counts, QBIT heal, grok index).
+Last updated: 2026-09-04 (round 7 — evolution loop, vault status, DAX index).
 
 ## Active / keep
 
@@ -15,11 +15,12 @@ Last updated: 2026-09-04 (round 6 — backlog counts, QBIT heal, grok index).
 |------|------|---------|-----|
 | AI outage monitor | `tools/ai_outage_monitor/` | Probe AI service status pages; JSONL history | `python3 -m tools.ai_outage_monitor check [--dry-run]` |
 | Daily automation | `tools/elm_daily_automation/` | Outage probe + checklists + vault backlog counts | `python3 -m tools.elm_daily_automation run [--dry-run]` |
-| DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize | `python3 -m tools.dax_memory store "…" --kind fact` |
+| DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize + indexed recall | `python3 -m tools.dax_memory irecall "…"` |
 | QBIT / QSTATE | `tools/qbit/` | Decision evidence scoring (never bypasses safety) | `python3 -m tools.qbit score L M R H` |
 | Liquid-3D prompting | `tools/liquid3d_prompting/` | Visual/audio/animation prompt composer | `python3 -m tools.liquid3d_prompting compose --mode visual --subject "…"` |
-| Grok archive intake | `tools/grok_archive/` + `vault/.../sources/grok/` | Ingest, backlog extract, inverted search | `python3 -m tools.grok_archive search "vault"` |
+| Grok archive intake | `tools/grok_archive/` + `vault/.../sources/grok/` | Ingest, backlog, search, multi-source status | `python3 -m tools.grok_archive status` |
 | ELM orchestrator | `tools/elm_orchestrator/` | Diag / vault-log / QBIT-gated heal / OpenAPI serve / NTP / watermark / optimize | `python3 -m tools.elm_orchestrator diag` |
+| ELM evolution | `tools/elm_evolution/` | Gated DISCOVER→PROPOSE→… lifecycle (no auto prod mutation) | `python3 -m tools.elm_evolution discover` |
 
 ### Schedules & related docs
 

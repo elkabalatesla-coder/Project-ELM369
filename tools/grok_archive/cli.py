@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Sequence
 
 from tools.grok_archive.ingest import ingest_path, list_normalized
+from tools.grok_archive.status import vault_status
 from tools.grok_archive.index import build_index, search
 from tools.grok_archive.normalize import extract_backlog
 
@@ -27,6 +28,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     ex = sub.add_parser("extract-backlog", help="Re-extract design/dev backlog from normalized JSONL")
     ex.add_argument("--source", default="grok")
 
+    st = sub.add_parser("status", help="Multi-source vault status summary")
     ix = sub.add_parser("index", help="Rebuild inverted search index")
     ix.add_argument("--source", default="grok")
 
@@ -49,6 +51,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 0
         for r in rows:
             print(f"{r.get('role','?'):<12} {str(r.get('content',''))[:120]}")
+        return 0
+
+    if args.command == "status":
+        print(json.dumps(vault_status(), indent=2))
         return 0
 
     if args.command == "index":
