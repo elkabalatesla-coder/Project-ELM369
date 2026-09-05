@@ -6,6 +6,8 @@ import argparse
 from typing import Sequence
 
 from tools.dax_memory import store as mem
+from tools.dax_memory.index import build_index, indexed_recall
+import json
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -39,6 +41,11 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     arc = sub.add_parser("archive", help="Archive a memory by id")
     arc.add_argument("memory_id")
+
+    sub.add_parser("index", help="Rebuild inverted recall index")
+    irq = sub.add_parser("irecall", help="Indexed recall (faster path)")
+    irq.add_argument("query")
+    irq.add_argument("-n", "--limit", type=int, default=10)
 
     args = parser.parse_args(argv)
 
@@ -89,6 +96,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             print("Not found.")
             return 1
         print(f"archived {entry.memory_id}")
+        return 0
+
+    if args.command == "index":
+        print(json.dumps(build_index(), indent=2))
+        return 0
+
+    if args.command == "irecall":
+        hits = indexed_recall(args.query, limit=args.limit)
+        print(json.dumps(hits, indent=2))
         return 0
 
     return 2

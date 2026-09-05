@@ -19,3 +19,7 @@ __pycache__/
 
 tools/**/data/
 tools/elm_orchestrator/data/
+
+tools/elm_evolution/data/
+
+tools/dax_memory/data/
