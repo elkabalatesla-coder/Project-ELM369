@@ -1,0 +1,19 @@
+{
+  "project_id": "ELM369_JMR08241978202646902",
+  "note": "Sample/mock inventory only — not a live device scan.",
+  "device": {
+    "model": "Sample Android",
+    "sdk": 34,
+    "security_patch": "2026-01-01",
+    "encrypted": true
+  },
+  "apps": [
+    {"name": "com.android.chrome", "label": "Chrome", "version": "120.0.1", "sdk": 34, "size": "142MB", "perms": 18, "status": "ok"},
+    {"name": "com.facebook.katana", "label": "Facebook", "version": "450.0", "sdk": 33, "size": "98MB", "perms": 32, "status": "warn"},
+    {"name": "com.google.android.gms", "label": "Play Services", "version": "24.02", "sdk": 34, "size": "210MB", "perms": 44, "status": "warn"},
+    {"name": "com.elm369.project", "label": "ELM369 App", "version": "3.6.9", "sdk": 34, "size": "22MB", "perms": 8, "status": "ok"},
+    {"name": "com.tiktok.android", "label": "TikTok", "version": "33.5.2", "sdk": 31, "size": "175MB", "perms": 27, "status": "error"},
+    {"name": "com.whatsapp", "label": "WhatsApp", "version": "2.24.3", "sdk": 33, "size": "56MB", "perms": 22, "status": "ok"},
+    {"name": "com.malware.test", "label": "UnknownApp_x", "version": "1.0", "sdk": 28, "size": "3MB", "perms": 51, "status": "error"}
+  ]
+}

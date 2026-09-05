@@ -27,3 +27,6 @@ tools/dax_memory/data/
 tools/pandora_vault/data/
 tools/elm_offline/data/cache/
 tools/elm_offline/data/manifest.json
+
+!tools/elm_translator/data/glossary.json
+!tools/elmdx/data/sample_device.json
