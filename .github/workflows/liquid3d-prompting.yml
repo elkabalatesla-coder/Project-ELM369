@@ -1,0 +1,26 @@
+name: Liquid-3D Prompting Tests
+
+on:
+  push:
+    paths:
+      - 'tools/liquid3d_prompting/**'
+      - 'schemas/liquid3d/**'
+      - '.github/workflows/liquid3d-prompting.yml'
+  pull_request:
+    paths:
+      - 'tools/liquid3d_prompting/**'
+      - 'schemas/liquid3d/**'
+      - '.github/workflows/liquid3d-prompting.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Unit tests
+        run: python -m unittest discover -s tools/liquid3d_prompting/tests -v

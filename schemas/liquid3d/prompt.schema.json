@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "elm369://schema/liquid3d/prompt/1.0.0",
+  "title": "ELM369 Liquid-3D Prompt Packet",
+  "type": "object",
+  "required": ["prompt_id", "project_id", "mode", "subject", "rendered", "created_at"],
+  "properties": {
+    "prompt_id": {"type": "string"},
+    "project_id": {"const": "ELM369_JMR08241978202646902"},
+    "mode": {"enum": ["visual", "audio", "animation", "combo"]},
+    "subject": {"type": "string", "minLength": 1},
+    "palette": {"type": "array", "items": {"type": "string"}},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "constraints": {"type": "array", "items": {"type": "string"}},
+    "rendered": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,15 @@
+{
+  "project_id": "ELM369_JMR08241978202646902",
+  "default_palette": ["#00D4FF", "#8B00FF", "#FF006E", "#00FF88"],
+  "templates": {
+    "visual": "Liquid-3D visual: {subject}. Soft volumetric fluid, translucent droplets, particle field on a deep slate/purple void. Palette {palette}. Mood: luminous, slow morphing, Artifact Registry aesthetic. Constraints: {constraints}.",
+    "audio": "Liquid-3D audio bed for: {subject}. Soft sub-bass pulses synced to droplet impacts, airy synth shimmer in cyan register, sparse glassy chimes. No vocals. Palette mood {palette}. Constraints: {constraints}.",
+    "animation": "Liquid-3D animation: {subject}. Looping 8–12s, ease-in-out morphs, nodes breathe and reconnect with faint energy filaments. Camera slow orbit. Palette {palette}. Constraints: {constraints}.",
+    "combo": "Unified Liquid-3D audiovisual: {subject}. Visual fluid + particle network, audio pulse locked to motion peaks, seamless loop. Palette {palette}. Constraints: {constraints}."
+  },
+  "default_constraints": [
+    "Keep ELM369 creator provenance in metadata when publishing",
+    "Prefer additive, reversible stylistic choices",
+    "No brand marks of third-party AIs as logos"
+  ]
+}

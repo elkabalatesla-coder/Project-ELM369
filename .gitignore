@@ -13,3 +13,6 @@ node_modules/
 .idea/
 *.sublime-workspace
 *.sublime-project
+
+__pycache__/
+*.py[cod]
