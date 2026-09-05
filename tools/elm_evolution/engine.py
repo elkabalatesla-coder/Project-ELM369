@@ -23,7 +23,7 @@ def discover(root: Path | None = None) -> dict[str, Any]:
     """DISCOVER: inventory key artifacts / tools present in the repo."""
     base = root or Path(".")
     findings = {
-        "tools": sorted(p.name for p in (base / "tools").iterdir() if p.is_dir()) if (base / "tools").is_dir() else [],
+        "tools": sorted(p.name for p in (base / "tools").iterdir() if p.is_dir() and not p.name.startswith((".", "_"))) if (base / "tools").is_dir() else [],
         "schemas_evolution": (base / "schemas/evolution").is_dir(),
         "openapi": (base / "openapi/elm369-orchestrator.openapi.yaml").is_file(),
         "repo_map": (base / "docs/REPO_MAP.md").is_file(),

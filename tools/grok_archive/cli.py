@@ -29,7 +29,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     ex.add_argument("--source", default="grok")
 
     st = sub.add_parser("status", help="Multi-source vault status summary")
-ix = sub.add_parser("index", help="Rebuild inverted search index")
+    ix = sub.add_parser("index", help="Rebuild inverted search index")
     ix.add_argument("--source", default="grok")
 
     se = sub.add_parser("search", help="Search normalized + backlog via inverted index")
