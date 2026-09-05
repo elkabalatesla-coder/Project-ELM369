@@ -8,6 +8,7 @@ from typing import Sequence
 
 from tools.elm_orchestrator.agents import diagnose, heal_propose, vault_log
 from tools.elm_orchestrator.esign import watermark
+from tools.elm_orchestrator.heal import list_proposals, simulate_apply
 from tools.elm_orchestrator.optimizer import suggest
 from tools.elm_orchestrator.time_sync import sync_report
 
@@ -22,6 +23,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     log.add_argument("--detail", default="{}", help="JSON object string")
     heal = sub.add_parser("heal", help="Propose gated self-heal (no auto-apply)")
     heal.add_argument("--issue", required=True)
+    hl = sub.add_parser("heal-list", help="List recent heal proposals")
+    hl.add_argument("-n", "--limit", type=int, default=20)
+    hs = sub.add_parser("heal-simulate", help="Dry-run apply a proposal (still no production mutation)")
+    hs.add_argument("--proposal-id", required=True)
+    hs.add_argument("--authorize", action="store_true", help="Acknowledge dry-run simulation authorization")
     sub.add_parser("time-sync", help="Geo-NTP sync check")
     sign = sub.add_parser("watermark", help="Local provenance watermark")
     sign.add_argument("--payload", required=True, help="JSON object string")
@@ -46,6 +52,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "heal":
         print(json.dumps(heal_propose(args.issue), indent=2))
         return 0
+
+    if args.command == "heal-list":
+        print(json.dumps(list_proposals(limit=args.limit), indent=2))
+        return 0
+
+    if args.command == "heal-simulate":
+        result = simulate_apply(args.proposal_id, authorize=args.authorize)
+        print(json.dumps(result, indent=2))
+        return 0 if result.get("ok") else 1
 
     if args.command == "time-sync":
         report = sync_report()

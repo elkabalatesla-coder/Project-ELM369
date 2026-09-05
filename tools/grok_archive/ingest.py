@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from tools.grok_archive.normalize import extract_backlog, iter_json_records, normalize_record
+from tools.grok_archive.index import build_index
 
 DEFAULT_VAULT = Path("vault/ELM369/JMR08241978202646902/sources")
 
@@ -37,12 +38,14 @@ def ingest_path(raw_path: Path, *, source: str = "grok", vault_root: Path | None
         for item in backlog:
             fh.write(json.dumps(item, ensure_ascii=False) + "\n")
 
+    index_stats = build_index(source=source, vault_root=root)
     return {
         "files": len(files),
         "messages": len(all_rows),
         "backlog_items": len(backlog),
         "normalized": str(out_norm),
         "backlog": str(out_backlog),
+        "index": index_stats,
     }
 
 

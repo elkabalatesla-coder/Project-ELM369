@@ -41,3 +41,30 @@ class DailyAutomationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VaultBacklogTaskTests(unittest.TestCase):
+    def test_vault_backlog_kind(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "sources" / "grok" / "extracted"
+            root.mkdir(parents=True)
+            (root / "backlog-grok.jsonl").write_text(
+                json.dumps({"kind": "design", "text": "x", "status": "open"}) + "\n"
+                + json.dumps({"kind": "develop", "text": "y", "status": "done"}) + "\n",
+                encoding="utf-8",
+            )
+            cfg = {
+                "project_id": "t",
+                "tasks": [
+                    {
+                        "id": "vault_backlog",
+                        "name": "Vault backlog",
+                        "kind": "vault_backlog",
+                        "enabled": True,
+                        "sources_root": str(Path(tmp) / "sources"),
+                    }
+                ],
+            }
+            report = run_daily(cfg, dry_run=True, log_path=Path(tmp) / "log.jsonl")
+            self.assertEqual(report.results[0].status, "ok")
+            self.assertIn("1 open", report.results[0].detail)

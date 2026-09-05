@@ -18,3 +18,4 @@ __pycache__/
 *.py[cod]
 
 tools/**/data/
+tools/elm_orchestrator/data/

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Sequence
 
 from tools.grok_archive.ingest import ingest_path, list_normalized
+from tools.grok_archive.index import build_index, search
 from tools.grok_archive.normalize import extract_backlog
 
 
@@ -26,6 +27,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     ex = sub.add_parser("extract-backlog", help="Re-extract design/dev backlog from normalized JSONL")
     ex.add_argument("--source", default="grok")
 
+    ix = sub.add_parser("index", help="Rebuild inverted search index")
+    ix.add_argument("--source", default="grok")
+
+    se = sub.add_parser("search", help="Search normalized + backlog via inverted index")
+    se.add_argument("query")
+    se.add_argument("--source", default="grok")
+    se.add_argument("-n", "--limit", type=int, default=20)
+
     args = parser.parse_args(argv)
 
     if args.command == "ingest":
@@ -40,6 +49,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 0
         for r in rows:
             print(f"{r.get('role','?'):<12} {str(r.get('content',''))[:120]}")
+        return 0
+
+    if args.command == "index":
+        print(json.dumps(build_index(source=args.source), indent=2))
+        return 0
+
+    if args.command == "search":
+        hits = search(args.query, source=args.source, limit=args.limit)
+        print(json.dumps(hits, indent=2))
         return 0
 
     if args.command == "extract-backlog":

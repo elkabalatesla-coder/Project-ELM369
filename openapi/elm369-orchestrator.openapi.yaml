@@ -113,3 +113,31 @@ paths:
       responses:
         '200':
           description: Optimization suggestions
+  /v1/heal/proposals:
+    get:
+      summary: List recent heal proposals
+      operationId: healList
+      responses:
+        '200':
+          description: Proposal list
+  /v1/heal/simulate:
+    post:
+      summary: Dry-run apply a heal proposal (no production mutation)
+      operationId: healSimulate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [proposal_id]
+              properties:
+                proposal_id:
+                  type: string
+                authorize:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: Simulation result
+
