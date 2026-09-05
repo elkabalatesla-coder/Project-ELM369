@@ -1,0 +1,115 @@
+openapi: 3.0.3
+info:
+  title: ELM369 Orchestrator API
+  version: 0.1.0
+  description: >
+    Additive HTTP surface for ELM369 orchestrator scaffolds.
+    Safety: heal endpoints propose only; no credential or destructive operations.
+  contact:
+    name: Joseph Michael Rose / Project ELM369
+servers:
+  - url: http://127.0.0.1:8769
+    description: Local scaffold server
+paths:
+  /health:
+    get:
+      summary: Liveness
+      operationId: health
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  project_id:
+                    type: string
+  /v1/diag:
+    get:
+      summary: Run diagnostic presence checks
+      operationId: diag
+      responses:
+        '200':
+          description: Diagnostic report
+  /v1/vault-log:
+    post:
+      summary: Append audit event
+      operationId: vaultLog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [event]
+              properties:
+                event:
+                  type: string
+                detail:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Logged event
+  /v1/heal:
+    post:
+      summary: Propose gated self-heal (never auto-applies)
+      operationId: healPropose
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [issue]
+              properties:
+                issue:
+                  type: string
+      responses:
+        '200':
+          description: Heal proposal
+  /v1/time/sync:
+    get:
+      summary: Geo-NTP time sync check (stdlib NTP query)
+      operationId: timeSync
+      responses:
+        '200':
+          description: Time sync report
+  /v1/sign/watermark:
+    post:
+      summary: Apply local provenance watermark metadata (not a cryptographic CA)
+      operationId: watermark
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [payload]
+              properties:
+                payload:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Watermarked envelope
+  /v1/optimize/suggest:
+    post:
+      summary: Suggest O(log n)-minded optimizations for a described workload
+      operationId: optimizeSuggest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [workload]
+              properties:
+                workload:
+                  type: string
+      responses:
+        '200':
+          description: Optimization suggestions

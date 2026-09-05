@@ -28,6 +28,7 @@ def diagnose(root: Path | None = None) -> dict[str, Any]:
         "vault.grok": (base / "vault/ELM369/JMR08241978202646902/sources/grok").is_dir(),
         "docs.repo_map": (base / "docs/REPO_MAP.md").is_file(),
         "schemas.evolution": (base / "schemas/evolution").is_dir(),
+        "openapi.orchestrator": (base / "openapi/elm369-orchestrator.openapi.yaml").is_file(),
     }
     missing = [k for k, ok in checks.items() if not ok]
     return {

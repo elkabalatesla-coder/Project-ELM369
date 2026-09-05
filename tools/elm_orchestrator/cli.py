@@ -7,6 +7,9 @@ import json
 from typing import Sequence
 
 from tools.elm_orchestrator.agents import diagnose, heal_propose, vault_log
+from tools.elm_orchestrator.esign import watermark
+from tools.elm_orchestrator.optimizer import suggest
+from tools.elm_orchestrator.time_sync import sync_report
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -19,6 +22,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     log.add_argument("--detail", default="{}", help="JSON object string")
     heal = sub.add_parser("heal", help="Propose gated self-heal (no auto-apply)")
     heal.add_argument("--issue", required=True)
+    sub.add_parser("time-sync", help="Geo-NTP sync check")
+    sign = sub.add_parser("watermark", help="Local provenance watermark")
+    sign.add_argument("--payload", required=True, help="JSON object string")
+    opt = sub.add_parser("optimize", help="Suggest logarithmic-minded optimizations")
+    opt.add_argument("--workload", required=True)
+    serve = sub.add_parser("serve", help="Run local OpenAPI HTTP scaffold")
+    serve.add_argument("--host", default="127.0.0.1")
+    serve.add_argument("--port", type=int, default=8769)
 
     args = parser.parse_args(argv)
 
@@ -34,6 +45,26 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "heal":
         print(json.dumps(heal_propose(args.issue), indent=2))
+        return 0
+
+    if args.command == "time-sync":
+        report = sync_report()
+        print(json.dumps(report, indent=2))
+        return 0 if report.get("ok") or any(r.get("status") == "ok" for r in report.get("results", [])) else 1
+
+    if args.command == "watermark":
+        payload = json.loads(args.payload)
+        print(json.dumps(watermark(payload), indent=2))
+        return 0
+
+    if args.command == "optimize":
+        print(json.dumps(suggest(args.workload), indent=2))
+        return 0
+
+    if args.command == "serve":
+        from tools.elm_orchestrator.server import serve as _serve
+
+        _serve(args.host, args.port)
         return 0
 
     return 2
