@@ -200,6 +200,24 @@
       "category": "Ops",
       "status": "DONE",
       "repo_path": "tools/elm_orchestrator/time_sync.py"
+    },
+    {
+      "id": "STATUS",
+      "name": "Unified ELM Status",
+      "phase": "Production",
+      "completion": 90,
+      "category": "Ops",
+      "status": "DONE",
+      "repo_path": "tools/elm_status"
+    },
+    {
+      "id": "ARTIFACTS",
+      "name": "Artifact Sandbox Gallery",
+      "phase": "Production",
+      "completion": 90,
+      "category": "Archive",
+      "status": "DONE",
+      "repo_path": "artifacts"
     }
   ]
 }

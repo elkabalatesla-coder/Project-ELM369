@@ -16,6 +16,17 @@ ROUTES = {
     "diag": "tools/elm_orchestrator diag / tools/elmdx",
     "flux": "tools/elm_flux",
     "bo": "tools/bo_assistant",
+    "status": "tools/elm_status",
+    "artifacts": "artifacts/ + tools/elm_artifacts",
+    "tokenizer": "tools/elm_tokenizer",
+    "offline": "tools/elm_offline",
+    "translator": "tools/elm_translator",
+    "devtools": "tools/elm_devtools",
+    "dashboard": "tools/elm_dashboard",
+    "finder": "tools/data_finder",
+    "evolution": "tools/elm_evolution",
+    "qbit": "tools/qbit",
+    "liquid3d": "tools/liquid3d_prompting",
 }
 
 
