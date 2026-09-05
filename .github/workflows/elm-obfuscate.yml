@@ -1,0 +1,15 @@
+name: ELM Obfuscate Tests
+on:
+  push:
+    paths: ["tools/elm_obfuscate/**", ".github/workflows/elm-obfuscate.yml"]
+  pull_request:
+    paths: ["tools/elm_obfuscate/**", ".github/workflows/elm-obfuscate.yml"]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 -m unittest discover -s tools/elm_obfuscate/tests -v

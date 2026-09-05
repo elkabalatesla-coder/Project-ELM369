@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 7 — evolution loop, vault status, DAX index).
+Last updated: 2026-09-04 (round 8 — GitHub issues vault + identity/shorthand docs).
 
 ## Active / keep
 
@@ -21,6 +21,8 @@ Last updated: 2026-09-04 (round 7 — evolution loop, vault status, DAX index).
 | Grok archive intake | `tools/grok_archive/` + `vault/.../sources/grok/` | Ingest, backlog, search, multi-source status | `python3 -m tools.grok_archive status` |
 | ELM orchestrator | `tools/elm_orchestrator/` | Diag / vault-log / QBIT-gated heal / OpenAPI serve / NTP / watermark / optimize | `python3 -m tools.elm_orchestrator diag` |
 | ELM evolution | `tools/elm_evolution/` | Gated DISCOVER→PROPOSE→… lifecycle (no auto prod mutation) | `python3 -m tools.elm_evolution discover` |
+| GitHub issues sync | `tools/github_issues/` | Open issues → vault `sources/github-issues` | `python3 -m tools.github_issues sync` |
+| Toy obfuscate | `tools/elm_obfuscate/` | Classical demo obfuscation (not encryption) | `python3 -m tools.elm_obfuscate obfuscate "…"` |
 
 ### Schedules & related docs
 
@@ -29,6 +31,9 @@ Last updated: 2026-09-04 (round 7 — evolution loop, vault status, DAX index).
 - Evolution layer: `docs/architecture/ELM369_AUTOMATED_EVOLUTION_SPEC_v1.0.0.md` + `schemas/evolution/`
 - QBIT design: `docs/architecture/ELM369_QBIT_DESIGN_v0.1.0.md`
 - Liquid-3D prompting: `docs/architecture/ELM369_LIQUID3D_PROMPTING_v0.1.0.md`
+- Identity: `docs/ELM369_IDENTITY.md`
+- Shorthand archive: `docs/architecture/ELM369_SHORTHAND_ARCHIVE_v0.1.0.md`
+- Handshake layers: `docs/architecture/ELM369_HANDSHAKE_v0.1.0.md`
 - OpenAPI: `openapi/elm369-orchestrator.openapi.yaml`
 - UI sketch: `Liquid3D Coloring ` (Artifact Registry React demo)
 

@@ -69,7 +69,14 @@ def normalize_record(obj: Any, *, source: str, origin: str) -> list[dict[str, An
     # Easy Grok Chat Exporter / JSONL message lines
     if "message" in obj and ("sender" in obj or "role" in obj):
         role = str(obj.get("sender") or obj.get("role") or "unknown")
-        add(role, str(obj.get("message")), model=obj.get("model"), thinking=obj.get("thinking"))
+        extra = {
+            "model": obj.get("model"),
+            "thinking": obj.get("thinking"),
+        }
+        for key in ("issue_number", "title", "url", "created_at", "labels"):
+            if key in obj:
+                extra[key] = obj.get(key)
+        add(role, str(obj.get("message")), **{k: v for k, v in extra.items() if v is not None})
         return rows
 
     # Conversation with messages[]

@@ -29,6 +29,10 @@ Derived from `PROJECT_METADATA.json` and vault Grok-archive intake.
 | Controlled evolution loop | DONE | `tools/elm_evolution/` (`discover`/`propose`/`advance`) |
 | E-sign / watermark provenance | DONE | `tools/elm_orchestrator/` (`watermark`) — local hash watermark, not a CA |
 
+| GitHub issues vault sync | DONE | `tools/github_issues/` + `sources/github-issues` |
+| Identity / shorthand / handshake docs | DONE | `docs/ELM369_IDENTITY.md` + architecture notes |
+| Toy classical obfuscate scaffold | DONE | `tools/elm_obfuscate/` |
+
 ## Still waiting on you
 
 - A real Grok export (JSON / JSONL / ZIP) dropped into `vault/.../sources/grok/raw/` for live discussion ingest.

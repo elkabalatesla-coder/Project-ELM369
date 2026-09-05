@@ -1,0 +1,15 @@
+name: GitHub Issues Sync Tests
+on:
+  push:
+    paths: ["tools/github_issues/**", ".github/workflows/github-issues.yml"]
+  pull_request:
+    paths: ["tools/github_issues/**", ".github/workflows/github-issues.yml"]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 -m unittest discover -s tools/github_issues/tests -v

@@ -30,6 +30,7 @@ def diagnose(root: Path | None = None) -> dict[str, Any]:
         "schemas.evolution": (base / "schemas/evolution").is_dir(),
         "openapi.orchestrator": (base / "openapi/elm369-orchestrator.openapi.yaml").is_file(),
         "tools.elm_evolution": (base / "tools/elm_evolution").is_dir(),
+        "tools.github_issues": (base / "tools/github_issues").is_dir(),
     }
     missing = [k for k, ok in checks.items() if not ok]
     return {
