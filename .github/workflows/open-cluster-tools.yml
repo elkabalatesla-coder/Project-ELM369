@@ -1,0 +1,32 @@
+name: Open Cluster Tools Tests
+on:
+  push:
+    paths:
+      - "tools/elmdx/**"
+      - "tools/elm_flux/**"
+      - "tools/omninet/**"
+      - "tools/elm_tokenizer/**"
+      - "tools/data_finder/**"
+      - ".github/workflows/open-cluster-tools.yml"
+  pull_request:
+    paths:
+      - "tools/elmdx/**"
+      - "tools/elm_flux/**"
+      - "tools/omninet/**"
+      - "tools/elm_tokenizer/**"
+      - "tools/data_finder/**"
+      - ".github/workflows/open-cluster-tools.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          python3 -m unittest discover -s tools/elmdx/tests -v
+          python3 -m unittest discover -s tools/elm_flux/tests -v
+          python3 -m unittest discover -s tools/omninet/tests -v
+          python3 -m unittest discover -s tools/elm_tokenizer/tests -v
+          python3 -m unittest discover -s tools/data_finder/tests -v

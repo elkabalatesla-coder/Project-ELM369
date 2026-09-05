@@ -29,17 +29,17 @@ Source: open GitHub issues synced into `vault/.../sources/github-issues`.
 | [15](https://github.com/elkabalatesla-coder/Project-ELM369/issues/15) | Self modify  | DONE | tools/elm_evolution gated self-mod loop |
 | [16](https://github.com/elkabalatesla-coder/Project-ELM369/issues/16) | Bo My Answering Service AI for Project ELM369  | SCAFFOLD | tools/bo_assistant draft-only |
 | [17](https://github.com/elkabalatesla-coder/Project-ELM369/issues/17) | reinstall all that you can find that was wiped off with IP address Change to Texas and other places other than Kokomo Indiana USA 46902 | OPEN | See issue body / extracted backlog |
-| [18](https://github.com/elkabalatesla-coder/Project-ELM369/issues/18) | New for elm  | OPEN | See issue body / extracted backlog |
-| [19](https://github.com/elkabalatesla-coder/Project-ELM369/issues/19) | new to elm369  | OPEN | See issue body / extracted backlog |
+| [18](https://github.com/elkabalatesla-coder/Project-ELM369/issues/18) | New for elm  | DOCS | HTML extracted to artifacts/from-issues |
+| [19](https://github.com/elkabalatesla-coder/Project-ELM369/issues/19) | new to elm369  | DOCS | HTML extracted to artifacts/from-issues |
 | [20](https://github.com/elkabalatesla-coder/Project-ELM369/issues/20) | install  | OPEN | See issue body / extracted backlog |
 | [21](https://github.com/elkabalatesla-coder/Project-ELM369/issues/21) | Iditify with.  | OPEN | See issue body / extracted backlog |
 | [22](https://github.com/elkabalatesla-coder/Project-ELM369/issues/22) | Claude's help. | OPEN | See issue body / extracted backlog |
 | [23](https://github.com/elkabalatesla-coder/Project-ELM369/issues/23) | Developer Tools for Project ELM369 | SCAFFOLD | tools/elm_devtools inventory |
 | [24](https://github.com/elkabalatesla-coder/Project-ELM369/issues/24) | ELM369 Dev Tools.  | SCAFFOLD | tools/elm_devtools (+ issue HTML remains source) |
 | [25](https://github.com/elkabalatesla-coder/Project-ELM369/issues/25) | Translator  | SCAFFOLD | tools/elm_translator glossary |
-| [26](https://github.com/elkabalatesla-coder/Project-ELM369/issues/26) | Fix OS for android and Apps | OPEN | See issue body / extracted backlog |
-| [27](https://github.com/elkabalatesla-coder/Project-ELM369/issues/27) | Integration Artifact.  | OPEN | See issue body / extracted backlog |
-| [28](https://github.com/elkabalatesla-coder/Project-ELM369/issues/28) | ELM369 Connection  | OPEN | See issue body / extracted backlog |
+| [26](https://github.com/elkabalatesla-coder/Project-ELM369/issues/26) | Fix OS for android and Apps | SCAFFOLD | tools/elmdx inventory diagnostics |
+| [27](https://github.com/elkabalatesla-coder/Project-ELM369/issues/27) | Integration Artifact.  | SCAFFOLD | tools/elm_tokenizer + artifacts/from-issues |
+| [28](https://github.com/elkabalatesla-coder/Project-ELM369/issues/28) | ELM369 Connection  | SCAFFOLD | tools/elm_flux prompt composer |
 | [29](https://github.com/elkabalatesla-coder/Project-ELM369/issues/29) | Progress engine.  | SCAFFOLD | tools/elm_progress registry + summary |
 | [30](https://github.com/elkabalatesla-coder/Project-ELM369/issues/30) | update archives.  | OPEN | See issue body / extracted backlog |
 | [31](https://github.com/elkabalatesla-coder/Project-ELM369/issues/31) | Archive 2.1  | OPEN | See issue body / extracted backlog |
@@ -79,3 +79,6 @@ Source: open GitHub issues synced into `vault/.../sources/github-issues`.
 - Full HTML Artifact Registry UIs from issue bodies (kept as issue sources; JSON dashboard is the live board)
 - Scraping social platforms outside their official APIs
 
+## Open cluster (this sweep)
+
+ELMDX, FLUX, OMNINET, tokenizer, data-finder scaffolds + extracted HTML artifacts.
