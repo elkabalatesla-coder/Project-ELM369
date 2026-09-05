@@ -1,0 +1,29 @@
+{
+  "project_id": "ELM369_JMR08241978202646902",
+  "operator": "Joseph Michael Rose",
+  "source_issue": 29,
+  "tools": [
+    {"id": "ELMDX", "name": "ELMDX Android Diagnostics", "phase": "Architecture", "completion": 20, "category": "Diagnostics", "status": "PLANNED", "repo_path": null},
+    {"id": "FLUX-UI", "name": "FLUX Image Gen UI", "phase": "Architecture", "completion": 10, "category": "AI/Creative", "status": "PLANNED", "repo_path": null},
+    {"id": "AUDIO-TX", "name": "Audio Translator", "phase": "Scaffold", "completion": 40, "category": "Communication", "status": "SCAFFOLD", "repo_path": "tools/elm_translator"},
+    {"id": "BO-COMM", "name": "Bo Communications Assistant", "phase": "Scaffold", "completion": 45, "category": "Communication", "status": "SCAFFOLD", "repo_path": "tools/bo_assistant"},
+    {"id": "DEVTOOLS", "name": "System Developer Tools", "phase": "Scaffold", "completion": 55, "category": "DevOps", "status": "SCAFFOLD", "repo_path": "tools/elm_devtools"},
+    {"id": "OMNINET", "name": "OMNINET / .mo* Protocol", "phase": "Architecture", "completion": 15, "category": "Infrastructure", "status": "PLANNED", "repo_path": null},
+    {"id": "TOKENIZER", "name": "Tokenizer Add-On System", "phase": "Architecture", "completion": 10, "category": "AI/Security", "status": "PLANNED", "repo_path": null},
+    {"id": "DATA-FIND", "name": "Data Location Finder", "phase": "Architecture", "completion": 10, "category": "Enterprise", "status": "PLANNED", "repo_path": null},
+    {"id": "AI-HUB", "name": "AI Team Management Dashboard", "phase": "Scaffold", "completion": 50, "category": "Management", "status": "SCAFFOLD", "repo_path": "tools/elm_dashboard"},
+    {"id": "PANDORA", "name": "Pandora Vault Security Layer", "phase": "Scaffold", "completion": 70, "category": "Security", "status": "SCAFFOLD", "repo_path": "tools/pandora_vault"},
+    {"id": "SELF-OPT", "name": "Self-Organizing Update Loop", "phase": "Scaffold", "completion": 65, "category": "Automation", "status": "SCAFFOLD", "repo_path": "tools/elm_evolution"},
+    {"id": "SEC-MASTER", "name": "Personal Security Master Guide", "phase": "Docs", "completion": 60, "category": "Security", "status": "DOCS", "repo_path": "docs/architecture/ELM369_HANDSHAKE_v0.1.0.md"},
+    {"id": "OUTAGE", "name": "AI Outage Monitor", "phase": "Production", "completion": 95, "category": "Ops", "status": "DONE", "repo_path": "tools/ai_outage_monitor"},
+    {"id": "DAILY", "name": "Daily Automation", "phase": "Production", "completion": 95, "category": "Ops", "status": "DONE", "repo_path": "tools/elm_daily_automation"},
+    {"id": "DAX", "name": "DAX Memory", "phase": "Production", "completion": 90, "category": "Memory", "status": "DONE", "repo_path": "tools/dax_memory"},
+    {"id": "QBIT", "name": "QBIT / QSTATE", "phase": "Production", "completion": 90, "category": "Decision", "status": "DONE", "repo_path": "tools/qbit"},
+    {"id": "LIQUID3D", "name": "Liquid-3D Prompting", "phase": "Production", "completion": 85, "category": "AI/Creative", "status": "DONE", "repo_path": "tools/liquid3d_prompting"},
+    {"id": "GROK-ARC", "name": "Grok / Multi-source Archive", "phase": "Production", "completion": 90, "category": "Archive", "status": "DONE", "repo_path": "tools/grok_archive"},
+    {"id": "ORCH", "name": "ELM Orchestrator", "phase": "Production", "completion": 90, "category": "Ops", "status": "DONE", "repo_path": "tools/elm_orchestrator"},
+    {"id": "ISSUES", "name": "GitHub Issues Vault Sync", "phase": "Production", "completion": 90, "category": "Archive", "status": "DONE", "repo_path": "tools/github_issues"},
+    {"id": "OFFLINE", "name": "Offline Engine", "phase": "Scaffold", "completion": 40, "category": "Infrastructure", "status": "SCAFFOLD", "repo_path": "tools/elm_offline"},
+    {"id": "TIME", "name": "Geo-NTP Time Keeping", "phase": "Production", "completion": 85, "category": "Ops", "status": "DONE", "repo_path": "tools/elm_orchestrator/time_sync.py"}
+  ]
+}

@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 8 — GitHub issues vault + identity/shorthand docs).
+Last updated: 2026-09-04 (round 9 — backlog sweep: progress/pandora/offline/translator/bo/devtools/dashboard).
 
 ## Active / keep
 
@@ -22,6 +22,13 @@ Last updated: 2026-09-04 (round 8 — GitHub issues vault + identity/shorthand d
 | ELM orchestrator | `tools/elm_orchestrator/` | Diag / vault-log / QBIT-gated heal / OpenAPI serve / NTP / watermark / optimize | `python3 -m tools.elm_orchestrator diag` |
 | ELM evolution | `tools/elm_evolution/` | Gated DISCOVER→PROPOSE→… lifecycle (no auto prod mutation) | `python3 -m tools.elm_evolution discover` |
 | GitHub issues sync | `tools/github_issues/` | Open issues → vault `sources/github-issues` | `python3 -m tools.github_issues sync` |
+| Progress engine | `tools/elm_progress/` | Tool registry completion summary | `python3 -m tools.elm_progress summary` |
+| Pandora / security logs | `tools/pandora_vault/` | Security Log 1/2 + Pandora vault feeds | `python3 -m tools.pandora_vault sync --message "…"` |
+| Offline snapshot | `tools/elm_offline/` | Local offline cache of key docs/backlogs | `python3 -m tools.elm_offline snapshot` |
+| Translator glossary | `tools/elm_translator/` | Offline phrase glossary scaffold | `python3 -m tools.elm_translator translate "hello" --to es` |
+| Bo assistant | `tools/bo_assistant/` | Draft-only SMS/email/phone scripts | `python3 -m tools.bo_assistant draft "…"` |
+| Devtools inventory | `tools/elm_devtools/` | List tools under tools/ | `python3 -m tools.elm_devtools inventory` |
+| Dashboard board | `tools/elm_dashboard/` | JSON status board | `python3 -m tools.elm_dashboard show` |
 | Toy obfuscate | `tools/elm_obfuscate/` | Classical demo obfuscation (not encryption) | `python3 -m tools.elm_obfuscate obfuscate "…"` |
 
 ### Schedules & related docs
@@ -31,6 +38,7 @@ Last updated: 2026-09-04 (round 8 — GitHub issues vault + identity/shorthand d
 - Evolution layer: `docs/architecture/ELM369_AUTOMATED_EVOLUTION_SPEC_v1.0.0.md` + `schemas/evolution/`
 - QBIT design: `docs/architecture/ELM369_QBIT_DESIGN_v0.1.0.md`
 - Liquid-3D prompting: `docs/architecture/ELM369_LIQUID3D_PROMPTING_v0.1.0.md`
+- Master backlog: `docs/BACKLOG.md`
 - Identity: `docs/ELM369_IDENTITY.md`
 - Shorthand archive: `docs/architecture/ELM369_SHORTHAND_ARCHIVE_v0.1.0.md`
 - Handshake layers: `docs/architecture/ELM369_HANDSHAKE_v0.1.0.md`

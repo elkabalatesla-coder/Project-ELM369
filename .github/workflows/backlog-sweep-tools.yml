@@ -1,0 +1,40 @@
+name: Backlog Sweep Tools Tests
+on:
+  push:
+    paths:
+      - "tools/elm_progress/**"
+      - "tools/pandora_vault/**"
+      - "tools/elm_offline/**"
+      - "tools/elm_translator/**"
+      - "tools/bo_assistant/**"
+      - "tools/elm_devtools/**"
+      - "tools/elm_dashboard/**"
+      - "data/registries/**"
+      - ".github/workflows/backlog-sweep-tools.yml"
+  pull_request:
+    paths:
+      - "tools/elm_progress/**"
+      - "tools/pandora_vault/**"
+      - "tools/elm_offline/**"
+      - "tools/elm_translator/**"
+      - "tools/bo_assistant/**"
+      - "tools/elm_devtools/**"
+      - "tools/elm_dashboard/**"
+      - "data/registries/**"
+      - ".github/workflows/backlog-sweep-tools.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: |
+          python3 -m unittest discover -s tools/elm_progress/tests -v
+          python3 -m unittest discover -s tools/pandora_vault/tests -v
+          python3 -m unittest discover -s tools/elm_offline/tests -v
+          python3 -m unittest discover -s tools/elm_translator/tests -v
+          python3 -m unittest discover -s tools/bo_assistant/tests -v
+          python3 -m unittest discover -s tools/elm_devtools/tests -v
