@@ -1,0 +1,25 @@
+{
+  "qbit_id": "ELM369-QBIT-EXAMPLE-001",
+  "project_id": "ELM369_JMR08241978202646902",
+  "subject": "Merge additive schema change for DAX memory",
+  "evidence": [
+    {
+      "source": "ci",
+      "summary": "Unit tests and evolution validate workflow passed",
+      "uri": "https://github.com/elkabalatesla-coder/Project-ELM369/actions"
+    },
+    {
+      "source": "policy",
+      "summary": "Change is additive; no credential or destructive operations"
+    }
+  ],
+  "terms": {"L": 0.85, "M": 0.6, "R": 0.9, "H": 0.95},
+  "weights": {"L": 0.4, "M": 0.25, "R": 0.2, "H": 0.15},
+  "qstate": 0.8075,
+  "recommendation": "ALLOW_WITH_LIMITS",
+  "safety_notes": [
+    "QSTATE does not bypass authorization for production mutation",
+    "Keep scoring separate from safety governor"
+  ],
+  "created_at": "2026-09-04T20:00:00+00:00"
+}

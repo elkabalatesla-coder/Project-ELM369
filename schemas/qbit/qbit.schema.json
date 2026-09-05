@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "elm369://schema/qbit/1.0.0",
+  "title": "ELM369 QBIT Decision Packet",
+  "type": "object",
+  "required": [
+    "qbit_id",
+    "project_id",
+    "subject",
+    "evidence",
+    "terms",
+    "qstate",
+    "recommendation",
+    "created_at"
+  ],
+  "properties": {
+    "qbit_id": {"type": "string", "minLength": 1},
+    "project_id": {"const": "ELM369_JMR08241978202646902"},
+    "subject": {"type": "string", "minLength": 1},
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source", "summary"],
+        "properties": {
+          "source": {"type": "string"},
+          "summary": {"type": "string"},
+          "uri": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "terms": {
+      "type": "object",
+      "required": ["L", "M", "R", "H"],
+      "properties": {
+        "L": {"type": "number", "minimum": 0, "maximum": 1},
+        "M": {"type": "number", "minimum": 0, "maximum": 1},
+        "R": {"type": "number", "minimum": 0, "maximum": 1},
+        "H": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "additionalProperties": false
+    },
+    "weights": {
+      "type": "object",
+      "properties": {
+        "L": {"const": 0.4},
+        "M": {"const": 0.25},
+        "R": {"const": 0.2},
+        "H": {"const": 0.15}
+      },
+      "additionalProperties": false
+    },
+    "qstate": {"type": "number", "minimum": 0, "maximum": 1},
+    "recommendation": {
+      "type": "string",
+      "enum": [
+        "ALLOW",
+        "ALLOW_WITH_LIMITS",
+        "MODIFY",
+        "DEFER",
+        "REQUEST_AUTHORIZATION",
+        "HANDOVER",
+        "QUARANTINE",
+        "ABORT",
+        "EMERGENCY"
+      ]
+    },
+    "safety_notes": {"type": "array", "items": {"type": "string"}},
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}
