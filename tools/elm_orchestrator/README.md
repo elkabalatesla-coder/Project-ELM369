@@ -11,3 +11,14 @@ python3 -m tools.elm_orchestrator diag
 python3 -m tools.elm_orchestrator vault-log --event smoke --detail '{"ok":true}'
 python3 -m tools.elm_orchestrator heal --issue "failing unit test in dax_memory"
 ```
+
+## Extended commands
+
+```bash
+python3 -m tools.elm_orchestrator time-sync
+python3 -m tools.elm_orchestrator watermark --payload '{"doc":"REPO_MAP"}'
+python3 -m tools.elm_orchestrator optimize --workload "jsonl recall search"
+python3 -m tools.elm_orchestrator serve --port 8769
+```
+
+OpenAPI: `openapi/elm369-orchestrator.openapi.yaml`

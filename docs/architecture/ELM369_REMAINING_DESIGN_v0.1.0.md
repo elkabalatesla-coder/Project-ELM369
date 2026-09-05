@@ -18,12 +18,13 @@ Derived from `PROJECT_METADATA.json` and vault Grok-archive intake.
 | QBIT / QSTATE | DONE | `tools/qbit/` |
 | Liquid-3D prompting | DONE | `tools/liquid3d_prompting/` |
 | Grok / multi-source vault intake | DONE | `vault/.../sources/*` + `tools/grok_archive/` |
-| Diagnostic & Security Auditor agent | SCAFFOLD | `tools/elm_orchestrator/` (`diag`) |
-| Vault logger / audit trail | SCAFFOLD | `tools/elm_orchestrator/` (`vault-log`) |
+| Diagnostic & Security Auditor agent | DONE | `tools/elm_orchestrator/` (`diag`) |
+| Vault logger / audit trail | DONE | `tools/elm_orchestrator/` (`vault-log`) |
 | Qbit self-healing engine | SCAFFOLD | `tools/elm_orchestrator/` (`heal`) — gated, no destructive actions |
-| Performance / O(log n) optimizer | PLANNED | backlog after heal metrics exist |
-| OpenAPI orchestrator surface | PLANNED | expose orchestrator via OpenAPI 3.0.3 |
-| Geo-NTP / e-sign enforcement | PLANNED | policy hooks only until crypto lib chosen |
+| Performance / O(log n) optimizer | DONE | `tools/elm_orchestrator/` (`optimize`) |
+| OpenAPI orchestrator surface | DONE | `openapi/elm369-orchestrator.openapi.yaml` + `serve` |
+| Geo-NTP sync | DONE | `tools/elm_orchestrator/` (`time-sync`) |
+| E-sign / watermark provenance | DONE | `tools/elm_orchestrator/` (`watermark`) — local hash watermark, not a CA |
 
 ## Safety boundary
 
