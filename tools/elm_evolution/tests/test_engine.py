@@ -46,5 +46,15 @@ class EvolutionTests(unittest.TestCase):
                 self.assertEqual(r["change"]["lifecycle"], "QUARANTINED")
 
 
+    def test_list_after_propose(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store = Path(tmp) / "changes.jsonl"
+            with mock.patch("tools.elm_evolution.engine.STORE", store):
+                from tools.elm_evolution.engine import list_changes
+                ch = propose("docs tidy", operation="organize")
+                rows = list_changes()
+                self.assertTrue(any(r["change_id"] == ch["change_id"] for r in rows))
+
+
 if __name__ == "__main__":
     unittest.main()

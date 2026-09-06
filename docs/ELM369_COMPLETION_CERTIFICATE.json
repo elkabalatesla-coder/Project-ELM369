@@ -5,28 +5,28 @@
   "e_symbol": "🌹",
   "auto_esign": true,
   "auto_watermark": true,
-  "payload_sha256": "b454c36fc97a053e395d6f6e3db2aa196a67c52bf4b01c5f52800738055c310a",
-  "signed_at": "2026-09-06T16:30:46.934224+00:00",
+  "payload_sha256": "2ea3f0fcf099af923011ad455e2b5d092083f9c0609acd2bb154050627f29c23",
+  "signed_at": "2026-09-06T18:46:21.090713+00:00",
   "payload": {
     "document": "ELM369_COMPLETION_CERTIFICATE",
     "project_id": "ELM369_JMR08241978202646902",
-    "generated_at": "2026-09-06T16:30:46.934061+00:00",
+    "generated_at": "2026-09-06T18:46:21.090587+00:00",
     "location_stamp": "Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹",
-    "registry_tools": 24,
-    "avg_completion": 68.1,
+    "registry_tools": 26,
+    "avg_completion": 88.3,
     "by_status": {
-      "SCAFFOLD": 12,
-      "DOCS": 1,
-      "DONE": 11
+      "DONE": 25,
+      "SCAFFOLD": 1
     },
     "artifacts_ok": true,
     "artifact_count": 16,
-    "statement": "In-repo Project ELM369 work that can be finished without telephony, radio/satellite control, live FLUX API keys, or a real Grok export has been completed or scaffolded and catalogued.",
+    "statement": "In-repo Project ELM369 work finishable without telephony, radio/satellite control, live FLUX API calls, ADB/root, or a real Grok export has been completed within safety bounds. AUDIO-TX remains SCAFFOLD (glossary only; no STT/TTS).",
     "remaining_external": [
       "Real Grok export ingest",
-      "GitHub MCP OAuth reconnect (gh path works)",
-      "Live image generation API token (optional)"
-    ]
+      "AUDIO-TX audio/STT/TTS pipeline (optional future)",
+      "Live image generation API token (optional Joseph opt-in)"
+    ],
+    "companion_vault": "JMR0824197846902"
   },
   "disclaimer": "Local provenance watermark only — not a certificate-authority signature."
 }

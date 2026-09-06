@@ -1,4 +1,4 @@
-"""CLI for ELM369 controlled evolution."""
+"""CLI for ELM369 controlled evolution (Joseph-gated late stages)."""
 
 from __future__ import annotations
 
@@ -16,10 +16,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     sub.add_parser("discover", help="DISCOVER repo artifacts")
     prop = sub.add_parser("propose", help="PROPOSE a change (no apply)")
     prop.add_argument("summary")
-    prop.add_argument("--operation", default="amend", help="amend|update|organize|optimize|upgrade|correct|repair|fix|integrate")
+    prop.add_argument(
+        "--operation",
+        default="amend",
+        help="amend|update|organize|optimize|upgrade|correct|repair|fix|integrate",
+    )
     prop.add_argument("--artifact", default="")
     ls = sub.add_parser("list", help="List recent changes")
     ls.add_argument("-n", "--limit", type=int, default=20)
+    sh = sub.add_parser("show", help="Show one change by id")
+    sh.add_argument("--change-id", required=True)
     adv = sub.add_parser("advance", help="Advance one lifecycle step")
     adv.add_argument("--change-id", required=True)
     adv.add_argument("--authorize", action="store_true")
@@ -38,6 +44,15 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "list":
         print(json.dumps(list_changes(limit=args.limit), indent=2))
+        return 0
+
+    if args.command == "show":
+        rows = list_changes(limit=10_000)
+        match = next((r for r in rows if r.get("change_id") == args.change_id), None)
+        if not match:
+            print(json.dumps({"ok": False, "error": "not_found", "change_id": args.change_id}, indent=2))
+            return 1
+        print(json.dumps({"ok": True, "change": match}, indent=2))
         return 0
 
     if args.command == "advance":

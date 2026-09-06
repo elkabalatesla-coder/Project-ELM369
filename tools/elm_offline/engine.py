@@ -6,6 +6,7 @@ Does not control telephony, radio, satellite, or hotspot hardware.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 from datetime import datetime, timezone
@@ -16,6 +17,8 @@ CACHE = Path("tools/elm_offline/data/cache")
 MANIFEST = Path("tools/elm_offline/data/manifest.json")
 
 CANNOT_CONTROL = ["telephony", "radio", "satellite", "hotspot"]
+WATERMARK = "Joseph Michael Rose · IX JR · 🌹 / Kokomo IN 46902"
+PROJECT_ID = "ELM369_JMR08241978202646902"
 
 DEFAULT_SNAPSHOT_PATHS = [
     "docs/REPO_MAP.md",
@@ -23,6 +26,7 @@ DEFAULT_SNAPSHOT_PATHS = [
     "docs/STATUS.md",
     "docs/BACKLOG.md",
     "docs/policy",
+    "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md",
     "docs/ELM369_COMPLETION_CERTIFICATE.json",
     "data/registries/elm369_tools.json",
     "artifacts/sandboxes/manifest.json",
@@ -36,7 +40,6 @@ DEFAULT_SNAPSHOT_PATHS = [
 
 
 def _copy_tree_or_file(src: Path, dest: Path) -> list[str]:
-    """Copy a file or recursively copy a directory; return relative paths copied under dest root naming."""
     copied: list[str] = []
     if src.is_file():
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -49,12 +52,7 @@ def _copy_tree_or_file(src: Path, dest: Path) -> list[str]:
                 target = dest / rel_under
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(child, target)
-                # record as original repo-relative path
-                try:
-                    repo_rel = child.as_posix()
-                except Exception:
-                    repo_rel = str(child)
-                copied.append(repo_rel)
+                copied.append(child.as_posix())
     return copied
 
 
@@ -77,11 +75,13 @@ def snapshot(paths: list[str] | None = None) -> dict[str, Any]:
             shutil.copy2(src, dest)
             copied.append(rel)
     manifest = {
+        "project_id": PROJECT_ID,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "copied": copied,
         "missing": missing,
         "cannot_control": list(CANNOT_CONTROL),
         "note": "Local offline cache only — no telephony/radio/satellite/hotspot control. Supported offline path for ELM369.",
+        "watermark": WATERMARK,
     }
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
     MANIFEST.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
@@ -115,7 +115,7 @@ def _age_seconds(created_at: str | None) -> float | None:
 
 
 def status() -> dict[str, Any]:
-    base_cannot = {"cannot_control": list(CANNOT_CONTROL)}
+    base_cannot = {"cannot_control": list(CANNOT_CONTROL), "watermark": WATERMARK, "project_id": PROJECT_ID}
     if not MANIFEST.exists():
         return {
             "ok": False,
@@ -135,4 +135,66 @@ def status() -> dict[str, Any]:
         "file_count": stats["file_count"],
         "bytes": stats["bytes"],
         "cannot_control": list(CANNOT_CONTROL),
+        "watermark": WATERMARK,
+        "project_id": PROJECT_ID,
+    }
+
+
+def list_cached(limit: int = 200) -> dict[str, Any]:
+    files: list[dict[str, Any]] = []
+    if CACHE.exists():
+        for p in sorted(CACHE.rglob("*")):
+            if p.is_file():
+                rel = p.relative_to(CACHE).as_posix()
+                files.append({"path": rel, "bytes": p.stat().st_size})
+                if len(files) >= limit:
+                    break
+    return {
+        "ok": True,
+        "count": len(files),
+        "files": files,
+        "cannot_control": list(CANNOT_CONTROL),
+        "watermark": WATERMARK,
+    }
+
+
+def _sha256(path: Path) -> str | None:
+    try:
+        h = hashlib.sha256()
+        with path.open("rb") as fh:
+            for chunk in iter(lambda: fh.read(65536), b""):
+                h.update(chunk)
+        return h.hexdigest()
+    except OSError:
+        return None
+
+
+def verify(limit: int = 50) -> dict[str, Any]:
+    """Compare cached files to live repo counterparts (hash match)."""
+    if not CACHE.exists():
+        return {"ok": False, "error": "no_cache", "cannot_control": list(CANNOT_CONTROL)}
+    checked = 0
+    mismatched: list[dict[str, str]] = []
+    missing_source: list[str] = []
+    for p in sorted(CACHE.rglob("*")):
+        if not p.is_file():
+            continue
+        rel = p.relative_to(CACHE).as_posix()
+        src = Path(rel)
+        checked += 1
+        if not src.is_file():
+            missing_source.append(rel)
+        else:
+            a, b = _sha256(p), _sha256(src)
+            if a and b and a != b:
+                mismatched.append({"path": rel, "cache": a[:12], "source": b[:12]})
+        if checked >= limit:
+            break
+    return {
+        "ok": not mismatched and not missing_source,
+        "checked": checked,
+        "mismatched": mismatched,
+        "missing_source": missing_source,
+        "cannot_control": list(CANNOT_CONTROL),
+        "watermark": WATERMARK,
     }

@@ -77,7 +77,8 @@ Finish-pass closeout for all open GitHub issues that can be resolved in-repo.
 
 ## Open cluster (this sweep)
 
-ELMDX, FLUX, OMNINET, tokenizer, data-finder scaffolds + extracted HTML artifacts.
+Remaining registry SCAFFOLD: **AUDIO-TX** (`tools/elm_translator`) — phrase glossary only; no STT/TTS/audio pipeline.
+ELMDX, FLUX (dry-run), OMNINET, tokenizer, data-finder, offline, evolution, and devtools are DONE within safety bounds.
 
 ## Artifacts / sandboxes
 
