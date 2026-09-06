@@ -19,8 +19,6 @@ DEFAULT_PATHS = [
     "tools",
     "artifacts/sandboxes/manifest.json",
     "artifacts/index.html",
-    "docs/STATUS.md",
-    "docs/BACKLOG.md",
 ]
 
 
