@@ -36,3 +36,5 @@ tools/elm_offline/data/manifest.json
 
 !tools/elm_translator/data/glossary.json
 !tools/elmdx/data/sample_device.json
+
+artifacts/snapshots/*.zip
