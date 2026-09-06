@@ -1,11 +1,84 @@
 {
   "project_id": "ELM369_JMR08241978202646902",
-  "note": "Offline glossary scaffold — not a full audio/100-language engine.",
+  "note": "Offline glossary scaffold — not a full audio / STT / TTS / 100-language engine.",
+  "languages": [
+    "en",
+    "es",
+    "fr",
+    "de"
+  ],
   "entries": [
-    {"en": "hello", "es": "hola", "fr": "bonjour", "de": "hallo"},
-    {"en": "thank you", "es": "gracias", "fr": "merci", "de": "danke"},
-    {"en": "project", "es": "proyecto", "fr": "projet", "de": "projekt"},
-    {"en": "security", "es": "seguridad", "fr": "sécurité", "de": "sicherheit"},
-    {"en": "vault", "es": "bóveda", "fr": "coffre", "de": "tresor"}
+    {
+      "en": "hello",
+      "es": "hola",
+      "fr": "bonjour",
+      "de": "hallo"
+    },
+    {
+      "en": "thank you",
+      "es": "gracias",
+      "fr": "merci",
+      "de": "danke"
+    },
+    {
+      "en": "please",
+      "es": "por favor",
+      "fr": "s'il vous plaît",
+      "de": "bitte"
+    },
+    {
+      "en": "yes",
+      "es": "sí",
+      "fr": "oui",
+      "de": "ja"
+    },
+    {
+      "en": "no",
+      "es": "no",
+      "fr": "non",
+      "de": "nein"
+    },
+    {
+      "en": "project",
+      "es": "proyecto",
+      "fr": "projet",
+      "de": "projekt"
+    },
+    {
+      "en": "security",
+      "es": "seguridad",
+      "fr": "sécurité",
+      "de": "sicherheit"
+    },
+    {
+      "en": "vault",
+      "es": "bóveda",
+      "fr": "coffre",
+      "de": "tresor"
+    },
+    {
+      "en": "status",
+      "es": "estado",
+      "fr": "statut",
+      "de": "status"
+    },
+    {
+      "en": "offline",
+      "es": "sin conexión",
+      "fr": "hors ligne",
+      "de": "offline"
+    },
+    {
+      "en": "authorize",
+      "es": "autorizar",
+      "fr": "autoriser",
+      "de": "autorisieren"
+    },
+    {
+      "en": "Kokomo",
+      "es": "Kokomo",
+      "fr": "Kokomo",
+      "de": "Kokomo"
+    }
   ]
 }

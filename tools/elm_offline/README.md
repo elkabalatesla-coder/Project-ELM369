@@ -1,14 +1,27 @@
-# Offline engine scaffold
+# Offline Engine (OFFLINE)
 
-Issue #14. Snapshots key docs, policy, backlog, sandboxes manifest, vault README paths, and completion certificate (when present) for **local** use.
+Issue #14. Snapshots key docs, policy, backlog, sandboxes manifest, vault README paths,
+Grok bot roster, and completion certificate for **local** use.
 
 This is the **supported offline path for ELM369**.
 
-It does **not** control satellites, radios, hotspots, or telephony hardware. Those remain explicit non-goals (`cannot_control` in `status`).
+**E-sign:** Joseph Michael Rose · IX JR · 🌹 / Kokomo IN 46902  
+Vault: `JMR08241978202646902` · companion `JMR0824197846902`
+
+## Scope (DONE)
+
+| Action | Allowed? |
+|--------|----------|
+| Local file snapshot / list / verify | Yes |
+| Satellite / radio / hotspot / telephony control | **Never** (`cannot_control`) |
+
+## Commands
 
 ```bash
 python3 -m tools.elm_offline snapshot
 python3 -m tools.elm_offline status
+python3 -m tools.elm_offline list
+python3 -m tools.elm_offline verify
 ```
 
 ## Tests
