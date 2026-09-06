@@ -1,26 +1,45 @@
 from __future__ import annotations
-import argparse, json
+
+import argparse
+import json
 from typing import Sequence
-from tools.pandora_vault.logs import append, sync_event, tail
+
+from tools.pandora_vault.logs import append, channel_stats, sync_event, tail
+
 
 def main(argv: Sequence[str] | None = None) -> int:
-    p = argparse.ArgumentParser(prog="pandora-vault")
+    p = argparse.ArgumentParser(
+        prog="pandora-vault",
+        description="Local Security Log 1/2 + Pandora Vault feeds (no remote send)",
+    )
     sub = p.add_subparsers(dest="command", required=True)
-    log = sub.add_parser("log")
+
+    log = sub.add_parser("log", help="Append one channel event")
     log.add_argument("--channel", required=True, choices=["security1", "security2", "pandora"])
     log.add_argument("--level", default="INFO")
     log.add_argument("--message", required=True)
-    syn = sub.add_parser("sync")
+
+    syn = sub.add_parser("sync", help="Write message to security1+security2+pandora")
     syn.add_argument("--message", required=True)
     syn.add_argument("--level", default="INFO")
-    tl = sub.add_parser("tail")
+
+    tl = sub.add_parser("tail", help="Tail recent JSONL rows")
     tl.add_argument("--channel", required=True, choices=["security1", "security2", "pandora"])
     tl.add_argument("-n", "--limit", type=int, default=20)
+
+    sub.add_parser("stats", help="Per-channel line/byte counts")
+
     args = p.parse_args(argv)
     if args.command == "log":
-        print(json.dumps(append(args.channel, args.level, args.message), indent=2)); return 0
+        print(json.dumps(append(args.channel, args.level, args.message), indent=2, ensure_ascii=False))
+        return 0
     if args.command == "sync":
-        print(json.dumps(sync_event(args.message, level=args.level), indent=2)); return 0
+        print(json.dumps(sync_event(args.message, level=args.level), indent=2, ensure_ascii=False))
+        return 0
     if args.command == "tail":
-        print(json.dumps(tail(args.channel, limit=args.limit), indent=2)); return 0
+        print(json.dumps(tail(args.channel, limit=args.limit), indent=2, ensure_ascii=False))
+        return 0
+    if args.command == "stats":
+        print(json.dumps(channel_stats(), indent=2, ensure_ascii=False))
+        return 0
     return 2

@@ -75,6 +75,56 @@
         "authority_level": "ROOT_ADMIN"
       },
       {
+        "member_id": "GROK-HOPE",
+        "name": "Hope",
+        "title": "Vault / ELM Tips",
+        "authority_level": "ADVISOR"
+      },
+      {
+        "member_id": "GROK-NEW-BOT",
+        "name": "New Bot",
+        "title": "Placeholder TBD",
+        "authority_level": "PLACEHOLDER"
+      },
+      {
+        "member_id": "GROK-ORANGE-NINJA",
+        "name": "Orange Ninja",
+        "title": "Silent Guardian",
+        "authority_level": "GUARDIAN"
+      },
+      {
+        "member_id": "GROK-PRIVATE-EYE-X",
+        "name": "Private Eye X",
+        "title": "9:30 Dig Research",
+        "authority_level": "RESEARCH_OPERATOR"
+      },
+      {
+        "member_id": "GROK-RED-DRAGON",
+        "name": "Red Dragon Samurai Knight",
+        "title": "Offense-for-Defense (Joseph/Ziggy authorize)",
+        "authority_level": "DEFENSE_PROPOSER"
+      },
+      {
+        "member_id": "GROK-VID-CAMBOT",
+        "name": "Vid Cambot",
+        "title": "Media Assist",
+        "authority_level": "MEDIA_OPERATOR"
+      },
+      {
+        "member_id": "GROK-WHITE-ROOK",
+        "name": "White Rook",
+        "title": "Malware / Threat / Scam Guard",
+        "authority_level": "THREAT_GUARD"
+      },
+      {
+        "member_id": "GROK-ZIGGY",
+        "name": "Ziggy",
+        "title": "Complaint/Case Collector (CASE-YYYYMMDD-NNN)",
+        "authority_level": "INTAKE_OPERATOR",
+        "vault_primary": "JMR08241978202646902",
+        "vault_companion": "JMR0824197846902"
+      },
+      {
         "member_id": "PANEL-AI-ORCHESTRATOR",
         "name": "Gemini System Collaborator",
         "title": "AI System Architecture & Integration Specialist",
@@ -86,7 +136,8 @@
         "title": "Adaptive Lifecycle & Heuristic Operations Lead",
         "authority_level": "AUTONOMOUS_OPERATOR"
       }
-    ]
+    ],
+    "grok_bot_roster_doc": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md"
   },
   "runtime_specifications": {
     "python_orchestrator": "ELM369_Orchestrator_v1.0",

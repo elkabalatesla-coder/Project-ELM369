@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-06 (round 14 — finish-pass policies/archive/esign + sandboxes on main).
+Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot roster).
 
 ## Active / keep
 
@@ -29,12 +29,12 @@ Last updated: 2026-09-06 (round 14 — finish-pass policies/archive/esign + sand
 | Artifacts gallery | `artifacts/` + `tools/elm_artifacts/` | All issue sandboxes + index | `python3 -m tools.elm_artifacts list` |
 | Data finder | `tools/data_finder/` | Locate files/content in repo | `python3 -m tools.data_finder find "pandora"` |
 | Progress engine | `tools/elm_progress/` | Tool registry completion summary | `python3 -m tools.elm_progress summary` |
-| Pandora / security logs | `tools/pandora_vault/` | Security Log 1/2 + Pandora vault feeds | `python3 -m tools.pandora_vault sync --message "…"` |
+| Pandora / security logs | `tools/pandora_vault/` | Security Log 1/2 + Pandora vault feeds (sync/tail/stats) | `python3 -m tools.pandora_vault sync --message "…"` |
 | Offline snapshot | `tools/elm_offline/` | Local offline cache of key docs/backlogs | `python3 -m tools.elm_offline snapshot` |
 | Translator glossary | `tools/elm_translator/` | Offline phrase glossary scaffold | `python3 -m tools.elm_translator translate "hello" --to es` |
-| Bo assistant | `tools/bo_assistant/` | Draft-only SMS/email/phone scripts | `python3 -m tools.bo_assistant draft "…"` |
+| Bo assistant | `tools/bo_assistant/` | Draft-only SMS/email/phone + multi-turn (never sends) | `python3 -m tools.bo_assistant draft "…"` / `multi-turn` |
 | Devtools inventory | `tools/elm_devtools/` | List tools under tools/ | `python3 -m tools.elm_devtools inventory` |
-| Dashboard board | `tools/elm_dashboard/` | JSON status board | `python3 -m tools.elm_dashboard show` |
+| Dashboard board | `tools/elm_dashboard/` | JSON board + roster lanes + case queue | `python3 -m tools.elm_dashboard show` / `roster` / `cases` |
 | Toy obfuscate | `tools/elm_obfuscate/` | Classical demo obfuscation (not encryption) | `python3 -m tools.elm_obfuscate obfuscate "…"` |
 
 ### Schedules & related docs
@@ -48,7 +48,9 @@ Last updated: 2026-09-06 (round 14 — finish-pass policies/archive/esign + sand
 - Master backlog: `docs/BACKLOG.md`
 - Identity: `docs/ELM369_IDENTITY.md`
 - Shorthand archive: `docs/architecture/ELM369_SHORTHAND_ARCHIVE_v0.1.0.md`
-- Handshake layers: `docs/architecture/ELM369_HANDSHAKE_v0.1.0.md`
+- Handshake / Personal Security Master: `docs/architecture/ELM369_HANDSHAKE_v0.1.0.md`
+- Grok bot roster: `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md`
+- Geofence (Kokomo 46902): `docs/policy/ELM369_GEOFENCE_KOKOMO_v0.1.0.md`
 - OpenAPI: `openapi/elm369-orchestrator.openapi.yaml`
 - UI sketch: `Liquid3D Coloring ` (Artifact Registry React demo)
 
