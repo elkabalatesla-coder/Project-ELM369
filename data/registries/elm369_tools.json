@@ -7,7 +7,7 @@
       "id": "ELMDX",
       "name": "ELMDX Android Diagnostics",
       "phase": "Scaffold",
-      "completion": 45,
+      "completion": 60,
       "category": "Diagnostics",
       "status": "SCAFFOLD",
       "repo_path": "tools/elmdx"
@@ -16,7 +16,7 @@
       "id": "FLUX-UI",
       "name": "FLUX Image Gen UI",
       "phase": "Scaffold",
-      "completion": 40,
+      "completion": 55,
       "category": "AI/Creative",
       "status": "SCAFFOLD",
       "repo_path": "tools/elm_flux"
@@ -25,7 +25,7 @@
       "id": "AUDIO-TX",
       "name": "Audio Translator",
       "phase": "Scaffold",
-      "completion": 40,
+      "completion": 55,
       "category": "Communication",
       "status": "SCAFFOLD",
       "repo_path": "tools/elm_translator"
@@ -34,7 +34,7 @@
       "id": "BO-COMM",
       "name": "Bo Communications Assistant",
       "phase": "Scaffold",
-      "completion": 45,
+      "completion": 60,
       "category": "Communication",
       "status": "SCAFFOLD",
       "repo_path": "tools/bo_assistant"
@@ -43,7 +43,7 @@
       "id": "DEVTOOLS",
       "name": "System Developer Tools",
       "phase": "Scaffold",
-      "completion": 55,
+      "completion": 75,
       "category": "DevOps",
       "status": "SCAFFOLD",
       "repo_path": "tools/elm_devtools"
@@ -52,7 +52,7 @@
       "id": "OMNINET",
       "name": "OMNINET / .mo* Protocol",
       "phase": "Scaffold",
-      "completion": 40,
+      "completion": 70,
       "category": "Infrastructure",
       "status": "SCAFFOLD",
       "repo_path": "tools/omninet"
@@ -61,7 +61,7 @@
       "id": "TOKENIZER",
       "name": "Tokenizer Add-On System",
       "phase": "Scaffold",
-      "completion": 45,
+      "completion": 65,
       "category": "AI/Security",
       "status": "SCAFFOLD",
       "repo_path": "tools/elm_tokenizer"
@@ -70,7 +70,7 @@
       "id": "DATA-FIND",
       "name": "Data Location Finder",
       "phase": "Scaffold",
-      "completion": 50,
+      "completion": 70,
       "category": "Enterprise",
       "status": "SCAFFOLD",
       "repo_path": "tools/data_finder"
@@ -79,7 +79,7 @@
       "id": "AI-HUB",
       "name": "AI Team Management Dashboard",
       "phase": "Scaffold",
-      "completion": 50,
+      "completion": 70,
       "category": "Management",
       "status": "SCAFFOLD",
       "repo_path": "tools/elm_dashboard"
@@ -88,7 +88,7 @@
       "id": "PANDORA",
       "name": "Pandora Vault Security Layer",
       "phase": "Scaffold",
-      "completion": 70,
+      "completion": 80,
       "category": "Security",
       "status": "SCAFFOLD",
       "repo_path": "tools/pandora_vault"
@@ -97,7 +97,7 @@
       "id": "SELF-OPT",
       "name": "Self-Organizing Update Loop",
       "phase": "Scaffold",
-      "completion": 65,
+      "completion": 80,
       "category": "Automation",
       "status": "SCAFFOLD",
       "repo_path": "tools/elm_evolution"
@@ -106,7 +106,7 @@
       "id": "SEC-MASTER",
       "name": "Personal Security Master Guide",
       "phase": "Docs",
-      "completion": 60,
+      "completion": 80,
       "category": "Security",
       "status": "DOCS",
       "repo_path": "docs/architecture/ELM369_HANDSHAKE_v0.1.0.md"
@@ -187,7 +187,7 @@
       "id": "OFFLINE",
       "name": "Offline Engine",
       "phase": "Scaffold",
-      "completion": 40,
+      "completion": 65,
       "category": "Infrastructure",
       "status": "SCAFFOLD",
       "repo_path": "tools/elm_offline"
@@ -218,6 +218,24 @@
       "category": "Archive",
       "status": "DONE",
       "repo_path": "artifacts"
+    },
+    {
+      "id": "POLICY",
+      "name": "ELM Policy (English/Geofence)",
+      "phase": "Production",
+      "completion": 85,
+      "category": "Governance",
+      "status": "DONE",
+      "repo_path": "tools/elm_policy"
+    },
+    {
+      "id": "ARCHIVE-SNAP",
+      "name": "Archive Snapshot Zip",
+      "phase": "Production",
+      "completion": 85,
+      "category": "Archive",
+      "status": "DONE",
+      "repo_path": "tools/elm_archive_snapshot"
     }
   ]
 }
