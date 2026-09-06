@@ -1,0 +1,27 @@
+{
+  "session_type": "ELM369_AI_PANEL_HANDSHAKE",
+  "operator": "Joseph Michael Rose",
+  "initials": "IX JR",
+  "e_symbol": "\ud83c\udf39",
+  "project": "ELM369",
+  "identifiers": [
+    "JMR0824197846902",
+    "JMR08241978202646902"
+  ],
+  "session_uuid": "1550e4d5-9ee3-49cd-8af8-7c9d630f84ad",
+  "connected_at": "2026-09-06T16:43:46.698388+00:00",
+  "status": "CONNECTED",
+  "layers": {
+    "operator_reference": [
+      "JMR0824197846902",
+      "JMR08241978202646902"
+    ],
+    "vault_paths": [
+      "vault/ELM369/JMR0824197846902",
+      "vault/ELM369/JMR08241978202646902"
+    ],
+    "omninet": "mo*://vault",
+    "offline_snapshot": true
+  },
+  "note": "Dual-identifier operator session. Logical vault connect \u2014 not telephony/radio/satellite."
+}
