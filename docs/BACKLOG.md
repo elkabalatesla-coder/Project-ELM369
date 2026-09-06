@@ -75,3 +75,13 @@ Finish-pass closeout for all open GitHub issues that can be resolved in-repo.
 - Real Grok export for live discussion ingest
 - Optional GitHub MCP reconnect (gh works)
 
+## Open cluster (this sweep)
+
+ELMDX, FLUX, OMNINET, tokenizer, data-finder scaffolds + extracted HTML artifacts.
+
+## Artifacts / sandboxes
+
+All recoverable HTML/React/JSON issue sandboxes extracted under `artifacts/sandboxes/` with gallery `artifacts/index.html`.
+
+Sandboxed issues marked DONE (2026-09-05): 11, 16, 18, 19, 22, 24, 25, 26, 27, 28, 29, 38, 39, 40, 47, 52. See `artifacts/FINISH_REPORT_2026-09-05.md`.
+

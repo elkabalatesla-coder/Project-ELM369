@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-04 (round 13 — finish-pass policies, archive snapshot, signed completion).
+Last updated: 2026-09-06 (round 14 — finish-pass policies/archive/esign + sandboxes on main).
 
 ## Active / keep
 
