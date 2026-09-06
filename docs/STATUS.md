@@ -1,6 +1,6 @@
 # Project ELM369 status
 
-Updated: 2026-09-06T16:30:46.934367+00:00
+Updated: 2026-09-06T16:41:59.461106+00:00
 Location stamp: Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹
 
 ## Health
@@ -20,13 +20,17 @@ Shipped across prior PRs + this finish pass:
 - Creative/comms scaffolds: liquid3d, flux compose, translator glossary, Bo drafts (never sends)
 - Device/data scaffolds: ELMDX, data-finder, tokenizer, omninet, offline cache, dashboard/devtools/progress
 
+## Still waiting on you
+
+- Real Grok export file dropped under `vault/.../sources/grok/raw/` (ingest path already exists; no live scrape).
+- Live FLUX remains dry-run / scaffold until you intentionally opt in later (not part of the offline harden ship).
+
 ## Still external / intentional non-goals
 
-- Real Grok chat export file
 - Real SMS/email/phone transmission
-- Satellite / modem / hotspot control
+- Satellite / modem / hotspot / telephony control (`elm_offline` reports `cannot_control`)
 - Phone rooting / ADB mutation
-- Live FLUX API calls without your token
+- Live FLUX API calls without an explicit future opt-in
 
 ## Commands
 
