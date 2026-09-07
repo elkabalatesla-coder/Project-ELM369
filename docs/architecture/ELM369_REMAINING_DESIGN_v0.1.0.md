@@ -41,7 +41,7 @@ Derived from `PROJECT_METADATA.json` and vault Grok-archive intake.
 | Tokenizer / prompt score | DONE | `tools/elm_tokenizer/` |
 | Data location finder | DONE | `tools/data_finder/` |
 | Offline engine | DONE | `tools/elm_offline/` (local cache; `cannot_control` radios) |
-| Audio translator | SCAFFOLD | `tools/elm_translator/` — glossary only; no STT/TTS |
+| Offline Phrase Glossary (AUDIO-TX) | DONE | `tools/elm_translator/` — offline phrase tool; no STT/TTS (intentional non-goal) |
 | Grok bot roster + daily ops | DONE | `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md` |
 
 ## Still waiting on you
