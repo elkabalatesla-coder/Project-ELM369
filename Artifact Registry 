@@ -1,2 +1,0 @@
-pip install -r requirements.txt
-python scripts/register_artifact.py --title "Example" --type doc --version v0.1.0 --file README.md --tags elm369,registry
