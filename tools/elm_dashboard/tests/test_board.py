@@ -15,7 +15,9 @@ class BoardTests(unittest.TestCase):
         self.assertIn("Ziggy", names)
         self.assertIn("Hope", names)
         self.assertIn("White Rook", names)
-        self.assertEqual(len(lanes), 8)
+        self.assertGreaterEqual(len(lanes), 60)
+        self.assertIn("Dante The Designer", names)
+        self.assertIn("Devon The Developer", names)
 
     def test_build_includes_roster_and_rules(self):
         board = build(include_cases=False)
