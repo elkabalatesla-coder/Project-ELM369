@@ -7,10 +7,11 @@
     "install_command": "pip install -r requirements.txt",
     "dependencies": [
       "requests>=2.32.0,<3.0.0",
-      "pydantic>=2.0,<3.0"
+      "pydantic>=2.0,<3.0",
+      "backports.zoneinfo>=0.2; python_version < \"3.9\""
     ]
   },
-  "entrypoint": "scripts/run_app.py",
+  "entrypoint": "scripts/elm_orchestrator.py",
   "env": {
     "ELM_ENV": "production",
     "ELM_LOG_LEVEL": "INFO"
