@@ -43,6 +43,7 @@ Derived from `PROJECT_METADATA.json` and vault Grok-archive intake.
 | Offline engine | DONE | `tools/elm_offline/` (local cache; `cannot_control` radios) |
 | Audio translator | SCAFFOLD | `tools/elm_translator/` — glossary only; no STT/TTS |
 | Grok bot roster + daily ops | DONE | `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md` |
+| Operator Console wireframe + visual system | PLANNED | `docs/architecture/ELM369_OPERATOR_CONSOLE_WIREFRAME_v0.1.0.md` + `ELM369_VISUAL_SYSTEM_v0.1.0.md` (Ziggy GO #2/#3; docs only) |
 
 ## Still waiting on you
 
