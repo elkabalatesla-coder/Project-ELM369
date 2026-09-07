@@ -1,6 +1,6 @@
 # Project ELM369 status
 
-Updated: 2026-09-07T07:05:00+00:00 (≈ 3:05 AM ET)
+Updated: 2026-09-07T07:35:00+00:00 (≈ 3:35 AM ET)
 Location stamp: Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹
 
 ## Health
@@ -18,13 +18,13 @@ Shipped across prior PRs + AUDIO-TX offline-phrase finish:
 - Core ops: outage monitor, daily automation, status, orchestrator, evolution (gated DONE), QBIT
 - Memory/archive: DAX, grok archive, github issues sync, artifacts gallery, archive snapshot
 - Security/policy: pandora logs, geofence/English policy, watermark e-sign, SEC-MASTER handshake
-- Creative/comms: liquid3d, FLUX dry-run composer (DONE), **AUDIO-TX offline phrase glossary (DONE)**, Bo drafts (never sends)
+- Creative/comms: liquid3d, FLUX dry-run composer (DONE), **Offline Phrase Glossary (AUDIO-TX) DONE**, Bo drafts (never sends)
 - Device/data: ELMDX inventory diagnostics (DONE), data-finder (DONE), tokenizer (DONE), omninet (DONE), offline cache (DONE), dashboard/devtools (DONE)
 - Live Grok roster + **Daily automation + ELM ops delegation** (Ziggy / Hope / PIX / etc.)
 
 ## Still SCAFFOLD
 
-_None in registry._ AUDIO-TX is **DONE** as an offline phrase glossary (`tools/elm_translator`). STT/TTS / audio pipeline / live MT remain intentional non-goals (optional future), not SCAFFOLD debt.
+_None in registry._ **Offline Phrase Glossary (AUDIO-TX)** is **DONE** as an offline phrase tool (`tools/elm_translator`). STT/TTS / audio pipeline / live MT remain intentional non-goals (optional future), not SCAFFOLD debt.
 
 ## Still waiting on you
 
