@@ -52,7 +52,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 - Grok bot roster: `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md`
 - Geofence (Kokomo 46902): `docs/policy/ELM369_GEOFENCE_KOKOMO_v0.1.0.md`
 - OpenAPI: `openapi/elm369-orchestrator.openapi.yaml`
-- UI sketch: `liquid3d-coloring.jsx` (Artifact Registry React demo)
+- UI sketch: `liquid3d-coloring.jsx` (artifact-registry / liquid3d-coloring React demo (`artifact-registry.txt`, `liquid3d-coloring.jsx`))
 
 ## Archived stubs (intent preserved here)
 
