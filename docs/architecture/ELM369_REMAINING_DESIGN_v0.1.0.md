@@ -43,6 +43,7 @@ Derived from `PROJECT_METADATA.json` and vault Grok-archive intake.
 | Offline engine | DONE | `tools/elm_offline/` (local cache; `cannot_control` radios) |
 | Audio translator | SCAFFOLD | `tools/elm_translator/` — glossary only; no STT/TTS |
 | Grok bot roster + daily ops | DONE | `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md` |
+| Operator Spine | PLANNED | Design: `docs/architecture/ELM369_OPERATOR_SPINE_v0.1.0.md` + live architecture rewrite in `docs/architecture.md`; code entrypoint `tools/elm_operator` follows AUDIO-TX |
 
 ## Still waiting on you
 
