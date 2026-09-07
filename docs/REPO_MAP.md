@@ -1,7 +1,7 @@
 # ELM369 repository map
 
 Canonical home for Project ELM369 intent across Joseph's GitHub (`elkabalatesla-coder`).
-Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot roster).
+Last updated: 2026-09-07 (Operator Spine v0.1 — Phase-1 ops facade).
 
 ## Active / keep
 
@@ -35,6 +35,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 | Bo assistant | `tools/bo_assistant/` | Draft-only SMS/email/phone + multi-turn (never sends) | `python3 -m tools.bo_assistant draft "…"` / `multi-turn` |
 | Devtools inventory | `tools/elm_devtools/` | List tools under tools/ | `python3 -m tools.elm_devtools inventory` |
 | Dashboard board | `tools/elm_dashboard/` | JSON board + roster lanes + case queue | `python3 -m tools.elm_dashboard show` / `roster` / `cases` |
+| Operator Spine | `tools/elm_operator/` | Phase-1 ops facade (status/roster/offline/stamp/daily-dry-run) | `python3 -m tools.elm_operator status` |
 | Toy obfuscate | `tools/elm_obfuscate/` | Classical demo obfuscation (not encryption) | `python3 -m tools.elm_obfuscate obfuscate "…"` |
 
 ### Schedules & related docs
@@ -50,6 +51,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 - Shorthand archive: `docs/architecture/ELM369_SHORTHAND_ARCHIVE_v0.1.0.md`
 - Handshake / Personal Security Master: `docs/architecture/ELM369_HANDSHAKE_v0.1.0.md`
 - Grok bot roster: `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md`
+- Operator Spine: `docs/architecture/ELM369_OPERATOR_SPINE_v0.1.0.md` + `docs/architecture.md`
 - Geofence (Kokomo 46902): `docs/policy/ELM369_GEOFENCE_KOKOMO_v0.1.0.md`
 - OpenAPI: `openapi/elm369-orchestrator.openapi.yaml`
 - UI sketch: `Liquid3D Coloring ` (Artifact Registry React demo)
