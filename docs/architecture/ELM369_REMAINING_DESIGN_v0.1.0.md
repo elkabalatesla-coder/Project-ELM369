@@ -1,7 +1,7 @@
 # ELM369 Remaining Design & Development Plan v0.1.0
 
 Derived from `PROJECT_METADATA.json` and vault Grok-archive intake.
-Updated: 2026-09-07 — Operator Spine v0.1 noted.
+Updated: 2026-09-07 — Operator Spine v0.1 nits; AUDIO-TX aligned with PR #87.
 
 ## Status legend
 
@@ -40,7 +40,7 @@ Updated: 2026-09-07 — Operator Spine v0.1 noted.
 | Data location finder | DONE | `tools/data_finder/` |
 | Offline engine | DONE | `tools/elm_offline/` (local cache; `cannot_control` radios) |
 | **Operator Spine** | **DONE** | `tools/elm_operator/` — Phase-1 ops facade (status/roster/offline/stamp/daily-dry-run) |
-| Audio translator | SCAFFOLD | `tools/elm_translator/` — glossary only; no STT/TTS (parallel AUDIO-TX lane) |
+| Audio translator (AUDIO-TX) | DONE (offline glossary via PR #87) | `tools/elm_translator/` — phrase glossary DONE; **STT/TTS / audio pipeline / live MT remain non-goals** |
 | Grok bot roster + daily ops | DONE | `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md` |
 
 ## Still waiting on you
@@ -49,9 +49,9 @@ Updated: 2026-09-07 — Operator Spine v0.1 noted.
 
 ## Next after Spine
 
-1. AUDIO-TX offline STT/TTS (no telephony) — clears last SCAFFOLD when merged.
+1. Land AUDIO-TX PR #87 (offline glossary DONE). Do **not** treat STT/TTS as remaining SCAFFOLD — those stay intentional non-goals unless Joseph/Ziggy reopen.
 2. Deeper quantum / HQM + FLUX opt-in specs (architecture lane).
-3. Optional console wireframe binding to Spine (design lane).
+3. Optional console wireframe binding to Spine (design lane / Dante #96).
 
 ## Safety boundary
 

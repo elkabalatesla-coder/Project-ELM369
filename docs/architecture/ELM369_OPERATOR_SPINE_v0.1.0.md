@@ -10,9 +10,9 @@ Give Joseph and Ziggy **one** Phase-1 operator entrypoint over the live Python t
 
 | Subcommand | Wraps | Notes |
 |------------|-------|-------|
-| `status` | `tools.elm_status.report.build` | JSON health envelope + Spine provenance |
+| `status` | `tools.elm_status.report.build` | JSON health envelope + Spine provenance; exit `1` if report not ok |
 | `roster` | `tools.elm_dashboard.roster.roster_lanes` | Grok bot roster lanes |
-| `offline` | `tools.elm_offline.engine.status` | Offline cache status (`cannot_control` radios) |
+| `offline` | `tools.elm_offline.engine.status` | Offline cache status (`cannot_control` radios). **Exit `1` when no snapshot** (`error: no_snapshot`); run `python3 -m tools.elm_offline snapshot` first |
 | `stamp` | `tools.elm_policy.geofence.stamp_line` | Kokomo e-sign stamp + dual-ID JSON |
 | `daily-dry-run` | `tools.elm_daily_automation.runner.run_daily(dry_run=True)` | Safe daily pass |
 
@@ -34,15 +34,23 @@ Every Spine JSON envelope includes:
 - `esign`: Joseph Michael Rose · IX JR · 🌹
 - `stamp`: human-readable stamp line from `elm_policy`
 
+## Tests
+
+Repo convention is **unittest** (same as `elm_offline` / `elm_translator`):
+
+```bash
+python3 -m unittest tools.elm_operator.tests.test_cli -v
+```
+
 ## Non-goals (this version)
 
-- Does not touch `tools/elm_translator/` (AUDIO-TX lane owned elsewhere).
+- Does not touch `tools/elm_translator/` (AUDIO-TX lane — see PR #87 offline glossary DONE; STT/TTS remain non-goals).
 - No live send / telephony / FLUX API.
 - No force-push; ship by PR only.
 - Does not mint CASE / ticket numbers.
 
 ## Follow-ons
 
-- AUDIO-TX offline STT/TTS (when cleared).
+- AUDIO-TX: merge/keep #87 offline glossary DONE; STT/TTS stay out of scope unless Joseph/Ziggy reopen that lane.
 - Deeper quantum / HQM + FLUX opt-in specs (Archy lane).
 - Dante console wireframe can bind to this Spine after merge.
