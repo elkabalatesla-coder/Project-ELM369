@@ -56,12 +56,12 @@ class GlossaryTests(unittest.TestCase):
         from tools.elm_translator.glossary import load
 
         entries = load().get("entries") or []
-        self.assertGreater(len(entries), 12)
+        self.assertGreaterEqual(len(entries), 40)
 
     def test_coverage(self):
         c = coverage()
         self.assertTrue(c["ok"])
-        self.assertGreater(c["entry_count"], 12)
+        self.assertGreaterEqual(c["entry_count"], 40)
         self.assertTrue(c["complete"])
         self.assertFalse(c["audio"])
 
