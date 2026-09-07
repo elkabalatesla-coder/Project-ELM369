@@ -1,32 +1,30 @@
 # Project ELM369 status
 
-Updated: 2026-09-06T18:50:00+00:00 (≈ 2:50 PM ET)
+Updated: 2026-09-07T07:05:00+00:00 (≈ 3:05 AM ET)
 Location stamp: Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹
 
 ## Health
 
-- Registry tools: **26** · avg completion **88.3%**
-- By status: `{"DONE": 25, "SCAFFOLD": 1}`
+- Registry tools: **26** · avg completion **89.1%**
+- By status: `{"DONE": 26}`
 - Artifact sandboxes: verify via `python3 -m tools.elm_artifacts verify`
 - Signed completion certificate: `docs/ELM369_COMPLETION_CERTIFICATE.json` (Joseph Michael Rose · IX JR · 🌹)
 - Grok bot roster (+ daily ops delegation): `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md`
 
 ## Finish-what-we-can summary
 
-Shipped across prior PRs + this remaining-scaffold finish pass:
+Shipped across prior PRs + AUDIO-TX offline-phrase finish:
 
 - Core ops: outage monitor, daily automation, status, orchestrator, evolution (gated DONE), QBIT
 - Memory/archive: DAX, grok archive, github issues sync, artifacts gallery, archive snapshot
 - Security/policy: pandora logs, geofence/English policy, watermark e-sign, SEC-MASTER handshake
-- Creative/comms: liquid3d, FLUX dry-run composer (DONE), translator glossary (still SCAFFOLD — no audio), Bo drafts (never sends)
+- Creative/comms: liquid3d, FLUX dry-run composer (DONE), **AUDIO-TX offline phrase glossary (DONE)**, Bo drafts (never sends)
 - Device/data: ELMDX inventory diagnostics (DONE), data-finder (DONE), tokenizer (DONE), omninet (DONE), offline cache (DONE), dashboard/devtools (DONE)
 - Live Grok roster + **Daily automation + ELM ops delegation** (Ziggy / Hope / PIX / etc.)
 
 ## Still SCAFFOLD
 
-| ID | Path | Gap |
-|----|------|-----|
-| AUDIO-TX | `tools/elm_translator` | Phrase glossary only — no STT/TTS / audio pipeline / live MT |
+_None in registry._ AUDIO-TX is **DONE** as an offline phrase glossary (`tools/elm_translator`). STT/TTS / audio pipeline / live MT remain intentional non-goals (optional future), not SCAFFOLD debt.
 
 ## Still waiting on you
 
@@ -41,6 +39,7 @@ Shipped across prior PRs + this remaining-scaffold finish pass:
 - Phone rooting / ADB mutation
 - Live FLUX API calls without an explicit future opt-in
 - Florida-geo Google interactive sign-in retries from remote boxes
+- AUDIO-TX STT/TTS / live MT / audio pipeline (optional future — not required for DONE)
 
 ## Commands
 
@@ -56,4 +55,6 @@ python3 -m tools.pandora_vault stats
 python3 -m tools.bo_assistant draft "status please"
 python3 -m tools.elm_archive_snapshot create
 python3 -m tools.elm_artifacts verify
+python3 -m tools.elm_translator status
+python3 -m tools.elm_translator coverage
 ```
