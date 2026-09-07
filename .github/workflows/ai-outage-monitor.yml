@@ -21,4 +21,6 @@ jobs:
         with:
           python-version: '3.x'
       - name: Unit tests
+        env:
+          PYTHONPATH: .
         run: python -m unittest discover -s tools/ai_outage_monitor/tests -v
