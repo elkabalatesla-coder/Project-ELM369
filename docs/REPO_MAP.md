@@ -49,7 +49,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 - Identity: `docs/ELM369_IDENTITY.md`
 - Shorthand archive: `docs/architecture/ELM369_SHORTHAND_ARCHIVE_v0.1.0.md`
 - Handshake / Personal Security Master: `docs/architecture/ELM369_HANDSHAKE_v0.1.0.md`
-- Grok bot roster: `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md`
+- Grok bot roster: `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md`
 - Geofence (Kokomo 46902): `docs/policy/ELM369_GEOFENCE_KOKOMO_v0.1.0.md`
 - OpenAPI: `openapi/elm369-orchestrator.openapi.yaml`
 - UI sketch: `Liquid3D Coloring ` (Artifact Registry React demo)

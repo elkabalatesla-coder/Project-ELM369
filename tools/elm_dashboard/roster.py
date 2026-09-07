@@ -13,6 +13,7 @@ ROSTER: list[dict[str, Any]] = [
         "bot": 'Ziggy',
         "role": 'complaint/case collector + monitor surface',
         "agent_id": '4f908f2c-747c-4b08-9f2f-e4e6c0df0f06',
+        "id_pattern": 'CASE-YYYYMMDD-NNN',
         "status": 'OPERATIONAL',
     },
     {
