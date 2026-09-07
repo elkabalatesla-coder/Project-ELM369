@@ -1,18 +1,17 @@
 # Node.js
 node_modules/
+dist/
+build/
+coverage/
+*.log
+npm-debug.log*
+.env
+.env.*
+!.env.example
 
-# TypeScript
-*.ts
-*.tsx
-*.js
-# *.jsx ignored except under artifacts/
-*.jsx
-!artifacts/
-!artifacts/**/
-!artifacts/**/*.jsx
-!artifacts/**/*.jsx
-!artifacts/**/*.jsx.txt
-*.d.ts
+# TypeScript / JS build artifacts only — do NOT ignore source *.ts/*.tsx/*.js/*.jsx
+# (Phase 1 H01: prior blanket ignores made the Node/TS tree untrackable)
+*.tsbuildinfo
 
 # IDEs
 .vscode/
