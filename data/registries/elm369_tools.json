@@ -23,11 +23,11 @@
     },
     {
       "id": "AUDIO-TX",
-      "name": "Audio Translator",
-      "phase": "Scaffold",
-      "completion": 68,
+      "name": "Audio Translator (offline phrase glossary)",
+      "phase": "Complete",
+      "completion": 90,
       "category": "Communication",
-      "status": "SCAFFOLD",
+      "status": "DONE",
       "repo_path": "tools/elm_translator"
     },
     {
