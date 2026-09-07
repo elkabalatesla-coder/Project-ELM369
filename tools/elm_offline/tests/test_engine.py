@@ -52,7 +52,7 @@ class OfflineTests(unittest.TestCase):
         self.assertIn("docs/policy", DEFAULT_SNAPSHOT_PATHS)
         self.assertIn("artifacts/sandboxes/manifest.json", DEFAULT_SNAPSHOT_PATHS)
         self.assertIn("docs/ELM369_COMPLETION_CERTIFICATE.json", DEFAULT_SNAPSHOT_PATHS)
-        self.assertIn("docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md", DEFAULT_SNAPSHOT_PATHS)
+        self.assertIn("docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md", DEFAULT_SNAPSHOT_PATHS)
 
     def test_snapshot_copies_directory(self):
         with tempfile.TemporaryDirectory() as tmp:

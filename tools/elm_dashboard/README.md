@@ -20,7 +20,7 @@ python3 -m tools.elm_dashboard cases
 
 ## Roster lanes
 
-See `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md` for Ziggy, Hope, Vid Cambot,
+See `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md` for Ziggy, Hope, Vid Cambot,
 Private Eye X, Red Dragon Samurai Knight, Orange Ninja, White Rook, and New Bot.
 
 ## Hard rules surfaced on the board

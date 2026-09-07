@@ -35,10 +35,10 @@ ROUTES: dict[str, dict[str, str]] = {
     "qbit": {"routes_to": "tools/qbit", "lane": "ai", "note": "QSTATE scoring"},
     "liquid3d": {"routes_to": "tools/liquid3d_prompting", "lane": "creative", "note": "Liquid3D prompts"},
     "daily": {"routes_to": "tools/elm_daily_automation", "lane": "ops", "note": "Daily automation runner"},
-    "ziggy": {"routes_to": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md", "lane": "intake", "note": "Ziggy case intake"},
-    "hope": {"routes_to": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md + vault/", "lane": "vault", "note": "Hope vault tips"},
-    "pix": {"routes_to": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md", "lane": "research", "note": "Private Eye X dig"},
-    "roster": {"routes_to": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md", "lane": "ops", "note": "Grok bot roster"},
+    "ziggy": {"routes_to": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md", "lane": "intake", "note": "Ziggy case intake"},
+    "hope": {"routes_to": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md + vault/", "lane": "vault", "note": "Hope vault tips"},
+    "pix": {"routes_to": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md", "lane": "research", "note": "Private Eye X dig"},
+    "roster": {"routes_to": "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md", "lane": "ops", "note": "Grok bot roster"},
 }
 
 
