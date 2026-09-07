@@ -1,6 +1,6 @@
 # Project ELM369 backlog
 
-Generated: 2026-09-06T16:30:47.001820+00:00
+Generated: 2026-09-07T07:05:00.000000+00:00
 Finish-pass closeout for all open GitHub issues that can be resolved in-repo.
 
 ## Legend
@@ -77,12 +77,11 @@ Finish-pass closeout for all open GitHub issues that can be resolved in-repo.
 
 ## Open cluster (this sweep)
 
-Remaining registry SCAFFOLD: **AUDIO-TX** (`tools/elm_translator`) — phrase glossary only; no STT/TTS/audio pipeline.
-ELMDX, FLUX (dry-run), OMNINET, tokenizer, data-finder, offline, evolution, and devtools are DONE within safety bounds.
+Registry SCAFFOLD cleared: **AUDIO-TX** (`tools/elm_translator`) is **DONE** as an offline phrase glossary (fuzzy suggest, coverage/status/search CLI). STT/TTS / audio pipeline / live MT remain intentional non-goals (optional future).
+ELMDX, FLUX (dry-run), OMNINET, tokenizer, data-finder, offline, evolution, and devtools remain DONE within safety bounds.
 
 ## Artifacts / sandboxes
 
 All recoverable HTML/React/JSON issue sandboxes extracted under `artifacts/sandboxes/` with gallery `artifacts/index.html`.
 
 Sandboxed issues marked DONE (2026-09-05): 11, 16, 18, 19, 22, 24, 25, 26, 27, 28, 29, 38, 39, 40, 47, 52. See `artifacts/FINISH_REPORT_2026-09-05.md`.
-

@@ -1,6 +1,7 @@
 {
   "project_id": "ELM369_JMR08241978202646902",
-  "note": "Offline glossary scaffold — not a full audio / STT / TTS / 100-language engine.",
+  "note": "Offline operator/ELM phrase glossary — DONE as phrase tool; not STT/TTS / live MT / SMS.",
+  "watermark": "Joseph Michael Rose · IX JR · 🌹 / Kokomo IN 46902",
   "languages": [
     "en",
     "es",
@@ -13,6 +14,12 @@
       "es": "hola",
       "fr": "bonjour",
       "de": "hallo"
+    },
+    {
+      "en": "goodbye",
+      "es": "adiós",
+      "fr": "au revoir",
+      "de": "auf wiedersehen"
     },
     {
       "en": "thank you",
@@ -37,6 +44,12 @@
       "es": "no",
       "fr": "non",
       "de": "nein"
+    },
+    {
+      "en": "help",
+      "es": "ayuda",
+      "fr": "aide",
+      "de": "hilfe"
     },
     {
       "en": "project",
@@ -75,10 +88,166 @@
       "de": "autorisieren"
     },
     {
+      "en": "access granted",
+      "es": "acceso concedido",
+      "fr": "accès accordé",
+      "de": "zugriff gewährt"
+    },
+    {
+      "en": "access denied",
+      "es": "acceso denegado",
+      "fr": "accès refusé",
+      "de": "zugriff verweigert"
+    },
+    {
+      "en": "operator",
+      "es": "operador",
+      "fr": "opérateur",
+      "de": "bediener"
+    },
+    {
+      "en": "companion",
+      "es": "compañero",
+      "fr": "compagnon",
+      "de": "begleiter"
+    },
+    {
+      "en": "watermark",
+      "es": "marca de agua",
+      "fr": "filigrane",
+      "de": "wasserzeichen"
+    },
+    {
+      "en": "archive",
+      "es": "archivo",
+      "fr": "archive",
+      "de": "archiv"
+    },
+    {
+      "en": "dashboard",
+      "es": "panel",
+      "fr": "tableau de bord",
+      "de": "dashboard"
+    },
+    {
+      "en": "orchestrator",
+      "es": "orquestador",
+      "fr": "orchestrateur",
+      "de": "orchestrierer"
+    },
+    {
+      "en": "diagnose",
+      "es": "diagnosticar",
+      "fr": "diagnostiquer",
+      "de": "diagnostizieren"
+    },
+    {
+      "en": "backup",
+      "es": "copia de seguridad",
+      "fr": "sauvegarde",
+      "de": "sicherung"
+    },
+    {
+      "en": "restore",
+      "es": "restaurar",
+      "fr": "restaurer",
+      "de": "wiederherstellen"
+    },
+    {
+      "en": "sync",
+      "es": "sincronizar",
+      "fr": "synchroniser",
+      "de": "synchronisieren"
+    },
+    {
+      "en": "network",
+      "es": "red",
+      "fr": "réseau",
+      "de": "netzwerk"
+    },
+    {
+      "en": "connected",
+      "es": "conectado",
+      "fr": "connecté",
+      "de": "verbunden"
+    },
+    {
+      "en": "disconnected",
+      "es": "desconectado",
+      "fr": "déconnecté",
+      "de": "getrennt"
+    },
+    {
+      "en": "ready",
+      "es": "listo",
+      "fr": "prêt",
+      "de": "bereit"
+    },
+    {
+      "en": "error",
+      "es": "error",
+      "fr": "erreur",
+      "de": "fehler"
+    },
+    {
+      "en": "warning",
+      "es": "advertencia",
+      "fr": "avertissement",
+      "de": "warnung"
+    },
+    {
+      "en": "confirm",
+      "es": "confirmar",
+      "fr": "confirmer",
+      "de": "bestätigen"
+    },
+    {
+      "en": "cancel",
+      "es": "cancelar",
+      "fr": "annuler",
+      "de": "abbrechen"
+    },
+    {
+      "en": "proceed",
+      "es": "continuar",
+      "fr": "continuer",
+      "de": "fortfahren"
+    },
+    {
+      "en": "wait",
+      "es": "esperar",
+      "fr": "attendre",
+      "de": "warten"
+    },
+    {
+      "en": "emergency",
+      "es": "emergencia",
+      "fr": "urgence",
+      "de": "notfall"
+    },
+    {
+      "en": "location",
+      "es": "ubicación",
+      "fr": "emplacement",
+      "de": "standort"
+    },
+    {
       "en": "Kokomo",
       "es": "Kokomo",
       "fr": "Kokomo",
       "de": "Kokomo"
+    },
+    {
+      "en": "Project ELM369",
+      "es": "Proyecto ELM369",
+      "fr": "Projet ELM369",
+      "de": "Projekt ELM369"
+    },
+    {
+      "en": "good morning",
+      "es": "buenos días",
+      "fr": "bonne matinée",
+      "de": "guten morgen"
     }
   ]
 }

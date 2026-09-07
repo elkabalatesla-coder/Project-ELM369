@@ -6,7 +6,15 @@ import argparse
 import json
 from typing import Sequence
 
-from tools.elm_translator.glossary import languages, load, translate, translate_many
+from tools.elm_translator.glossary import (
+    coverage,
+    languages,
+    load,
+    search,
+    status,
+    translate,
+    translate_many,
+)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -23,6 +31,12 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     sub.add_parser("list", help="Dump glossary JSON")
     sub.add_parser("langs", help="List supported language codes")
+    sub.add_parser("coverage", help="Show per-language glossary coverage")
+    sub.add_parser("status", help="Show AUDIO-TX status (DONE offline phrase tool + non-goals)")
+
+    sr = sub.add_parser("search", help="Substring search glossary entries")
+    sr.add_argument("query")
+    sr.add_argument("--limit", type=int, default=20)
 
     args = p.parse_args(argv)
 
@@ -43,5 +57,20 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "langs":
         print(json.dumps({"languages": languages(), "audio": False}, indent=2))
         return 0
+
+    if args.command == "coverage":
+        out = coverage()
+        print(json.dumps(out, indent=2, ensure_ascii=False))
+        return 0 if out.get("ok") else 1
+
+    if args.command == "status":
+        out = status()
+        print(json.dumps(out, indent=2, ensure_ascii=False))
+        return 0 if out.get("ok") else 1
+
+    if args.command == "search":
+        out = search(args.query, limit=args.limit)
+        print(json.dumps(out, indent=2, ensure_ascii=False))
+        return 0 if out.get("ok") else 1
 
     return 2

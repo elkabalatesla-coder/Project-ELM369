@@ -5,25 +5,24 @@
   "e_symbol": "🌹",
   "auto_esign": true,
   "auto_watermark": true,
-  "payload_sha256": "2ea3f0fcf099af923011ad455e2b5d092083f9c0609acd2bb154050627f29c23",
-  "signed_at": "2026-09-06T18:46:21.090713+00:00",
+  "payload_sha256": "800f546ca35acbe2a86023e90264d3de5084a554ba760e32a9c172fddde61944",
+  "signed_at": "2026-09-07T07:35:00.000000+00:00",
   "payload": {
     "document": "ELM369_COMPLETION_CERTIFICATE",
     "project_id": "ELM369_JMR08241978202646902",
-    "generated_at": "2026-09-06T18:46:21.090587+00:00",
+    "generated_at": "2026-09-07T07:35:00.000000+00:00",
     "location_stamp": "Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹",
     "registry_tools": 26,
-    "avg_completion": 88.3,
+    "avg_completion": 89.1,
     "by_status": {
-      "DONE": 25,
-      "SCAFFOLD": 1
+      "DONE": 26
     },
     "artifacts_ok": true,
     "artifact_count": 16,
-    "statement": "In-repo Project ELM369 work finishable without telephony, radio/satellite control, live FLUX API calls, ADB/root, or a real Grok export has been completed within safety bounds. AUDIO-TX remains SCAFFOLD (glossary only; no STT/TTS).",
+    "statement": "In-repo Project ELM369 work finishable without telephony, radio/satellite control, live FLUX API calls, ADB/root, or a real Grok export has been completed within safety bounds. Offline Phrase Glossary (AUDIO-TX) is DONE as an offline phrase tool (no STT/TTS / live MT / SMS).",
     "remaining_external": [
       "Real Grok export ingest",
-      "AUDIO-TX audio/STT/TTS pipeline (optional future)",
+      "AUDIO-TX audio/STT/TTS pipeline (optional future — not required for DONE)",
       "Live image generation API token (optional Joseph opt-in)"
     ],
     "companion_vault": "JMR0824197846902"
