@@ -1,3 +1,5 @@
-# Optional Python dependencies for Project-ELM369
+# Python dependencies for Project-ELM369 (aligned with PROJECT_PYTHON_RUNTIME.json)
 
+requests>=2.32.0,<3.0.0
+pydantic>=2.0,<3.0
 backports.zoneinfo>=0.2; python_version < "3.9"
