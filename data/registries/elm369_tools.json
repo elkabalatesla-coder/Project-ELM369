@@ -23,7 +23,7 @@
     },
     {
       "id": "AUDIO-TX",
-      "name": "Audio Translator (offline phrase glossary)",
+      "name": "Offline Phrase Glossary (AUDIO-TX)",
       "phase": "Complete",
       "completion": 90,
       "category": "Communication",
