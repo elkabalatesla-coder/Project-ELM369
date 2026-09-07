@@ -16,6 +16,7 @@ WATERMARK = "Joseph Michael Rose · IX JR · 🌹 / Kokomo IN 46902"
 PROJECT_ID = "ELM369_JMR08241978202646902"
 TOOL_ID = "AUDIO-TX"
 TOOL_STATUS = "DONE"
+TOOL_NAME = "Offline Phrase Glossary (AUDIO-TX)"
 
 
 def load() -> dict[str, Any]:
@@ -170,7 +171,7 @@ def status() -> dict[str, Any]:
     return {
         "ok": True,
         "tool_id": TOOL_ID,
-        "name": "Audio Translator (offline phrase glossary)",
+        "name": TOOL_NAME,
         "status": TOOL_STATUS,
         "scope": "offline_phrase_glossary",
         "entry_count": cov["entry_count"],
