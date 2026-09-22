@@ -1,0 +1,24 @@
+{
+  "schema": "elm369.artifact_manifest.v1",
+  "status": "RECONSTRUCTED_LOCAL_ONLY",
+  "canonical_anchor": "JMR0824197846902",
+  "alias_anchor": "JMR08241978202646902",
+  "repository": "elkabalatesla-coder/Project-ELM369",
+  "target_branch": "main",
+  "network_endpoints": [],
+  "credentials": false,
+  "secrets": false,
+  "private_keys": false,
+  "destructive_actions": false,
+  "execution_mode": "LOCAL_ONLY",
+  "artifacts": [
+    "ELM369_VIDEO_PIPELINE_JMR0824197846902.py",
+    "ELM369_INSTALLER_JMR0824197846902.sh",
+    "ELM369_FIX_AND_RUN.sh",
+    "ELM369_ARTIFACT_MANIFEST.json"
+  ],
+  "provenance": {
+    "source": "reconstructed from the supplied ELM369 pipeline/installer specifications and local artifact records",
+    "note": "This manifest records the reconstruction; it does not claim that these files existed previously in the repository."
+  }
+}
