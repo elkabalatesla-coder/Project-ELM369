@@ -1,0 +1,56 @@
+{
+  "design_id": "FIREFLY_ELM369_LANE_DESIGNS",
+  "version": "1.0.0",
+  "dual_id": [
+    "JMR0824197846902",
+    "JMR08241978202646902"
+  ],
+  "epoch_rule": "08241978 seed/fold only \u2014 never PIN/passkey/birthday",
+  "lane": "firewall_perimeter_hardening",
+  "methods": [
+    "Random Protocol",
+    "Rolling Logic",
+    "Rolling Reasoning"
+  ],
+  "eye_state": "RESEALED",
+  "algorithms": [
+    "A1_chatbot_perimeter_gate",
+    "A2_session_firewall_process",
+    "A3_media_marker_watch",
+    "A4_box_surfaces_pass",
+    "A5_actions_orphan_priv_drift"
+  ],
+  "functions": [
+    "fn_chatbot_egress_allowlist",
+    "fn_media_marker_note",
+    "fn_actions_orphan_diff",
+    "fn_disable_workflow",
+    "fn_tip_ziggy",
+    "fn_dual_id_stamp"
+  ],
+  "logarthems": [
+    "L1_chatbot_V_A_H",
+    "L2_sense_seal_signal"
+  ],
+  "tasks": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6"
+  ],
+  "evidence": {
+    "H07": "disabled_manually:321817118,313914947,323519367,323501127",
+    "H08": "https://github.com/elkabalatesla-coder/Project-ELM369/pull/94"
+  },
+  "path_md": "/workspace/artifacts/elm369-activation/firefly-firewall/FIREFLY_ELM369_LANE_DESIGNS.md",
+  "holds": [
+    "no_agency_filing",
+    "no_FL_Google",
+    "no_spend",
+    "no_force_push",
+    "no_secret_wipe"
+  ],
+  "watermark": "JMR0824197846902|JMR08241978202646902"
+}
