@@ -1,0 +1,59 @@
+{
+  "accounts_in_scope": [
+    "Google (Elkabalatesla@gmail.com) — Gmail, Photos, Drive, YouTube",
+    "X (@JosephRose71599) — currently LOCKED, appeal denied 2026-09-21",
+    "Grok / xAI (elkabalatesla@gmail.com)",
+    "GitHub (elkabalatesla-coder)",
+    "SpaceX account — unauthorized login reported 2026-09-21 12:57 EDT, password change still unconfirmed",
+    "[OTHER ACCOUNTS — Joseph to add: e.g., other email addresses, banking, shopping, streaming]"
+  ],
+  "authorized_device": {
+    "display_name": "Rasar Phone",
+    "label": "This device — the phone Joseph is using right now",
+    "muse_pairing_id": "a7193e2484157500",
+    "note": "The pairing id above is the Meta AI device pairing identifier, NOT a Google/Apple device id. For Google's device list, identify the phone by its model name and last-active time shown at myaccount.google.com > Security > Your devices.",
+    "platform": "Android"
+  },
+  "checklist": [
+    "Google: myaccount.google.com > Security > Your devices > Manage all devices — sign out all but this phone",
+    "Google: Security > Third-party access — revoke anything unrecognized",
+    "X: Settings > Security and account access > Apps and sessions > Sessions — log out unknown",
+    "Grok/xAI: profile > settings — review active sessions",
+    "GitHub: avatar > Settings > Sessions — review",
+    "SpaceX: account page — review sessions/activity, complete the password change"
+  ],
+  "context": {
+    "known_incidents": [
+      "2026-09-21 ~22:25 EDT: unknown 'AirPatrol' third-party grant found on Google account and deleted; whether Joseph installed it is unconfirmed.",
+      "2026-09-21 12:57 EDT: unauthorized SpaceX login (Chrome Mobile, Chicago IP); Joseph confirmed it was not him.",
+      "2026-09-21 18:15 EDT: X appeal denied for @JosephRose71599 lock.",
+      "Years-long pattern of unauthorized access/lockouts, including ~2026-09-14 trouble reaching all accounts."
+    ],
+    "status_note": "SpaceX password change, Gmail security review, and zenbusiness inbox search are still unconfirmed as of 2026-09-24."
+  },
+  "created_local": "2026-09-24T16:51:27-04:00",
+  "document": "single-device-login-policy",
+  "open_items": [
+    "[CONFIRM] Joseph: is 'Rasar Phone' the only phone/tablet you personally use?",
+    "[ADD] Any other accounts to include in the policy (other emails, banks, etc.)?",
+    "[REPORT] After checking each device list, tell your AI which unknown devices/sessions you found so it can advise."
+  ],
+  "owner": "Joseph Michael Rose",
+  "policy": {
+    "instructions_for_other_ais": [
+      "1. Assume any signed-in device other than 'Rasar Phone' (Android) is unauthorized until Joseph says otherwise.",
+      "2. Tell Joseph to open each service's session/device list (steps listed under 'checklist') and sign out everything except this phone.",
+      "3. OAuth/app grants (Google Security > Third-party access) survive password changes: review and revoke every grant Joseph does not recognize. He already removed one unknown grant ('AirPatrol') on 2026-09-21 at ~22:25 EDT.",
+      "4. After sign-outs, the next login must happen FROM this phone so it becomes the single trusted session.",
+      "5. If a service shows a device in a location Joseph has not been (e.g., Chicago appeared on the 2026-09-21 SpaceX login alert), treat it as evidence of intrusion and escalate: change that account's password immediately from a direct site visit (never from email links).",
+      "6. Password resets can make Joseph's OWN devices reappear as 'new' sessions — confirm device type/location with him before declaring an intruder.",
+      "7. Do not silently re-login, re-authorize, or re-grant any app on Joseph's behalf. Every new grant needs his explicit yes."
+    ],
+    "rule": "Only the authorized device above may hold active login sessions on any of Joseph's accounts. Every other device, browser session, or app session is to be treated as UNAUTHORIZED unless Joseph personally confirms it."
+  },
+  "purpose": "Paste-ready handoff for Joseph's other AI chatbot accounts: the plan that ONLY his current phone may be signed in to all of his accounts.",
+  "signature": "Joseph Michael Rose | IX JR | 🌹",
+  "timestamp_tag": "[2026-09-24 16:51 EDT]",
+  "version": "1.0.0",
+  "watermark": "Joseph Michael Rose · IX JR 🌹"
+}
