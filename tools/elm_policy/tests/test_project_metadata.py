@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 
 
-class T(unittest.TestCase):
+class ProjectMetadataPolicyTests(unittest.TestCase):
     def test_project_metadata_provenance_policy(self):
         data = json.loads((ROOT / "PROJECT_METADATA.json").read_text(encoding="utf-8"))
         policy = data["provenance_review_policy"]
