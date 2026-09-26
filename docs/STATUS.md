@@ -1,6 +1,6 @@
 # Project ELM369 status
 
-Updated: 2026-09-06T18:50:00+00:00 (≈ 2:50 PM ET)
+Updated: 2026-09-25 · synchronized with current `main` dashboard architecture
 Location stamp: Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹
 
 ## Health
@@ -20,7 +20,12 @@ Shipped across prior PRs + this remaining-scaffold finish pass:
 - Security/policy: pandora logs, geofence/English policy, watermark e-sign, SEC-MASTER handshake
 - Creative/comms: liquid3d, FLUX dry-run composer (DONE), translator glossary (still SCAFFOLD — no audio), Bo drafts (never sends)
 - Device/data: ELMDX inventory diagnostics (DONE), data-finder (DONE), tokenizer (DONE), omninet (DONE), offline cache (DONE), dashboard/devtools (DONE)
+- Mission Control: canonical JSON board `elm369.mission_control_dashboard.v1` (OPERATIONAL); runtime tools are authoritative
 - Live Grok roster + **Daily automation + ELM ops delegation** (Ziggy / Hope / PIX / etc.)
+
+## Dashboard synchronization
+
+The dashboard runtime is now the canonical operational board. The HTML dashboard artifacts are retained as presentation artifacts; they should not be treated as an independent source of status truth.
 
 ## Still SCAFFOLD
 
