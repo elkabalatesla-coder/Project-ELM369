@@ -1,9 +1,9 @@
-# AI Team Management Dashboard (AI-HUB)
+# Project ELM369 Mission Control Dashboard
 
-Issue #11 scaffold. JSON status board for Project ELM369 with:
+Canonical operational dashboard board for Project ELM369. The runtime JSON board is authoritative; HTML artifacts are presentation layers.
 
-- Progress / vault / artifacts / path verify
-- **Roster lanes** (live Grok bots)
+- Live progress / vault / artifacts / path verification
+- **Roster lanes** (AI/Grok operations roster)
 - **Case queue summary** (`CASE-YYYYMMDD-NNN`, Ziggy collector)
 
 Vault: primary `JMR08241978202646902` · companion `JMR0824197846902`  
@@ -30,6 +30,10 @@ Private Eye X, Red Dragon Samurai Knight, Orange Ninja, White Rook, and New Bot.
 - Filing Joseph-gated
 - Heal propose/dry-run only
 - No live SMS / phone / ADB / satellite
+
+## Canonical state
+
+`python3 -m tools.elm_dashboard show` emits `elm369.mission_control_dashboard.v1` with `dashboard_state=OPERATIONAL` and runtime tools as the source of truth.
 
 ## Tests
 
