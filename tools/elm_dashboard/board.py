@@ -1,4 +1,4 @@
-"""Compose a JSON dashboard from live tools (issue #11)."""
+"""Compose the canonical ELM369 Mission Control dashboard state from live tools."""
 
 from __future__ import annotations
 
@@ -26,7 +26,8 @@ def build(*, include_cases: bool = True) -> dict[str, Any]:
     lanes = roster_lanes()
     case_queue = summarize_case_queue() if include_cases else {"skipped": True}
     return {
-        "title": "Project ELM369 Security & Integrated Architecture Dashboard",
+        "schema": "elm369.mission_control_dashboard.v1",
+        "title": "Project ELM369 Mission Control Dashboard",
         "project_id": f"ELM369_{VAULT_PRIMARY}",
         "vault_ids": {
             "primary": VAULT_PRIMARY,
@@ -35,6 +36,8 @@ def build(*, include_cases: bool = True) -> dict[str, Any]:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "provenance": stamp_line(),
         "tabs": ["COMMAND", "TOOLS", "SECURITY", "VAULT", "PROGRESS", "ROSTER", "CASES"],
+        "dashboard_state": "OPERATIONAL",
+        "source_of_truth": "runtime_tools",
         "progress": {
             "avg_completion": progress["avg_completion"],
             "by_status": progress["by_status"],
@@ -54,5 +57,5 @@ def build(*, include_cases: bool = True) -> dict[str, Any]:
             "no_live_sms_phone_adb_satellite": True,
         },
         "esign": "Joseph Michael Rose · IX JR · 🌹 / Kokomo IN 46902",
-        "note": "JSON board — HTML artifact UIs remain in GitHub issues until extracted.",
+        "note": "Canonical runtime board. HTML presentation artifacts may consume this state; runtime tools remain authoritative.",
     }
