@@ -37,3 +37,25 @@ tools/elm_offline/data/manifest.json
 !tools/elmdx/data/sample_device.json
 
 artifacts/snapshots/*.zip
+
+# Provenance signing material
+*.pem
+*.key
+*.priv
+*.private
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.gpg
+*.pgp
+*.agekey
+*.sig
+*.minisig
+*.sig.tmp
+*.minisig.tmp
+.signing/
+signing/
+
+!vault/public/
+!vault/public/**
