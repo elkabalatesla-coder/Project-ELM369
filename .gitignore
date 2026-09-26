@@ -57,5 +57,6 @@ artifacts/snapshots/*.zip
 .signing/
 signing/
 
+!vault/
 !vault/public/
 !vault/public/**
