@@ -50,8 +50,6 @@ artifacts/snapshots/*.zip
 *.gpg
 *.pgp
 *.agekey
-*.sig
-*.minisig
 *.sig.tmp
 *.minisig.tmp
 .signing/
