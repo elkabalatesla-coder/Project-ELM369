@@ -6,6 +6,12 @@ from datetime import datetime, timezone
 from typing import Any
 
 
+def _security_posture() -> dict[str, Any]:
+    from tools.elm_security.security import safe_security_posture
+
+    return safe_security_posture()
+
+
 def build() -> dict[str, Any]:
     sections: dict[str, Any] = {}
     errors: list[str] = []
@@ -48,8 +54,7 @@ def build() -> dict[str, Any]:
         errors.append(f"devtools:{exc}")
 
     try:
-        from tools.elm_security.security import safe_security_posture
-        sections["security"] = safe_security_posture()
+        sections["security"] = _security_posture()
     except Exception as exc:  # noqa: BLE001
         sections["security"] = {"ok": False, "error": str(exc)}
 
