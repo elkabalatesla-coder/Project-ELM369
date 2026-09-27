@@ -136,7 +136,7 @@
       "version_check": "workflow image update",
       "security_status": "active",
       "registry_status": "active",
-      "required_for": ["CodeQL_analysis", "release_gate"],
+      "required_for": ["codeql_analysis", "release_gate"],
       "status": "active"
     },
     {
