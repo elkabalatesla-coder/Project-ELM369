@@ -67,7 +67,7 @@ jobs:
 
   push-image:
     name: Push Docker Image
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     needs: build
     runs-on: ubuntu-latest
     permissions:
