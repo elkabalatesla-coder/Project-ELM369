@@ -13,7 +13,7 @@ PROJECT_NAME = "ELM369"
 CANONICAL_ID = "JMR0824197846902"
 COMPANION_ID = "JMR08241978202646902"
 RELATIONSHIP = "companion -> project"
-REGISTRY = Path("data/registries/elm369_security_tools.json")
+REGISTRY = Path(__file__).resolve().parents[2] / "data/registries/elm369_security_tools.json"
 OBJECT_TYPES = [
     "Identity",
     "Asset",

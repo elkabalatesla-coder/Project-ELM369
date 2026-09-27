@@ -25,6 +25,8 @@ def build(*, include_cases: bool = True) -> dict[str, Any]:
     artifacts = artifacts_verify()
     tools = list_tools()
     security = build_security_posture()
+    security_identity = security.get("identity", {}).get("integrity_status", {})
+    security_registry = security.get("registry", {})
     lanes = roster_lanes()
     case_queue = summarize_case_queue() if include_cases else {"skipped": True}
     return {
@@ -50,10 +52,10 @@ def build(*, include_cases: bool = True) -> dict[str, Any]:
         "artifacts": artifacts,
         "devtools": {"tool_dirs": len(tools)},
         "security": {
-            "ok": security["ok"],
-            "identity_ok": security["identity"]["integrity_status"]["ok"],
-            "registry_tools": security["registry"]["tool_count"],
-            "required_capabilities": security["required_capabilities"],
+            "ok": security.get("ok", False),
+            "identity_ok": security_identity.get("ok", False),
+            "registry_tools": security_registry.get("tool_count", 0),
+            "required_capabilities": security.get("required_capabilities", []),
         },
         "roster_lanes": lanes,
         "case_queue": case_queue,

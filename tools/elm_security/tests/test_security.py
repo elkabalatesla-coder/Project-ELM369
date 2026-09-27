@@ -1,4 +1,6 @@
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 
 from tools.elm_security.cli import main
 from tools.elm_security.security import (
@@ -41,6 +43,27 @@ class ElmSecurityTests(unittest.TestCase):
 
     def test_cli_verify(self):
         self.assertEqual(main(["verify"]), 0)
+
+    def test_cli_identity(self):
+        stdout = StringIO()
+        with redirect_stdout(stdout):
+            rc = main(["identity", CANONICAL_ID, COMPANION_ID])
+        self.assertEqual(rc, 0)
+        self.assertIn(CANONICAL_ID, stdout.getvalue())
+
+    def test_cli_tools(self):
+        stdout = StringIO()
+        with redirect_stdout(stdout):
+            rc = main(["tools", "--required-for", "vulnerability_prioritization"])
+        self.assertEqual(rc, 0)
+        self.assertIn("CISA KEV", stdout.getvalue())
+
+    def test_cli_registry(self):
+        stdout = StringIO()
+        with redirect_stdout(stdout):
+            rc = main(["registry"])
+        self.assertEqual(rc, 0)
+        self.assertIn("tool_count", stdout.getvalue())
 
 
 if __name__ == "__main__":
