@@ -8,6 +8,7 @@ from tools.elm_security.security import (
     list_security_tools,
     registry_summary,
     resolve_identity,
+    safe_security_posture,
 )
 
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     "list_security_tools",
     "registry_summary",
     "resolve_identity",
+    "safe_security_posture",
 ]

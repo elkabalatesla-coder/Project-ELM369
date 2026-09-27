@@ -136,8 +136,13 @@ def resolve_identity(
     }
 
 
-def list_security_tools(*, required_for: str | None = None, category: str | None = None) -> list[dict[str, Any]]:
-    data = load_registry()
+def list_security_tools(
+    *,
+    required_for: str | None = None,
+    category: str | None = None,
+    path: Path | None = None,
+) -> list[dict[str, Any]]:
+    data = load_registry(path)
     required_key = (required_for or "").strip().lower()
     category_key = (category or "").strip().lower()
     rows: list[dict[str, Any]] = []
@@ -152,8 +157,8 @@ def list_security_tools(*, required_for: str | None = None, category: str | None
     return rows
 
 
-def registry_summary() -> dict[str, Any]:
-    data = load_registry()
+def registry_summary(*, path: Path | None = None) -> dict[str, Any]:
+    data = load_registry(path)
     tools = data.get("tools") or []
     categories: dict[str, int] = {}
     by_status: dict[str, int] = {}
@@ -171,13 +176,13 @@ def registry_summary() -> dict[str, Any]:
     }
 
 
-def build_security_posture() -> dict[str, Any]:
-    registry = registry_summary()
+def build_security_posture(*, registry_path: Path | None = None) -> dict[str, Any]:
+    registry = registry_summary(path=registry_path)
     identity = resolve_identity()
     required_for = sorted(
         {
             capability
-            for tool in list_security_tools()
+            for tool in list_security_tools(path=registry_path)
             for capability in (tool.get("required_for") or [])
         }
     )
@@ -189,3 +194,26 @@ def build_security_posture() -> dict[str, Any]:
         "registry": registry,
         "required_capabilities": required_for,
     }
+
+
+def safe_security_posture(*, registry_path: Path | None = None) -> dict[str, Any]:
+    try:
+        return build_security_posture(registry_path=registry_path)
+    except Exception as exc:  # noqa: BLE001
+        return {
+            "project_id": PROJECT_ID,
+            "checked_at": _now(),
+            "ok": False,
+            "error": str(exc),
+            "identity": resolve_identity(),
+            "registry": {
+                "project_id": PROJECT_ID,
+                "security_object_types": OBJECT_TYPES,
+                "tool_count": 0,
+                "categories": {},
+                "by_status": {},
+                "identity": {},
+                "ok": False,
+            },
+            "required_capabilities": [],
+        }

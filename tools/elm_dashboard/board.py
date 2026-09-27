@@ -11,7 +11,7 @@ from tools.elm_dashboard.roster import roster_lanes
 from tools.elm_devtools.inventory import list_tools
 from tools.elm_policy.geofence import stamp_line
 from tools.elm_progress.engine import summarize, verify_paths
-from tools.elm_security.security import build_security_posture
+from tools.elm_security.security import safe_security_posture
 from tools.grok_archive.status import vault_status
 
 VAULT_PRIMARY = "JMR08241978202646902"
@@ -24,7 +24,7 @@ def build(*, include_cases: bool = True) -> dict[str, Any]:
     vault = vault_status()
     artifacts = artifacts_verify()
     tools = list_tools()
-    security = build_security_posture()
+    security = safe_security_posture()
     security_identity = security.get("identity", {}).get("integrity_status", {})
     security_registry = security.get("registry", {})
     lanes = roster_lanes()

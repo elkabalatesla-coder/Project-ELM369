@@ -1,6 +1,7 @@
 import unittest
 from contextlib import redirect_stdout
 from io import StringIO
+from pathlib import Path
 
 from tools.elm_security.cli import main
 from tools.elm_security.security import (
@@ -10,6 +11,7 @@ from tools.elm_security.security import (
     list_security_tools,
     registry_summary,
     resolve_identity,
+    safe_security_posture,
 )
 
 
@@ -40,6 +42,12 @@ class ElmSecurityTests(unittest.TestCase):
         self.assertTrue(posture["ok"])
         self.assertIn("identity", posture)
         self.assertIn("registry", posture)
+
+    def test_safe_security_posture_missing_registry(self):
+        posture = safe_security_posture(registry_path=Path("missing-security-registry.json"))
+        self.assertFalse(posture["ok"])
+        self.assertEqual(posture["registry"]["tool_count"], 0)
+        self.assertIn("error", posture)
 
     def test_cli_verify(self):
         self.assertEqual(main(["verify"]), 0)

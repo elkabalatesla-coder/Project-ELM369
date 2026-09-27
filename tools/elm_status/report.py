@@ -48,10 +48,10 @@ def build() -> dict[str, Any]:
         errors.append(f"devtools:{exc}")
 
     try:
-        from tools.elm_security.security import build_security_posture
-        sections["security"] = build_security_posture()
+        from tools.elm_security.security import safe_security_posture
+        sections["security"] = safe_security_posture()
     except Exception as exc:  # noqa: BLE001
-        errors.append(f"security:{exc}")
+        sections["security"] = {"ok": False, "error": str(exc)}
 
     ok = (
         bool(sections.get("diag", {}).get("ok"))
