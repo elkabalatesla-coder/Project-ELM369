@@ -6,7 +6,7 @@ import argparse
 import json
 from typing import Sequence
 
-from tools.elm_security.security import build_security_posture, list_security_tools, registry_summary, resolve_identity
+from tools.elm_security.security import list_security_tools, registry_summary, resolve_identity, safe_security_posture
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -41,7 +41,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0 if result.get("ok") else 1
 
     if args.command == "verify":
-        result = build_security_posture()
+        result = safe_security_posture()
         print(json.dumps(result, indent=2))
         return 0 if result.get("ok") else 1
 

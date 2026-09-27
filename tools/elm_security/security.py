@@ -59,6 +59,50 @@ def load_registry(path: Path | None = None) -> dict[str, Any]:
     return json.loads(target.read_text(encoding="utf-8"))
 
 
+def _capability_key(value: str) -> str:
+    return str(value or "").strip().lower()
+
+
+def _filter_security_tools(
+    data: dict[str, Any],
+    *,
+    required_for: str | None = None,
+    category: str | None = None,
+) -> list[dict[str, Any]]:
+    required_key = _capability_key(required_for or "")
+    category_key = str(category or "").strip().lower()
+    rows: list[dict[str, Any]] = []
+    for row in data.get("tools") or []:
+        reqs = [_capability_key(item) for item in row.get("required_for") or []]
+        row_category = str(row.get("category") or "").lower()
+        if required_key and required_key not in reqs:
+            continue
+        if category_key and category_key != row_category:
+            continue
+        normalized = dict(row)
+        normalized["required_for"] = reqs
+        rows.append(normalized)
+    return rows
+
+
+def _registry_summary_from_data(data: dict[str, Any]) -> dict[str, Any]:
+    tools = data.get("tools") or []
+    categories: dict[str, int] = {}
+    by_status: dict[str, int] = {}
+    for row in tools:
+        categories[row.get("category") or "unknown"] = categories.get(row.get("category") or "unknown", 0) + 1
+        by_status[row.get("status") or "unknown"] = by_status.get(row.get("status") or "unknown", 0) + 1
+    return {
+        "project_id": data.get("project_id") or PROJECT_ID,
+        "security_object_types": data.get("security_object_types") or OBJECT_TYPES,
+        "tool_count": len(tools),
+        "categories": categories,
+        "by_status": by_status,
+        "identity": data.get("identity") or {},
+        "ok": bool(tools),
+    }
+
+
 def _identity_record(identifier: str, *, role: str, observed_at: str, source: str) -> dict[str, Any]:
     return {
         "object_id": f"{PROJECT_NAME}-IDENTITY-{role.upper()}",
@@ -142,47 +186,22 @@ def list_security_tools(
     category: str | None = None,
     path: Path | None = None,
 ) -> list[dict[str, Any]]:
-    data = load_registry(path)
-    required_key = (required_for or "").strip().lower()
-    category_key = (category or "").strip().lower()
-    rows: list[dict[str, Any]] = []
-    for row in data.get("tools") or []:
-        reqs = [str(item).lower() for item in row.get("required_for") or []]
-        row_category = str(row.get("category") or "").lower()
-        if required_key and required_key not in reqs:
-            continue
-        if category_key and category_key != row_category:
-            continue
-        rows.append(row)
-    return rows
+    return _filter_security_tools(load_registry(path), required_for=required_for, category=category)
 
 
 def registry_summary(*, path: Path | None = None) -> dict[str, Any]:
-    data = load_registry(path)
-    tools = data.get("tools") or []
-    categories: dict[str, int] = {}
-    by_status: dict[str, int] = {}
-    for row in tools:
-        categories[row.get("category") or "unknown"] = categories.get(row.get("category") or "unknown", 0) + 1
-        by_status[row.get("status") or "unknown"] = by_status.get(row.get("status") or "unknown", 0) + 1
-    return {
-        "project_id": data.get("project_id") or PROJECT_ID,
-        "security_object_types": data.get("security_object_types") or OBJECT_TYPES,
-        "tool_count": len(tools),
-        "categories": categories,
-        "by_status": by_status,
-        "identity": data.get("identity") or {},
-        "ok": bool(tools),
-    }
+    return _registry_summary_from_data(load_registry(path))
 
 
 def build_security_posture(*, registry_path: Path | None = None) -> dict[str, Any]:
-    registry = registry_summary(path=registry_path)
+    data = load_registry(registry_path)
+    registry = _registry_summary_from_data(data)
     identity = resolve_identity()
+    tools = _filter_security_tools(data)
     required_for = sorted(
         {
             capability
-            for tool in list_security_tools(path=registry_path)
+            for tool in tools
             for capability in (tool.get("required_for") or [])
         }
     )

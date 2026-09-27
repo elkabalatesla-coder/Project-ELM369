@@ -2,6 +2,7 @@ import unittest
 from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
+from unittest.mock import patch
 
 from tools.elm_security.cli import main
 from tools.elm_security.security import (
@@ -51,6 +52,14 @@ class ElmSecurityTests(unittest.TestCase):
 
     def test_cli_verify(self):
         self.assertEqual(main(["verify"]), 0)
+
+    def test_cli_verify_failure(self):
+        stdout = StringIO()
+        with patch("tools.elm_security.cli.safe_security_posture", return_value={"ok": False, "error": "missing_registry"}):
+            with redirect_stdout(stdout):
+                rc = main(["verify"])
+        self.assertEqual(rc, 1)
+        self.assertIn("missing_registry", stdout.getvalue())
 
     def test_cli_identity(self):
         stdout = StringIO()

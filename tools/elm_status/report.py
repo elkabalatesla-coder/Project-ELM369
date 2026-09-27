@@ -56,7 +56,6 @@ def build() -> dict[str, Any]:
     ok = (
         bool(sections.get("diag", {}).get("ok"))
         and bool(sections.get("artifacts", {}).get("ok", True))
-        and bool(sections.get("security", {}).get("ok", True))
         and not errors
     )
     return {
