@@ -30,6 +30,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 | Data finder | `tools/data_finder/` | Locate files/content in repo | `python3 -m tools.data_finder find "pandora"` |
 | Progress engine | `tools/elm_progress/` | Tool registry completion summary | `python3 -m tools.elm_progress summary` |
 | Pandora / security logs | `tools/pandora_vault/` | Security Log 1/2 + Pandora vault feeds (sync/tail/stats) | `python3 -m tools.pandora_vault sync --message "…"` |
+| ELM security | `tools/elm_security/` | Identity resolution + security tool registry scaffold | `python3 -m tools.elm_security verify` |
 | Offline snapshot | `tools/elm_offline/` | Local offline cache of key docs/backlogs | `python3 -m tools.elm_offline snapshot` |
 | Translator glossary | `tools/elm_translator/` | Offline phrase glossary scaffold | `python3 -m tools.elm_translator translate "hello" --to es` |
 | Bo assistant | `tools/bo_assistant/` | Draft-only SMS/email/phone + multi-turn (never sends) | `python3 -m tools.bo_assistant draft "…"` / `multi-turn` |

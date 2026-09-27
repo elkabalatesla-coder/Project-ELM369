@@ -47,9 +47,16 @@ def build() -> dict[str, Any]:
     except Exception as exc:  # noqa: BLE001
         errors.append(f"devtools:{exc}")
 
+    try:
+        from tools.elm_security.security import build_security_posture
+        sections["security"] = build_security_posture()
+    except Exception as exc:  # noqa: BLE001
+        errors.append(f"security:{exc}")
+
     ok = (
         bool(sections.get("diag", {}).get("ok"))
         and bool(sections.get("artifacts", {}).get("ok", True))
+        and bool(sections.get("security", {}).get("ok", True))
         and not errors
     )
     return {
