@@ -193,10 +193,14 @@ def registry_summary(*, path: Path | None = None) -> dict[str, Any]:
     return _registry_summary_from_data(load_registry(path))
 
 
-def build_security_posture(*, registry_path: Path | None = None) -> dict[str, Any]:
+def build_security_posture(
+    *,
+    registry_path: Path | None = None,
+    identity: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     data = load_registry(registry_path)
     registry = _registry_summary_from_data(data)
-    identity = resolve_identity()
+    identity = identity or resolve_identity()
     tools = _filter_security_tools(data)
     required_for = sorted(
         {
@@ -216,15 +220,16 @@ def build_security_posture(*, registry_path: Path | None = None) -> dict[str, An
 
 
 def safe_security_posture(*, registry_path: Path | None = None) -> dict[str, Any]:
+    identity = resolve_identity()
     try:
-        return build_security_posture(registry_path=registry_path)
+        return build_security_posture(registry_path=registry_path, identity=identity)
     except Exception as exc:  # noqa: BLE001
         return {
             "project_id": PROJECT_ID,
             "checked_at": _now(),
             "ok": False,
             "error": str(exc),
-            "identity": resolve_identity(),
+            "identity": identity,
             "registry": {
                 "project_id": PROJECT_ID,
                 "security_object_types": OBJECT_TYPES,
