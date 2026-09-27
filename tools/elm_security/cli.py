@@ -36,7 +36,19 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
 
     if args.command == "registry":
-        result = registry_summary()
+        try:
+            result = registry_summary()
+        except Exception as exc:  # noqa: BLE001
+            result = {
+                "project_id": None,
+                "security_object_types": [],
+                "tool_count": 0,
+                "categories": {},
+                "by_status": {},
+                "identity": {},
+                "ok": False,
+                "error": str(exc),
+            }
         print(json.dumps(result, indent=2))
         return 0 if result.get("ok") else 1
 

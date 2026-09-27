@@ -82,6 +82,14 @@ class ElmSecurityTests(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertIn("tool_count", stdout.getvalue())
 
+    def test_cli_registry_failure(self):
+        stdout = StringIO()
+        with patch("tools.elm_security.cli.registry_summary", side_effect=RuntimeError("registry_missing")):
+            with redirect_stdout(stdout):
+                rc = main(["registry"])
+        self.assertEqual(rc, 1)
+        self.assertIn("registry_missing", stdout.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
