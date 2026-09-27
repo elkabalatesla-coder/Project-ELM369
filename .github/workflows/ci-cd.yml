@@ -29,7 +29,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Jest tests
         run: npm test -- --ci --coverage --maxWorkers=2
@@ -63,8 +63,8 @@ jobs:
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=elm369-pr
+          cache-to: type=gha,mode=max,scope=elm369-pr
 
   push-image:
     name: Push Docker Image
@@ -105,5 +105,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=elm369-push
+          cache-to: type=gha,mode=max,scope=elm369-push
