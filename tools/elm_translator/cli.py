@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 from typing import Sequence
 
-from tools.elm_translator.glossary import languages, load, translate, translate_many
+from tools.elm_translator.glossary import languages, load, translate, translate_file, translate_many
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -21,6 +22,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     batch.add_argument("texts", nargs="+")
     batch.add_argument("--to", default="es")
 
+    file_cmd = sub.add_parser("file", help="Translate newline text or JSON string-list files")
+    file_cmd.add_argument("path")
+    file_cmd.add_argument("--to", default="es")
+    file_cmd.add_argument("--out", help="Optional path to write JSON results")
+
     sub.add_parser("list", help="Dump glossary JSON")
     sub.add_parser("langs", help="List supported language codes")
 
@@ -34,6 +40,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "batch":
         out = translate_many(list(args.texts), to=args.to)
         print(json.dumps(out, indent=2, ensure_ascii=False))
+        return 0 if out.get("ok") else 1
+
+    if args.command == "file":
+        out = translate_file(args.path, to=args.to)
+        rendered = json.dumps(out, indent=2, ensure_ascii=False)
+        if args.out:
+            Path(args.out).write_text(rendered + "\n", encoding="utf-8")
+        print(rendered)
         return 0 if out.get("ok") else 1
 
     if args.command == "list":

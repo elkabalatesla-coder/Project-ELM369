@@ -9,7 +9,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-GLOSSARY = Path("tools/elm_translator/data/glossary.json")
+MODULE_ROOT = Path(__file__).resolve().parent
+GLOSSARY = MODULE_ROOT / "data" / "glossary.json"
 WATERMARK = "Joseph Michael Rose · IX JR · 🌹 / Kokomo IN 46902"
 PROJECT_ID = "ELM369_JMR08241978202646902"
 
@@ -81,3 +82,57 @@ def translate_many(texts: list[str], *, to: str = "es") -> dict[str, Any]:
         "audio": False,
         "watermark": WATERMARK,
     }
+
+
+def _read_text_items(path: Path) -> list[str]:
+    suffix = path.suffix.lower()
+    raw = path.read_text(encoding="utf-8")
+    if suffix == ".json":
+        data = json.loads(raw)
+        if not isinstance(data, list) or any(not isinstance(item, str) for item in data):
+            raise ValueError("json_input_must_be_a_list_of_strings")
+        return [item for item in data if item.strip()]
+    return [line.strip() for line in raw.splitlines() if line.strip()]
+
+
+def translate_file(path: str | Path, *, to: str = "es") -> dict[str, Any]:
+    source = Path(path)
+    if not source.exists():
+        return {
+            "ok": False,
+            "error": "input_file_not_found",
+            "input_path": str(source),
+            "target": (to or "es").lower(),
+            "audio": False,
+            "watermark": WATERMARK,
+        }
+    try:
+        texts = _read_text_items(source)
+    except json.JSONDecodeError:
+        return {
+            "ok": False,
+            "error": "invalid_json_input",
+            "input_path": str(source),
+            "target": (to or "es").lower(),
+            "audio": False,
+            "watermark": WATERMARK,
+        }
+    except ValueError as exc:
+        return {
+            "ok": False,
+            "error": str(exc),
+            "input_path": str(source),
+            "target": (to or "es").lower(),
+            "audio": False,
+            "watermark": WATERMARK,
+        }
+
+    translated = translate_many(texts, to=to)
+    translated.update(
+        {
+            "mode": "file_pipeline",
+            "input_path": str(source),
+            "input_format": "json" if source.suffix.lower() == ".json" else "text",
+        }
+    )
+    return translated
