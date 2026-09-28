@@ -1,6 +1,34 @@
 # Project-ELM369
 Visioning advanced Technology of Today and the future and pre-developing programming code for it in advance and coming up with our own intellectual designs
 
+## Current install + completion status
+
+Issue [#20](https://github.com/elkabalatesla-coder/Project-ELM369/issues/20) (`install`) is closed as completed in the in-repo finish pass.
+
+- Current operational status: `docs/STATUS.md`
+- Finish-pass issue tracking: `docs/BACKLOG.md`
+- Signed completion record: `docs/ELM369_COMPLETION_CERTIFICATE.json`
+- Local validation entrypoint: `./ELM369_INSTALLER_JMR0824197846902.sh`
+
+### Local setup / validation
+
+```bash
+python3 -m venv venv
+. venv/bin/activate
+pip install -r requirements.txt
+./ELM369_INSTALLER_JMR0824197846902.sh
+python3 -m tools.elm_status show
+```
+
+Node/TypeScript tooling is optional for the Python-first operational tools:
+
+```bash
+npm ci
+npm test
+```
+
+## Historical project snapshot
+
 Category / Subcomponent                        Completion
 ────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today
@@ -31,9 +59,6 @@ Overall Weighted Completion: ~65%
 Owner: Joseph Michael Rose
 D.O.B.: 08/24/1978
 Location: Kokomo, Indiana 46902 (Eastern Standard Time)
-Timestamps:
-- ISO 8601 (commit time): [to be filled at commit, e.g. 2026-07-30T13:07:23-05:00]
-- Human-friendly (commit time): [to be filled at commit, e.g. July 30, 2026 1:07 PM EST]
 E-signature: Esign Joseph Michael Rose
 Eintial: Eintial IX JR
 E-Symbol: 🌹
