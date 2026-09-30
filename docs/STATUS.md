@@ -1,6 +1,6 @@
 # Project ELM369 status
 
-Updated: 2026-09-25 · synchronized with current `main` dashboard architecture
+Updated: 2026-09-28 · synchronized with current `main` dashboard architecture
 Location stamp: Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹
 
 ## Health
@@ -31,7 +31,7 @@ The dashboard runtime is now the canonical operational board. The HTML dashboard
 
 | ID | Path | Gap |
 |----|------|-----|
-| AUDIO-TX | `tools/elm_translator` | Phrase glossary only — no STT/TTS / audio pipeline / live MT |
+| AUDIO-TX | `tools/elm_translator` | Offline glossary + local file pipeline present; no STT/TTS / audio pipeline / live MT |
 
 ## Still waiting on you
 
