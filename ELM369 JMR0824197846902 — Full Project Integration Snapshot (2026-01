@@ -1,29 +1,8 @@
-pip install -r requirements.txt
-python scripts/register_artifact.py --title "Example" --type doc --version v0.1.0 --file README.md --tags elm369,registrypip install -r requirements.txt
-python scripts/register_artifact.py --title "Example" --type doc --version v0.1.0 --file README.md --tags elm369,registrygit checkout main
-git pull --rebase origin main
-git checkout -b pr/elm369-vault-intake-2026-01-14# 0) sanity
-git status
-git pull --rebase origin main
+# ELM369 JMR0824197846902 — Full Project Integration Snapshot (2026-01-12)
 
-# 1) create a full-project PR branch
-git checkout -b pr/elm369-full-integration-2026-01-12
+## Original integration workflow
 
-# 2) stage everything (entire project)
-git add -A
-
-# 3) commit (use a strong message)
-git commit -m "ELM369: full-project integration snapshot (2026-01-12)"
-
-# 4) push branch to GitHub
-git push -u origin pr/elm369-full-integration-2026-01-12git reset HEAD~1   # undo the big commit, keep changes staged/unstaged
-git add docs/ README* && git commit -m "Docs: update ELM369 documentation"
-git add src/ tests/ && git commit -m "Code: core implementation updates"
-git add scripts/ infra/ && git commit -m "Ops: scripts and infrastructure updates"
-git add -A && git commit -m "Repo: remaining tracked changes"
-git push -f #!/usr/bin/env bash
-set -euo pipefail
-
+```bash
 # 0) sanity
 git status
 git pull --rebase origin main
@@ -46,14 +25,19 @@ git push -u origin pr/elm369-full-integration-2026-01-12
 # git add src/ tests/ && git commit -m "Code: core implementation updates"
 # git add scripts/ infra/ && git commit -m "Ops: scripts and infrastructure updates"
 # git add -A && git commit -m "Repo: remaining tracked changes"
-# git push -f ELM369/
-JMR0824197846902/
-sources/chatgpt/
-sources/grok/
-sources/gemini/
-sources/copilot/
-sources/meta/
-sources/perplexity/
-sources/claude/ git add -A
-git commit -m "ELM369: vault intake structure + safe integration scripts"
-git push -u origin pr/elm369-vault-intake-2026-01-14
+# git push -f
+```
+
+## Completion status
+
+Closed as completed in Project-ELM369 finish-pass.
+
+Tracked in:
+- `docs/BACKLOG.md`
+- `docs/STATUS.md`
+
+Signed completion:
+- `docs/ELM369_COMPLETION_CERTIFICATE.json`
+
+E-sign provenance:
+- Joseph Michael Rose · IX JR · 🌹 (local watermark, not a CA)
