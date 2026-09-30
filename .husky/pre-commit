@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Validate docker-compose syntax before commit
+if command -v docker >/dev/null 2>&1; then
+  docker compose config --quiet || {
+    echo "docker compose config failed – fix YAML before committing"
+    exit 1
+  }
+fi
+
+echo "Pre-commit: docker compose config OK"
