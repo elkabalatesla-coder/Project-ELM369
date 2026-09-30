@@ -9,7 +9,7 @@ Location stamp: Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹
 - By status: `{"DONE": 25, "SCAFFOLD": 1}`
 - Artifact sandboxes: verify via `python3 -m tools.elm_artifacts verify`
 - Signed completion certificate: `docs/ELM369_COMPLETION_CERTIFICATE.json` (Joseph Michael Rose · IX JR · 🌹)
-- Grok bot roster (+ daily ops delegation): `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md`
+- Grok bot roster (+ daily ops delegation): `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md`
 
 ## Finish-what-we-can summary
 

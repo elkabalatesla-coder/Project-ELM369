@@ -26,7 +26,7 @@ DEFAULT_SNAPSHOT_PATHS = [
     "docs/STATUS.md",
     "docs/BACKLOG.md",
     "docs/policy",
-    "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md",
+    "docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md",
     "docs/ELM369_COMPLETION_CERTIFICATE.json",
     "data/registries/elm369_tools.json",
     "artifacts/sandboxes/manifest.json",
