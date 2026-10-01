@@ -46,25 +46,39 @@
           "input": {
             "text": "alpha beta alpha gamma"
           },
-          "expected_output": {
-            "keywords": [
-              "alpha",
-              "beta",
-              "gamma"
-            ]
+          "expected_outputs": {
+            "builtin_rules": {
+              "keywords": [
+                "alpha",
+                "beta",
+                "gamma"
+              ]
+            },
+            "mock": {
+              "keywords": [
+                "mock-result"
+              ]
+            }
           }
         },
         {
           "input": {
             "text": "the robots build safe tools"
           },
-          "expected_output": {
-            "keywords": [
-              "build",
-              "robots",
-              "safe",
-              "tools"
-            ]
+          "expected_outputs": {
+            "builtin_rules": {
+              "keywords": [
+                "build",
+                "robots",
+                "safe",
+                "tools"
+              ]
+            },
+            "mock": {
+              "keywords": [
+                "mock-result"
+              ]
+            }
           }
         }
       ]

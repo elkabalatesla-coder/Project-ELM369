@@ -25,6 +25,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     evaluation = sub.add_parser("evaluate", help="Run the task's registered evaluation cases")
     evaluation.add_argument("task_id")
     evaluation.add_argument("--provider")
+    evaluation.add_argument("--human-approved", action="store_true")
+    evaluation.add_argument("--approval-ref")
     sub.add_parser("monitor", help="Summarize redacted local audit events")
     args = parser.parse_args(argv)
 
@@ -48,7 +50,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             status = 0 if result.get("ok") else 1
     elif args.command == "evaluate":
-        result = evaluate(args.task_id, provider=args.provider)
+        result = evaluate(
+            args.task_id,
+            provider=args.provider,
+            human_approved=args.human_approved,
+            approval_ref=args.approval_ref,
+        )
         status = 0 if result.get("ok") else 1
     else:
         result = monitor()

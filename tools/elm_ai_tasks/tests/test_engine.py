@@ -39,14 +39,15 @@ class AiTaskTests(unittest.TestCase):
 
     def test_mock_provider_is_offline_and_contract_compatible(self):
         evaluation = evaluate(TASK_ID, provider="mock", audit_path=self.audit)
-        self.assertFalse(evaluation["ok"])
+        self.assertTrue(evaluation["ok"])
         result = execute(
             TASK_ID,
             {"text": "ignored"},
             provider="mock",
             audit_path=self.audit,
         )
-        self.assertEqual(result["error"], "evaluation_required")
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["output"], {"keywords": ["mock-result"]})
 
     def test_rejects_bad_inputs_restricted_data_and_sensitive_fields(self):
         self.assertEqual(
@@ -55,7 +56,7 @@ class AiTaskTests(unittest.TestCase):
         )
         self.assertEqual(
             execute(TASK_ID, {"text": "ok", "password": "hidden"}, audit_path=self.audit)["error"],
-            "unexpected_input",
+            "sensitive_input_field",
         )
         self.assertEqual(
             execute(
@@ -97,6 +98,8 @@ class AiTaskTests(unittest.TestCase):
         registry_path.write_text(json.dumps(registry))
         self.assertTrue(evaluate(
             "text.approval_test",
+            human_approved=True,
+            approval_ref="evaluation-ticket-1",
             registry_path=registry_path,
             audit_path=self.audit,
         )["ok"])

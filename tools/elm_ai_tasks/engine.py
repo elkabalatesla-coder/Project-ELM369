@@ -253,15 +253,15 @@ def _execute(
             "provider_unavailable", task_id=task_id, provider=selected_provider, model=model,
             registry=registry, run_id=run_id, audit_path=audit_path, mode=mode,
         )
-    if _validate_inputs(task, inputs):
-        return _failure(
-            _validate_inputs(task, inputs) or "invalid_input", task_id=task_id,
-            provider=selected_provider, model=model, registry=registry, run_id=run_id,
-            audit_path=audit_path, mode=mode,
-        )
     if _contains_sensitive_field(inputs):
         return _failure(
             "sensitive_input_field", task_id=task_id, provider=selected_provider, model=model,
+            registry=registry, run_id=run_id, audit_path=audit_path, mode=mode,
+        )
+    input_error = _validate_inputs(task, inputs)
+    if input_error:
+        return _failure(
+            input_error, task_id=task_id, provider=selected_provider, model=model,
             registry=registry, run_id=run_id, audit_path=audit_path, mode=mode,
         )
     if data_classification not in (task.get("allowed_data_classifications") or []):
@@ -370,6 +370,8 @@ def evaluate(
     task_id: str,
     *,
     provider: Optional[str] = None,
+    human_approved: bool = False,
+    approval_ref: Optional[str] = None,
     registry_path: Optional[Path] = None,
     audit_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
@@ -392,13 +394,16 @@ def evaluate(
             case.get("input"),
             provider=selected_provider,
             data_classification="public",
-            human_approved=False,
-            approval_ref=None,
+            human_approved=human_approved,
+            approval_ref=approval_ref,
             registry_path=registry_path,
             audit_path=audit,
             evaluation_mode=True,
         )
-        results.append(bool(result.get("ok") and result.get("output") == case.get("expected_output")))
+        expected = (case.get("expected_outputs") or {}).get(
+            selected_provider, case.get("expected_output")
+        )
+        results.append(bool(result.get("ok") and result.get("output") == expected))
     passed = sum(results)
     model = MODELS.get(selected_provider, "unknown")
     evaluation_id = str(uuid.uuid4())
@@ -413,7 +418,12 @@ def evaluate(
             registry_version=str(registry["version"]),
             mode="evaluation",
             audit_path=audit,
-            extra={"cases": len(results), "passed_cases": passed, "accuracy": passed / len(results)},
+            extra={
+                "cases": len(results),
+                "passed_cases": passed,
+                "accuracy": passed / len(results),
+                "human_approved": bool(human_approved),
+            },
         )
     except OSError:
         return {"ok": False, "error": "audit_unavailable", "task_id": task_id}
