@@ -66,7 +66,14 @@ PROVIDERS.update({"builtin_rules": _keyword_extract, "mock": _mock})
 
 def load_registry(path: Optional[Path] = None) -> Dict[str, Any]:
     registry = json.loads((path or REGISTRY_PATH).read_text(encoding="utf-8"))
-    if registry.get("schema") != "elm369.ai_task_registry.v1" or not isinstance(registry.get("tasks"), list):
+    if (
+        not isinstance(registry, dict)
+        or registry.get("schema") != "elm369.ai_task_registry.v1"
+        or not isinstance(registry.get("version"), str)
+        or not registry["version"]
+        or not isinstance(registry.get("tasks"), list)
+        or any(not isinstance(task, dict) for task in registry["tasks"])
+    ):
         raise ValueError("invalid task registry schema")
     ids = [task.get("task_id") for task in registry["tasks"]]
     if not all(isinstance(task_id, str) and task_id for task_id in ids) or len(ids) != len(set(ids)):
@@ -116,6 +123,10 @@ def _audit_row(
     if extra:
         row.update(extra)
     _append_audit(audit_path, row)
+
+
+def _model_for(task: Dict[str, Any], provider: str) -> str:
+    return str((task.get("models") or {}).get(provider) or MODELS.get(provider, "unknown"))
 
 
 def _contains_sensitive_field(value: Any) -> bool:
@@ -177,21 +188,49 @@ def _find_passing_evaluation(
 ) -> bool:
     if not audit_path.is_file():
         return False
-    for line in reversed(audit_path.read_text(encoding="utf-8").splitlines()):
+    try:
+        lines = audit_path.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return False
+    for line in reversed(lines):
         try:
             row = json.loads(line)
         except json.JSONDecodeError:
             continue
         if (
             row.get("event") == "evaluation"
-            and row.get("status") == "passed"
             and row.get("task_id") == task_id
             and row.get("provider") == provider
             and row.get("model") == model
             and row.get("registry_version") == registry_version
         ):
-            return True
+            return row.get("status") == "passed"
     return False
+
+
+def _error_result(
+    error: str,
+    *,
+    run_id: str,
+    task_id: str,
+    provider: str = "",
+    model: str = "unknown",
+    registry_version: str = "unknown",
+) -> Dict[str, Any]:
+    return {
+        "schema": CONTRACT_VERSION,
+        "ok": False,
+        "error": error,
+        "task_id": task_id,
+        "provenance": {
+            "run_id": run_id,
+            "registry_version": registry_version,
+            "provider": provider,
+            "model": model,
+            "offline": True,
+            "executed_at": _now(),
+        },
+    }
 
 
 def _failure(
@@ -218,8 +257,15 @@ def _failure(
             audit_path=audit_path,
         )
     except OSError:
-        return {"schema": CONTRACT_VERSION, "ok": False, "error": "audit_unavailable"}
-    return {"schema": CONTRACT_VERSION, "ok": False, "error": error, "task_id": task_id}
+        error = "audit_unavailable"
+    return _error_result(
+        error,
+        run_id=run_id,
+        task_id=task_id,
+        provider=provider,
+        model=model,
+        registry_version=str(registry.get("version", "unknown")),
+    )
 
 
 def _execute(
@@ -238,10 +284,10 @@ def _execute(
     try:
         registry = load_registry(registry_path)
     except (OSError, ValueError, json.JSONDecodeError):
-        return {"schema": CONTRACT_VERSION, "ok": False, "error": "registry_unavailable"}
+        return _error_result("registry_unavailable", run_id=run_id, task_id=task_id)
     task = next((item for item in registry["tasks"] if item["task_id"] == task_id), None)
     selected_provider = provider or (task or {}).get("default_provider", "")
-    model = MODELS.get(selected_provider, "unknown")
+    model = _model_for(task, selected_provider) if task else MODELS.get(selected_provider, "unknown")
     mode = "evaluation" if evaluation_mode else "run"
     if task is None:
         return _failure(
@@ -296,7 +342,10 @@ def _execute(
             audit_path=audit_path,
         )
     except OSError:
-        return {"schema": CONTRACT_VERSION, "ok": False, "error": "audit_unavailable"}
+        return _error_result(
+            "audit_unavailable", run_id=run_id, task_id=task_id, provider=selected_provider,
+            model=model, registry_version=str(registry["version"]),
+        )
 
     try:
         output = PROVIDERS[selected_provider](inputs)
@@ -310,8 +359,14 @@ def _execute(
                 mode=mode, audit_path=audit_path,
             )
         except OSError:
-            return {"schema": CONTRACT_VERSION, "ok": False, "error": "audit_unavailable"}
-        return {"schema": CONTRACT_VERSION, "ok": False, "error": "provider_failed", "task_id": task_id}
+            return _error_result(
+                "audit_unavailable", run_id=run_id, task_id=task_id, provider=selected_provider,
+                model=model, registry_version=str(registry["version"]),
+            )
+        return _error_result(
+            "provider_failed", run_id=run_id, task_id=task_id, provider=selected_provider,
+            model=model, registry_version=str(registry["version"]),
+        )
 
     try:
         _audit_row(
@@ -327,7 +382,10 @@ def _execute(
             extra={"human_approved": bool(approval_required and human_approved)},
         )
     except OSError:
-        return {"schema": CONTRACT_VERSION, "ok": False, "error": "audit_unavailable"}
+        return _error_result(
+            "audit_unavailable", run_id=run_id, task_id=task_id, provider=selected_provider,
+            model=model, registry_version=str(registry["version"]),
+        )
 
     return {
         "schema": CONTRACT_VERSION,
@@ -405,7 +463,7 @@ def evaluate(
         )
         results.append(bool(result.get("ok") and result.get("output") == expected))
     passed = sum(results)
-    model = MODELS.get(selected_provider, "unknown")
+    model = _model_for(task, selected_provider)
     evaluation_id = str(uuid.uuid4())
     try:
         _audit_row(
@@ -444,8 +502,19 @@ def monitor(audit_path: Optional[Path] = None) -> Dict[str, Any]:
     path = audit_path or AUDIT_PATH
     counts = Counter()
     by_task: Dict[str, Counter] = {}
-    if path.is_file():
-        for line in path.read_text(encoding="utf-8").splitlines():
+    try:
+        exists = path.is_file()
+        lines = path.read_text(encoding="utf-8").splitlines() if exists else []
+    except OSError:
+        return {
+            "schema": "elm369.ai_task_monitor.v1",
+            "audit_available": False,
+            "error": "audit_unavailable",
+            "counts": {},
+            "by_task": {},
+        }
+    if exists:
+        for line in lines:
             try:
                 row = json.loads(line)
             except json.JSONDecodeError:
@@ -457,7 +526,7 @@ def monitor(audit_path: Optional[Path] = None) -> Dict[str, Any]:
             task_counts[event + ":" + status] += 1
     return {
         "schema": "elm369.ai_task_monitor.v1",
-        "audit_available": path.is_file(),
+        "audit_available": exists,
         "counts": dict(sorted(counts.items())),
         "by_task": {key: dict(sorted(value.items())) for key, value in sorted(by_task.items())},
     }

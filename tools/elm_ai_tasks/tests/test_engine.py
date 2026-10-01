@@ -27,6 +27,11 @@ class AiTaskTests(unittest.TestCase):
     def test_run_requires_evaluation_then_returns_provenance(self):
         blocked = execute(TASK_ID, {"text": "alpha beta"}, audit_path=self.audit)
         self.assertEqual(blocked["error"], "evaluation_required")
+        self.assertEqual(blocked["provenance"]["model"], "keyword-frequency-v1")
+        self.assertEqual(
+            execute("unknown.task", {}, audit_path=self.audit)["error"],
+            "unknown_task",
+        )
 
         evaluation = evaluate(TASK_ID, audit_path=self.audit)
         self.assertTrue(evaluation["ok"])
@@ -48,6 +53,20 @@ class AiTaskTests(unittest.TestCase):
         )
         self.assertTrue(result["ok"])
         self.assertEqual(result["output"], {"keywords": ["mock-result"]})
+
+    def test_latest_failed_evaluation_revokes_prior_pass(self):
+        self.assertTrue(evaluate(TASK_ID, audit_path=self.audit)["ok"])
+        with self.audit.open("a") as stream:
+            stream.write(json.dumps({
+                "event": "evaluation",
+                "status": "failed",
+                "task_id": TASK_ID,
+                "provider": "builtin_rules",
+                "model": "keyword-frequency-v1",
+                "registry_version": "1.0.0",
+            }) + "\n")
+        result = execute(TASK_ID, {"text": "alpha"}, audit_path=self.audit)
+        self.assertEqual(result["error"], "evaluation_required")
 
     def test_rejects_bad_inputs_restricted_data_and_sensitive_fields(self):
         self.assertEqual(

@@ -37,6 +37,10 @@
         "builtin_rules",
         "mock"
       ],
+      "models": {
+        "builtin_rules": "keyword-frequency-v1",
+        "mock": "fixed-mock-v1"
+      },
       "default_provider": "builtin_rules",
       "evaluation_required": true,
       "consequential": false,
