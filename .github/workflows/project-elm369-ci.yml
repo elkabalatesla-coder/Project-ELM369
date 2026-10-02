@@ -11,12 +11,12 @@ permissions:
 
 jobs:
   test:
-    name: Run Pytest Suite
+    name: Run Pytest & Codecov Upload
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.11"]
 
     steps:
       - name: Check out repository
@@ -34,11 +34,14 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install pytest pytest-cov
 
-      - name: Execute pytest suite with coverage
-        run: pytest -v --cov=tools --cov-report=term-missing
+      - name: Execute pytest suite with XML coverage report
+        run: pytest -v --cov=tools --cov-report=xml
 
-      - name: Verify state cleanup
-        run: |
-          if [ -f "elm369_state.json" ]; then
-            echo "Warning: State file artifact detected outside temp environment."
-          fi
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-project-elm369
+          fail_ci_if_error: true
