@@ -1,0 +1,30 @@
+{
+  "manifest_id": "ELM369-SANDBOX-CLOSEOUT-2026-10-02",
+  "project": "ELM369",
+  "identifier": "JMR08241978202646902",
+  "operator": "Joseph Michael Rose / The Elkab",
+  "location_anchor": "815 Tomahawk Blvd, Kokomo, Indiana 46902",
+  "timezone": "America/Indiana/Indianapolis",
+  "timestamp_local": "2026-10-02T22:10:18-04:00",
+  "timestamp_utc": "2026-10-03T02:10:18Z",
+  "ai_marker": "\ud83c\udf39",
+  "watermark": "ELM369 | JMR08241978202646902 | \ud83c\udf39 | 2026-10-02T22:10:18-04:00",
+  "grok_sandbox_audit": {
+    "pre_audit_state": "empty",
+    "media_found": false,
+    "action": "clean state confirmed; close-out package written"
+  },
+  "github_commit_prior": "bec97d5005e8122f41f2ac1ae4339542f046fb47",
+  "cycle_completion": {
+    "grok_sandbox_closeout": "100%",
+    "readme_weighted_board_still_published": "~65%",
+    "note": "Does not rewrite the public README board to 100%."
+  },
+  "charity_alignment": {
+    "named": "Shriners Hospitals for Children",
+    "rate_marker": "1%",
+    "funds_moved": false
+  },
+  "status": "CLOSED",
+  "signatory": "Joseph Michael Rose / The Elkab / JMR08241978202646902"
+}
