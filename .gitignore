@@ -19,8 +19,13 @@ npm-debug.log*
 *.sublime-workspace
 *.sublime-project
 
+# Python
 __pycache__/
 *.py[cod]
+.venv/
+venv/
+ENV/
+env/
 
 tools/**/data/
 tools/elm_orchestrator/data/
