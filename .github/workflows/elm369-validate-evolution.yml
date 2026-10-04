@@ -1,8 +1,8 @@
-name: ELM369 Evolution Validation
+name: Project Build and Validation
 
 on:
   push:
-    branches: [main, 'elm369/**']
+    branches: ['**']
   pull_request:
 
 jobs:
@@ -17,11 +17,36 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run Python unit tests
+        run: |
+          for test_dir in tools/*/tests; do
+            if [ -d "$test_dir" ]; then
+              python -m unittest discover -s "$test_dir" -v
+            fi
+          done
 
       - name: Compile Python sources
         run: |
           python -m compileall -q .
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Run TypeScript tests
+        run: npm test -- --runInBand --passWithNoTests
 
       - name: Validate JSON documents
         run: |
