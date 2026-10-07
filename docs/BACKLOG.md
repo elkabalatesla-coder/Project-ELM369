@@ -36,7 +36,7 @@ Finish-pass closeout for all open GitHub issues that can be resolved in-repo.
 | [22](https://github.com/elkabalatesla-coder/Project-ELM369/issues/22) | Claude's help. | DONE | sandbox 022 |
 | [23](https://github.com/elkabalatesla-coder/Project-ELM369/issues/23) | Developer Tools for Project ELM369 | DONE | tools/elm_devtools |
 | [24](https://github.com/elkabalatesla-coder/Project-ELM369/issues/24) | ELM369 Dev Tools.  | DONE | devtools + sandbox 024 |
-| [25](https://github.com/elkabalatesla-coder/Project-ELM369/issues/25) | Translator  | DONE | translator + sandbox 025 |
+| [25](https://github.com/elkabalatesla-coder/Project-ELM369/issues/25) | Translator  | DONE | translator + sandbox 025 + offline file pipeline |
 | [26](https://github.com/elkabalatesla-coder/Project-ELM369/issues/26) | Fix OS for android and Apps | DONE | tools/elmdx + sandbox 026 |
 | [27](https://github.com/elkabalatesla-coder/Project-ELM369/issues/27) | Integration Artifact.  | DONE | tokenizer + sandbox 027 |
 | [28](https://github.com/elkabalatesla-coder/Project-ELM369/issues/28) | ELM369 Connection  | DONE | elm_flux + sandbox 028 |
@@ -77,7 +77,7 @@ Finish-pass closeout for all open GitHub issues that can be resolved in-repo.
 
 ## Open cluster (this sweep)
 
-Remaining registry SCAFFOLD: **AUDIO-TX** (`tools/elm_translator`) — phrase glossary only; no STT/TTS/audio pipeline.
+Remaining registry SCAFFOLD: **AUDIO-TX** (`tools/elm_translator`) — glossary + local file pipeline present; no STT/TTS/audio pipeline.
 ELMDX, FLUX (dry-run), OMNINET, tokenizer, data-finder, offline, evolution, and devtools are DONE within safety bounds.
 
 ## Artifacts / sandboxes
@@ -85,4 +85,3 @@ ELMDX, FLUX (dry-run), OMNINET, tokenizer, data-finder, offline, evolution, and 
 All recoverable HTML/React/JSON issue sandboxes extracted under `artifacts/sandboxes/` with gallery `artifacts/index.html`.
 
 Sandboxed issues marked DONE (2026-09-05): 11, 16, 18, 19, 22, 24, 25, 26, 27, 28, 29, 38, 39, 40, 47, 52. See `artifacts/FINISH_REPORT_2026-09-05.md`.
-

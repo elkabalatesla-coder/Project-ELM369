@@ -1,4 +1,4 @@
-# ELM Translator — Offline Phrase Glossary (AUDIO-TX)
+# ELM Translator — Offline Phrase Glossary + File Pipeline (AUDIO-TX)
 
 Issue #25. Offline English→{es,fr,de} phrase glossary for Project ELM369.
 
@@ -7,7 +7,7 @@ Vault: `JMR08241978202646902` · companion `JMR0824197846902`
 
 ## Status: SCAFFOLD
 
-Useful for operator phrase lookup. **Not** a full audio / 100-language product.
+Useful for operator phrase lookup and local file-based phrase batches. **Not** a full audio / 100-language product.
 
 ### Remaining gap
 
@@ -15,6 +15,7 @@ Useful for operator phrase lookup. **Not** a full audio / 100-language product.
 |------------|--------|
 | Phrase glossary (en→es/fr/de) | Present |
 | Batch phrase lookup | Present |
+| Local file pipeline (`.txt` newline / `.json` string list) | Present |
 | Speech-to-text / text-to-speech | **Not implemented** (intentional for now) |
 | Live neural MT API | **Not implemented** |
 | SMS / phone actuation | **Never** |
@@ -26,6 +27,8 @@ python3 -m tools.elm_translator langs
 python3 -m tools.elm_translator list
 python3 -m tools.elm_translator translate "hello" --to es
 python3 -m tools.elm_translator batch "hello" "thank you" "vault" --to fr
+python3 -m tools.elm_translator file /absolute/path/phrases.txt --to de
+python3 -m tools.elm_translator file /absolute/path/phrases.json --to es --out /absolute/path/output.json
 ```
 
 ## Tests
