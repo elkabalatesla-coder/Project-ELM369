@@ -51,7 +51,16 @@ def default_outage_runner(*, dry_run: bool) -> dict[str, Any]:
     return {
         "status": "ok" if not bad else "attention",
         "detail": f"{len(probes)} probed, {len(bad)} need attention",
-        "services": [{"id": p.service_id, "status": p.status} for p in probes],
+        "services": [
+            {
+                "id": p.service_id,
+                "name": p.name,
+                "status": p.status,
+                "http_status": p.http_status,
+                "detail": p.detail,
+            }
+            for p in probes
+        ],
     }
 
 
@@ -76,13 +85,40 @@ def run_daily(
         kind = task.get("kind")
         if kind == "outage_monitor":
             runner = outage_runner or (lambda: default_outage_runner(dry_run=dry_run))
-            payload = runner()
+            try:
+                payload = runner()
+            except Exception as exc:  # noqa: BLE001
+                results.append(
+                    TaskResult(
+                        task["id"],
+                        task["name"],
+                        "attention",
+                        f"probe failed: {type(exc).__name__}: {exc}",
+                    )
+                )
+                continue
+            failed_services = [
+                service
+                for service in payload.get("services", [])
+                if service.get("status") in {"down", "degraded", "unknown"}
+            ]
             results.append(
                 TaskResult(
                     task["id"],
                     task["name"],
                     payload.get("status", "unknown"),
                     payload.get("detail", ""),
+                    items=[
+                        f"{service.get('name') or service.get('id', 'service')}"
+                        f" ({service.get('id', 'unknown')}): {service.get('status', 'unknown')}"
+                        + (
+                            f", HTTP {service['http_status']}"
+                            if service.get("http_status") is not None
+                            else ""
+                        )
+                        + (f" — {service['detail']}" if service.get("detail") else "")
+                        for service in failed_services
+                    ],
                 )
             )
         elif kind == "checklist":
