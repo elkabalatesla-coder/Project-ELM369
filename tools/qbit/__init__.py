@@ -43,13 +43,20 @@ def calibrate_weights(
     The optimizer minimizes mean squared error plus a penalty for drifting from
     DEFAULT_WEIGHTS. It never changes the global weights or applies its result.
     """
-    if isinstance(samples, (str, bytes)) or len(samples) < len(_TERMS):
+    if (
+        isinstance(samples, (str, bytes))
+        or not isinstance(samples, Sequence)
+        or len(samples) < len(_TERMS)
+    ):
         raise ValueError("at least four calibration samples are required")
     if isinstance(regularization, bool) or not isinstance(regularization, (int, float)):
-        raise ValueError("regularization must be a finite non-negative number")
-    regularization = float(regularization)
-    if not math.isfinite(regularization) or regularization < 0:
-        raise ValueError("regularization must be a finite non-negative number")
+        raise ValueError("regularization must be finite and between 0 and 1000000")
+    try:
+        regularization = float(regularization)
+    except OverflowError as exc:
+        raise ValueError("regularization must be finite and between 0 and 1000000") from exc
+    if not math.isfinite(regularization) or not 0 <= regularization <= 1_000_000:
+        raise ValueError("regularization must be finite and between 0 and 1000000")
     if isinstance(iterations, bool) or not isinstance(iterations, int) or not 1 <= iterations <= 100_000:
         raise ValueError("iterations must be an integer from 1 to 100000")
 
@@ -75,15 +82,16 @@ def calibrate_weights(
     step_size = 1.0 / (8.0 + 2.0 * regularization)
     count = len(inputs)
     for _ in range(iterations):
+        gradient = [0.0] * len(_TERMS)
+        for row, target in zip(inputs, targets):
+            residual = _weighted_score(row, weights) - target
+            for column, term in enumerate(row):
+                gradient[column] += 2.0 * term * residual / count
         gradient = [
-            2.0 * sum(row[column] * (sum(row[i] * weights[i] for i in range(len(_TERMS))) - target)
-                       for row, target in zip(inputs, targets)) / count
-            + 2.0 * regularization * (weights[column] - baseline[column])
-            for column in range(len(_TERMS))
+            delta + 2.0 * regularization * (weights[column] - baseline[column])
+            for column, delta in enumerate(gradient)
         ]
-        weights = _project_simplex(
-            [weight - step_size * delta for weight, delta in zip(weights, gradient)]
-        )
+        weights = _project_simplex([weight - step_size * delta for weight, delta in zip(weights, gradient)])
 
     baseline_scores = [_weighted_score(row, baseline) for row in inputs]
     calibrated_scores = [_weighted_score(row, weights) for row in inputs]
@@ -103,7 +111,10 @@ def calibrate_weights(
 def _calibration_value(value: Any, name: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"{name} must be a finite number")
-    number = float(value)
+    try:
+        number = float(value)
+    except OverflowError as exc:
+        raise ValueError(f"{name} must be a finite number") from exc
     if not math.isfinite(number):
         raise ValueError(f"{name} must be a finite number")
     return number
@@ -126,11 +137,13 @@ def _weighted_score(terms: Sequence[float], weights: Sequence[float]) -> float:
 
 
 def _mae(scores: Sequence[float], targets: Sequence[float]) -> float:
-    return round(sum(abs(score - target) for score, target in zip(scores, targets)) / len(targets), 8)
+    total = sum(abs(score - target) for score, target in zip(scores, targets))
+    return round(total / len(targets), 8)
 
 
 def _rmse(scores: Sequence[float], targets: Sequence[float]) -> float:
-    return round(math.sqrt(sum((score - target) ** 2 for score, target in zip(scores, targets)) / len(targets)), 8)
+    squared_error = sum((score - target) ** 2 for score, target in zip(scores, targets))
+    return round(math.sqrt(squared_error / len(targets)), 8)
 
 
 def recommend(qstate: float, *,

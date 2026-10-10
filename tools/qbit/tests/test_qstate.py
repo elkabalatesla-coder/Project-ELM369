@@ -47,14 +47,26 @@ class QbitTests(unittest.TestCase):
     def test_calibration_rejects_insufficient_and_invalid_samples(self):
         with self.assertRaisesRegex(ValueError, "at least four"):
             calibrate_weights([])
+        with self.assertRaisesRegex(ValueError, "at least four"):
+            calibrate_weights(None)
         with self.assertRaisesRegex(ValueError, "between 0 and 1"):
             calibrate_weights([
                 {"terms": {"L": 1.1, "M": 0, "R": 0, "H": 0}, "target_qstate": 0}
                 for _ in range(4)
             ])
+        with self.assertRaisesRegex(ValueError, "between 0 and 1000000"):
+            calibrate_weights([
+                {"terms": {"L": 0, "M": 0, "R": 0, "H": 0}, "target_qstate": 0}
+                for _ in range(4)
+            ], regularization=1e300)
         with self.assertRaisesRegex(ValueError, "finite number"):
             calibrate_weights([
                 {"terms": {"L": float("nan"), "M": 0, "R": 0, "H": 0}, "target_qstate": 0}
+                for _ in range(4)
+            ])
+        with self.assertRaisesRegex(ValueError, "finite number"):
+            calibrate_weights([
+                {"terms": {"L": 0, "M": 0, "R": 0, "H": 0}, "target_qstate": 10**1000}
                 for _ in range(4)
             ])
 
