@@ -74,6 +74,31 @@ Reuse the evolution-spec set:
 
 See `schemas/qbit/qbit.schema.json` and example instance `schemas/qbit/examples/qbit.example.json`.
 
+## Supervised weight calibration
+
+The shared `tools/qbit` scorer can propose revised weights from at least four
+expert-reviewed calibration cases. Each case contains `terms` (`L`, `M`, `R`,
+and `H`, each in 0–1) and a `target_qstate` in 0–1. The optimizer minimizes
+mean squared score error with projected gradient descent on the non-negative,
+sum-to-one weight simplex. A regularization penalty (default 0.05) discourages
+large changes from the published default weights. Reports include baseline and
+proposed MAE/RMSE so reviewers can assess whether the fit improved.
+
+Run `python -m tools.qbit calibrate calibration.json --log calibration.jsonl`
+to print the proposal and optionally append a JSONL audit record. The record
+contains summary metrics and proposed weights, not calibration samples. Calibration
+does not modify the default weights, stored QBIT packets, or recommendation
+thresholds. A proposal must be reviewed before anyone supplies it explicitly
+to `compute_qstate`; decision policy, authorization, and hard safety gates remain
+separate and take precedence. Calibration data should cover varied term values
+and represent reviewed decisions; four samples is only a minimum, not a guarantee
+that the weights are statistically reliable.
+
+This is software calibration of the ELM369 decision-score formula, not calibration
+or control of quantum hardware. All ELM369 callers importing the shared scorer
+continue to use the published defaults unless they explicitly pass different
+weights.
+
 ## Non-goals (v0.1)
 
 - No quantum hardware claims
