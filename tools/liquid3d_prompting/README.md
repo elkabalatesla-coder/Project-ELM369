@@ -20,4 +20,4 @@ python3 -m unittest discover -s tools/liquid3d_prompting/tests -v
 
 `--skill` may be repeated; available IDs and practice exercises are listed by `list-skills`. The resulting prompt packet records selected skill IDs and incorporates their guidance. See `tools/liquid3d_prompting/skillsets.json` and `docs/research/ELM369_VISUAL_MEDIA_SKILLSETS_2026-10-11.md`.
 
-Prompt composition only — no media generation, editing, capture APIs, or credentials. Skillsets are reusable guidance and practice plans, not claims of autonomous expertise or verified output quality.
+Prompt composition only — no media generation, editing, capture APIs, or credentials. With no selected skills, rendered prompt text remains unchanged; JSON packets include an additive `skills` field. Skillsets are reusable guidance and practice plans, not claims of autonomous expertise or verified output quality.

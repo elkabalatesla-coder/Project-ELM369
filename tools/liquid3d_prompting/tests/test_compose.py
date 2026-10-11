@@ -10,6 +10,8 @@ class Liquid3dPromptTests(unittest.TestCase):
         self.assertEqual(packet.mode, "visual")
         self.assertIn("cyan droplet field", packet.rendered)
         self.assertTrue(packet.palette)
+        self.assertEqual(packet.skills, [])
+        self.assertNotIn("ELM369 skill guidance", packet.rendered)
 
     def test_compose_all_modes(self):
         for mode in ("visual", "audio", "animation", "combo"):

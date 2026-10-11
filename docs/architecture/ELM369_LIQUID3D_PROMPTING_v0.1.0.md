@@ -14,7 +14,7 @@ Provide a **command-line prompt composer** for Liquid-3D workstreams:
 
 Prompts are structured packets (JSON + rendered text) so they can be stored in DAX memory or handed to image/video/audio models.
 
-The skillset catalog at `tools/liquid3d_prompting/skillsets.json` covers camera and image/video workflows, drawing, sketching, etching, color, shading, shadowing, painting, accessibility, provenance, and delivery. Skill IDs can be selected when composing a packet; their guidance is included in the rendered prompt and their IDs are recorded in the packet. Skillsets provide repeatable instructions and practice exercises, not media execution or a guarantee of mastery.
+The skillset catalog at `tools/liquid3d_prompting/skillsets.json` covers camera and image/video workflows, drawing, sketching, etching, color, shading, shadowing, painting, accessibility, provenance, and delivery. Skill IDs can be selected when composing a packet; their guidance is included in the rendered prompt and their IDs are recorded in the packet. With no selected skills, rendered prompt text remains unchanged; JSON packets include an additive `skills` field. Skillsets provide repeatable instructions and practice exercises, not media execution or a guarantee of mastery.
 
 ## Type color map (from Artifact Registry)
 
