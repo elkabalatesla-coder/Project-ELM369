@@ -14,8 +14,16 @@ class GyroMatrixTests(unittest.TestCase):
 
     def test_transform_preserves_vector_norm(self):
         vector = (1, -2, 3, 4, -5, 6, 7, -8, 9)
-        output = transform(build_matrix((1.2, -0.7, 2.5), 0.04), vector)
+        matrix = build_matrix((1.2, -0.7, 2.5), 0.04)
+        output = transform(matrix, vector)
         self.assertAlmostEqual(sum(value * value for value in output), sum(value * value for value in vector))
+
+    def test_matrix_rows_are_orthonormal(self):
+        matrix = build_matrix((0.5, -1.1, 2.0), 0.02)
+        for left in range(9):
+            for right in range(9):
+                dot_product = sum(matrix[left][i] * matrix[right][i] for i in range(9))
+                self.assertAlmostEqual(dot_product, 1.0 if left == right else 0.0)
 
     def test_large_finite_rates_remain_bounded(self):
         matrix = build_matrix((1e300, -1e300, 1e300), 1e300)
