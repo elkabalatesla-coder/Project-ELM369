@@ -21,6 +21,7 @@ npm-debug.log*
 
 __pycache__/
 *.py[cod]
+venv/
 
 tools/**/data/
 tools/elm_orchestrator/data/
