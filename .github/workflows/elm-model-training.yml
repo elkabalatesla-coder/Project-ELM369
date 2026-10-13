@@ -12,6 +12,8 @@ on:
       - "data/registries/elm369_model_training.json"
       - "data/registries/elm369_tools.json"
       - ".github/workflows/elm-model-training.yml"
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
