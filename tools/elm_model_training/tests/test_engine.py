@@ -4,7 +4,7 @@ from pathlib import Path
 from unittest import mock
 
 from tools.elm_model_training.cli import main
-from tools.elm_model_training.engine import REGISTRY, catalog, list_plans, plan
+from tools.elm_model_training.engine import catalog, list_plans, plan
 
 
 class ModelTrainingTests(unittest.TestCase):
