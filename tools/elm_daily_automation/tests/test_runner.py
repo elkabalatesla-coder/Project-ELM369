@@ -35,6 +35,51 @@ class DailyAutomationTests(unittest.TestCase):
             )
             self.assertFalse(report.ok)
 
+    def test_outage_report_includes_failed_service_details(self):
+        def stub():
+            return {
+                "status": "attention",
+                "detail": "1 probed, 1 need attention",
+                "services": [
+                    {
+                        "id": "anthropic",
+                        "name": "Anthropic / Claude",
+                        "status": "degraded",
+                        "http_status": 503,
+                        "detail": "HTTP 503",
+                    }
+                ],
+            }
+
+        with tempfile.TemporaryDirectory() as tmp:
+            log = Path(tmp) / "daily_runs.jsonl"
+            report = run_daily(
+                dry_run=True,
+                outage_runner=stub,
+                log_path=log,
+            )
+
+            expected = "Anthropic / Claude (anthropic): degraded, HTTP 503 — HTTP 503"
+            self.assertEqual(report.results[0].items, [expected])
+            row = json.loads(log.read_text(encoding="utf-8").strip().splitlines()[-1])
+            self.assertEqual(row["results"][0]["items"], [expected])
+
+    def test_outage_probe_exception_is_recorded_and_other_tasks_continue(self):
+        def failing_probe():
+            raise TimeoutError("status endpoint timed out")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            report = run_daily(
+                dry_run=True,
+                outage_runner=failing_probe,
+                log_path=Path(tmp) / "daily_runs.jsonl",
+            )
+
+        self.assertEqual(report.results[0].status, "attention")
+        self.assertIn("TimeoutError: status endpoint timed out", report.results[0].detail)
+        self.assertTrue(any(result.task_id == "repo_hygiene" for result in report.results))
+        self.assertFalse(report.ok)
+
     def test_cli_dry_run(self):
         self.assertEqual(main(["run", "--dry-run"]), 0)
 
