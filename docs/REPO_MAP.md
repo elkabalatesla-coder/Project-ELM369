@@ -22,6 +22,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 | ELM orchestrator | `tools/elm_orchestrator/` | Diag / vault-log / QBIT-gated heal / OpenAPI serve / NTP / watermark / optimize | `python3 -m tools.elm_orchestrator diag` |
 | ELM evolution | `tools/elm_evolution/` | Gated DISCOVER→PROPOSE→… lifecycle (no auto prod mutation) | `python3 -m tools.elm_evolution discover` |
 | GitHub issues sync | `tools/github_issues/` | Open issues → vault `sources/github-issues` | `python3 -m tools.github_issues sync` |
+| Model training planner | `tools/elm_model_training/` | Dry-run model training / fine-tuning planning registry | `python3 -m tools.elm_model_training catalog` |
 | ELMDX | `tools/elmdx/` | Android inventory diagnostics (JSON) | `python3 -m tools.elmdx diagnose` |
 | FLUX composer | `tools/elm_flux/` | FLUX prompt compose (no live API in CI) | `python3 -m tools.elm_flux compose "…"` |
 | OMNINET | `tools/omninet/` | `mo*://` namespace router | `python3 -m tools.omninet resolve "mo*://vault"` |

@@ -1,0 +1,90 @@
+{
+  "project_id": "ELM369_JMR08241978202646902",
+  "version": "1.0.0",
+  "updated_at": "2026-10-13T00:00:00Z",
+  "lifecycle": [
+    "data_preparation",
+    "training_fine_tuning",
+    "evaluation",
+    "deployment",
+    "monitoring"
+  ],
+  "guardrails": [
+    "safety_filters",
+    "policy_checks",
+    "rate_limits",
+    "red_team_harness"
+  ],
+  "required_artifacts": [
+    "dataset_version",
+    "feature_or_prompt_spec",
+    "evaluation_suite",
+    "rollback_plan",
+    "human_approval"
+  ],
+  "profiles": [
+    {
+      "id": "rag_copilot",
+      "name": "Retrieval-Augmented Copilot",
+      "default_mode": "retrieval_tune",
+      "risk_tier_default": "medium",
+      "core_algorithms": [
+        "text_embedding",
+        "vector_search_knn_ann",
+        "reranking",
+        "llm_generation_with_system_prompt"
+      ],
+      "evaluation_requirements": [
+        "citation_required",
+        "hallucination_tests",
+        "red_team_prompt_suite"
+      ]
+    },
+    {
+      "id": "risk_scoring",
+      "name": "Propensity / Risk Scoring",
+      "default_mode": "supervised_training",
+      "risk_tier_default": "high",
+      "core_algorithms": [
+        "gradient_boosting",
+        "logistic_regression_baseline",
+        "probability_calibration"
+      ],
+      "evaluation_requirements": [
+        "fairness_metrics",
+        "stability_tests",
+        "challenger_model_comparisons"
+      ]
+    },
+    {
+      "id": "forecasting",
+      "name": "Time-Series Forecasting",
+      "default_mode": "forecast_training",
+      "risk_tier_default": "medium",
+      "core_algorithms": [
+        "arima_ets",
+        "tree_based_forecasting",
+        "deep_forecasting_models_where_justified"
+      ],
+      "evaluation_requirements": [
+        "backtesting",
+        "scenario_analysis"
+      ]
+    },
+    {
+      "id": "recommendation",
+      "name": "Recommendation & Ranking",
+      "default_mode": "ranking_training",
+      "risk_tier_default": "medium",
+      "core_algorithms": [
+        "collaborative_filtering",
+        "learning_to_rank",
+        "llm_reranking_for_context"
+      ],
+      "evaluation_requirements": [
+        "bias_checks",
+        "performance_monitoring"
+      ]
+    }
+  ]
+}

@@ -157,6 +157,15 @@
       "repo_path": "tools/liquid3d_prompting"
     },
     {
+      "id": "MODEL-TRAIN",
+      "name": "Model Training Planner",
+      "phase": "Complete",
+      "completion": 85,
+      "category": "MLOps",
+      "status": "DONE",
+      "repo_path": "tools/elm_model_training"
+    },
+    {
       "id": "GROK-ARC",
       "name": "Grok / Multi-source Archive",
       "phase": "Production",

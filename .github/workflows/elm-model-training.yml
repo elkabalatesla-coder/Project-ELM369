@@ -1,0 +1,24 @@
+name: ELM Model Training Tests
+on:
+  push:
+    paths:
+      - "tools/elm_model_training/**"
+      - "data/registries/elm369_model_training.json"
+      - "data/registries/elm369_tools.json"
+      - ".github/workflows/elm-model-training.yml"
+  pull_request:
+    paths:
+      - "tools/elm_model_training/**"
+      - "data/registries/elm369_model_training.json"
+      - "data/registries/elm369_tools.json"
+      - ".github/workflows/elm-model-training.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run model training tests
+        run: python3 -m unittest discover -s tools/elm_model_training/tests -v

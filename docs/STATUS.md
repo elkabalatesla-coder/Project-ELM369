@@ -5,8 +5,8 @@ Location stamp: Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹
 
 ## Health
 
-- Registry tools: **26** · avg completion **88.3%**
-- By status: `{"DONE": 25, "SCAFFOLD": 1}`
+- Registry tools: **27** · avg completion **88.2%**
+- By status: `{"DONE": 26, "SCAFFOLD": 1}`
 - Artifact sandboxes: verify via `python3 -m tools.elm_artifacts verify`
 - Signed completion certificate: `docs/ELM369_COMPLETION_CERTIFICATE.json` (Joseph Michael Rose · IX JR · 🌹)
 - Grok bot roster (+ daily ops delegation): `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md`
@@ -17,6 +17,7 @@ Shipped across prior PRs + this remaining-scaffold finish pass:
 
 - Core ops: outage monitor, daily automation, status, orchestrator, evolution (gated DONE), QBIT
 - Memory/archive: DAX, grok archive, github issues sync, artifacts gallery, archive snapshot
+- MLOps planning: model training planner (dry-run only)
 - Security/policy: pandora logs, geofence/English policy, watermark e-sign, SEC-MASTER handshake
 - Creative/comms: liquid3d, FLUX dry-run composer (DONE), translator glossary (still SCAFFOLD — no audio), Bo drafts (never sends)
 - Device/data: ELMDX inventory diagnostics (DONE), data-finder (DONE), tokenizer (DONE), omninet (DONE), offline cache (DONE), dashboard/devtools (DONE)
