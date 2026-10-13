@@ -5,8 +5,8 @@ Location stamp: Kokomo, Indiana 46902 USA · Joseph Michael Rose · IX JR 🌹
 
 ## Health
 
-- Registry tools: **26** · avg completion **88.3%**
-- By status: `{"DONE": 25, "SCAFFOLD": 1}`
+- Registry tools: **27** · avg completion **87.7%**
+- By status: `{"DONE": 25, "SCAFFOLD": 2}`
 - Artifact sandboxes: verify via `python3 -m tools.elm_artifacts verify`
 - Signed completion certificate: `docs/ELM369_COMPLETION_CERTIFICATE.json` (Joseph Michael Rose · IX JR · 🌹)
 - Grok bot roster (+ daily ops delegation): `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md`
@@ -17,7 +17,7 @@ Shipped across prior PRs + this remaining-scaffold finish pass:
 
 - Core ops: outage monitor, daily automation, status, orchestrator, evolution (gated DONE), QBIT
 - Memory/archive: DAX, grok archive, github issues sync, artifacts gallery, archive snapshot
-- Security/policy: pandora logs, geofence/English policy, watermark e-sign, SEC-MASTER handshake
+- Security/policy: pandora logs, geofence/English policy, watermark e-sign, SEC-MASTER handshake, security control-plane scaffold
 - Creative/comms: liquid3d, FLUX dry-run composer (DONE), translator glossary (still SCAFFOLD — no audio), Bo drafts (never sends)
 - Device/data: ELMDX inventory diagnostics (DONE), data-finder (DONE), tokenizer (DONE), omninet (DONE), offline cache (DONE), dashboard/devtools (DONE)
 - Mission Control: canonical JSON board `elm369.mission_control_dashboard.v1` (OPERATIONAL); runtime tools are authoritative
@@ -32,6 +32,7 @@ The dashboard runtime is now the canonical operational board. The HTML dashboard
 | ID | Path | Gap |
 |----|------|-----|
 | AUDIO-TX | `tools/elm_translator` | Phrase glossary only — no STT/TTS / audio pipeline / live MT |
+| SEC-CTRL | `tools/elm_security` | Identity resolution + registry scaffold only — no policy execution / response automation |
 
 ## Still waiting on you
 
@@ -53,6 +54,7 @@ The dashboard runtime is now the canonical operational board. The HTML dashboard
 python3 -m tools.elm_status show
 python3 -m tools.elm_policy stamp
 python3 -m tools.elm_dashboard show
+python3 -m tools.elm_security verify
 python3 -m tools.elm_dashboard roster
 python3 -m tools.elm_daily_automation run --dry-run
 python3 -m tools.omninet resolve "mo*://roster"
