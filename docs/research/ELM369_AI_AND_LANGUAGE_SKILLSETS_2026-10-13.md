@@ -1,6 +1,6 @@
 # ELM369 AI and English Language Skillsets
 
-**Date:** 2026-10-13  
+**Date:** 2026-10-13
 **Purpose:** A practical, reusable checklist for AI-assisted work and English spelling, grammar, and proofreading. This is operating guidance, not a claim that a model has been retrained or permanently learned new capabilities.
 
 ## Research basis
