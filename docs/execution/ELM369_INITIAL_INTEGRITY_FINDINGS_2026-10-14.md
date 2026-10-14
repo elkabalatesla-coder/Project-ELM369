@@ -26,6 +26,19 @@ Scope: limited read-only review of repository README.md, docs/ELM369_IDENTITY.md
 - Added those common directory patterns on the isolated work branch while preserving existing ignore rules.
 - **Verification needed:** use git check-ignore against representative paths in a local checkout; ensure no required files are unintentionally ignored.
 
+
+### ELM-ANOM-004 — Vault path contradicts canonical identifier mapping
+- **Status:** OPEN.
+- Search results for vault/ELM369/JMR0824197846902/STATUS.md show that file labeling JMR08241978202646902 as the canonical ID and describing the shorter ID as an alias. This directly conflicts with the current owner-provided mapping in this conversation, where JMR0824197846902 is canonical and JMR08241978202646902 is the companion.
+- **Risk:** vault path, canonical metadata, and tooling could disagree about where source-of-truth records live.
+- **Safe handling:** do not rename vault paths or rewrite records during this pass. Add an explicit alias map and compatibility tests only after reviewing both vault STATUS.md files and the related registry logic.
+
+### ELM-ANOM-005 — Existing repository has implementation beyond the proposed 12% snapshot
+- **Status:** OPEN — metrics need scope reconciliation.
+- docs/STATUS.md and docs/DASHBOARD.md report 26 registry tools, 25 DONE and one SCAFFOLD (88.3% average), while docs/BACKLOG.md identifies AUDIO-TX as the remaining speech pipeline scaffold. These are repository-reported claims, not independently executed test evidence in this session.
+- **Risk:** treating the proposed 12% program estimate as total repository progress would understate existing work; treating 88.3% as production readiness would overstate verified readiness.
+- **Safe handling:** publish separate scope-specific metrics and verify claims against code and tests.
+
 ## Work performed
 - Created isolated branch: work/elm369-master-execution-v1.
 - Added the master execution plan, structured JSON backlog, status model, and this finding log.
