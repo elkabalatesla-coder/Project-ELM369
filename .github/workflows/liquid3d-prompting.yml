@@ -1,14 +1,16 @@
-name: Liquid-3D Prompting Tests
+name: Liquid-3D and NFT Tests
 
 on:
   push:
     paths:
       - 'tools/liquid3d_prompting/**'
+      - 'tools/elm_nft/**'
       - 'schemas/liquid3d/**'
       - '.github/workflows/liquid3d-prompting.yml'
   pull_request:
     paths:
       - 'tools/liquid3d_prompting/**'
+      - 'tools/elm_nft/**'
       - 'schemas/liquid3d/**'
       - '.github/workflows/liquid3d-prompting.yml'
 
@@ -23,4 +25,6 @@ jobs:
         with:
           python-version: '3.x'
       - name: Unit tests
-        run: python -m unittest discover -s tools/liquid3d_prompting/tests -v
+        run: |
+          python -m unittest discover -s tools/liquid3d_prompting/tests -v
+          python -m unittest discover -s tools/elm_nft/tests -v

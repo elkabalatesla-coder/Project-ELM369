@@ -4,6 +4,15 @@
   "source_issue": 29,
   "tools": [
     {
+      "id": "NFT",
+      "name": "Offline NFT Creator and Generator",
+      "phase": "Offline",
+      "completion": 100,
+      "category": "AI/Creative",
+      "status": "DONE",
+      "repo_path": "tools/elm_nft"
+    },
+    {
       "id": "ELMDX",
       "name": "ELMDX Android Diagnostics",
       "phase": "Complete",
