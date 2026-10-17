@@ -164,7 +164,7 @@ small { color: #c3cee1; }
   }
   function pause() {
     if (phase === "running") phase = "paused";
-    else if (phase === "paused") phase = "running";
+    else if (phase === "paused") { phase = "running"; canvas.focus(); }
     accumulator = 0; clearInput(); draw();
   }
   function finish(won) {
