@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: elm369-api
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["elm369-api:8000"]
