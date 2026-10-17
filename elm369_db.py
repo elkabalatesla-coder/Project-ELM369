@@ -1,22 +1,30 @@
 """SQLite persistence for simulated financial transactions."""
 
+from __future__ import annotations
+
+from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
 import sqlite3
-from typing import Any
+from typing import Any, Iterator
 
 
 def _database_path() -> Path:
     return Path(os.environ.get("ELM369_DB_PATH", "elm369_transactions.sqlite3"))
 
 
-def _connect() -> sqlite3.Connection:
+@contextmanager
+def _connect() -> Iterator[sqlite3.Connection]:
     path = _database_path()
     path.parent.mkdir(parents=True, exist_ok=True)
     connection = sqlite3.connect(path, timeout=10)
     connection.row_factory = sqlite3.Row
-    return connection
+    try:
+        with connection:
+            yield connection
+    finally:
+        connection.close()
 
 
 def init_database() -> None:
@@ -39,4 +47,5 @@ def persist_transaction(ledger: dict[str, Any]) -> int:
         cursor = connection.execute(
             "INSERT INTO transactions (ledger_json) VALUES (?)", (serialized,)
         )
-        return int(cursor.lastrowid)
+        transaction_id = int(cursor.lastrowid)
+    return transaction_id

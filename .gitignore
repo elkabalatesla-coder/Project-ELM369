@@ -22,6 +22,7 @@ npm-debug.log*
 __pycache__/
 *.py[cod]
 venv/
+*.egg-info/
 elm369_transactions.sqlite3
 elm369_transactions.sqlite3-*
 

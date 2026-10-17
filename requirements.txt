@@ -3,5 +3,5 @@
 requests>=2.32.0,<3.0.0
 pydantic>=2.0,<3.0
 backports.zoneinfo>=0.2; python_version < "3.9"
-fastapi>=0.143.3,<1.0.0
-uvicorn>=0.54.0,<1.0.0
+fastapi>=0.115.14,<0.116.0
+uvicorn>=0.30.6,<0.31.0

@@ -50,7 +50,7 @@ class LogisticsRequest(RequestModel):
 
 
 class TransactionRequest(RequestModel):
-    base_amount: float = Field(gt=0)
+    base_amount: float = Field(gt=0, le=1_000_000_000_000)
     supply_volatility: float = Field(ge=-1, le=1)
     demand_flux: float = Field(ge=-1, le=1)
 

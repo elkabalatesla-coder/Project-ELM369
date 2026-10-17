@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+import sqlite3
 import tempfile
 import unittest
 
@@ -92,8 +93,6 @@ class ApiTests(unittest.TestCase):
         result = response.json()
         self.assertEqual(result["ledger"]["charity_allocation"], 1.32)
         self.assertGreater(result["transaction_id"], 0)
-
-        import sqlite3
 
         with sqlite3.connect(self.database) as connection:
             rows = connection.execute(

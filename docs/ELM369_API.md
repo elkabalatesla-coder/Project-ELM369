@@ -29,7 +29,7 @@ username defaults to `admin`; set `GRAFANA_ADMIN_USER` to change it.
   (1 + demand_flux)`, rounds the adjusted amount to cents, allocates 1% of that
   adjusted amount to charity (rounded to cents), and persists the ledger in
   SQLite. Both adjustment inputs are in `[-1, 1]`; the base amount must be
-  positive. This endpoint is not a payment processor.
+  greater than zero and at most `1e12`. This endpoint is not a payment processor.
 - `GET /health` reports service status. `GET /metrics` exposes request counts
   and cumulative request duration in Prometheus text format.
 

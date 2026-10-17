@@ -1,5 +1,7 @@
 """Deterministic simulation functions used by the ELM369 API."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from decimal import Decimal, ROUND_HALF_UP
 import heapq
@@ -7,6 +9,7 @@ import math
 
 
 _CENT = Decimal("0.01")
+_MAX_BASE_AMOUNT = 1_000_000_000_000
 _ROUTES = {
     "Kokomo": (("Indianapolis", 1.0), ("Chicago", 3.0)),
     "Indianapolis": (("Kokomo", 1.0), ("Chicago", 3.5), ("Cincinnati", 2.0)),
@@ -33,7 +36,10 @@ def calculate_influence_weight(
         raise ValueError("reach and viral_velocity must be non-negative")
     if not -1 <= sentiment_delta <= 1:
         raise ValueError("sentiment_delta must be between -1 and 1")
-    return reach * viral_velocity * (1 + sentiment_delta)
+    weight = reach * viral_velocity * (1 + sentiment_delta)
+    if not math.isfinite(weight):
+        raise ValueError("calculated influence weight is too large")
+    return weight
 
 
 def initialize_logistics_network() -> dict[str, tuple[tuple[str, float], ...]]:
@@ -46,7 +52,8 @@ def optimize_logistics_route(
 ) -> tuple[list[str], float]:
     """Return the least-cost path and summed cost in the illustrative network."""
     if origin not in network or destination not in network:
-        raise ValueError(f"Unknown logistics node: {origin if origin not in network else destination}")
+        unknown_node = origin if origin not in network else destination
+        raise ValueError(f"Unknown logistics node: {unknown_node}")
     if origin == destination:
         return [origin], 0.0
 
@@ -78,8 +85,8 @@ def process_financial_simulation(config: FinancialTransactionConfig) -> dict[str
     amount = _finite_number(config.base_amount, "base_amount")
     volatility = _finite_number(config.supply_volatility, "supply_volatility")
     demand = _finite_number(config.demand_flux, "demand_flux")
-    if amount <= 0:
-        raise ValueError("base_amount must be greater than zero")
+    if not 0 < amount <= _MAX_BASE_AMOUNT:
+        raise ValueError("base_amount must be greater than zero and at most 1e12")
     if not -1 <= volatility <= 1:
         raise ValueError("supply_volatility must be between -1 and 1")
     if not -1 <= demand <= 1:
