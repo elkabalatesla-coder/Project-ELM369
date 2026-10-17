@@ -36,6 +36,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 | Devtools inventory | `tools/elm_devtools/` | List tools under tools/ | `python3 -m tools.elm_devtools inventory` |
 | Dashboard board | `tools/elm_dashboard/` | JSON board + roster lanes + case queue | `python3 -m tools.elm_dashboard show` / `roster` / `cases` |
 | Toy obfuscate | `tools/elm_obfuscate/` | Classical demo obfuscation (not encryption) | `python3 -m tools.elm_obfuscate obfuscate "…"` |
+| NFT creator / generator | `tools/elm_nft/` | Offline seeded SVG collections, metadata, logarithmic rarity, SHA-256 verification (no minting) | `python3 -m tools.elm_nft --help` |
 
 ### Schedules & related docs
 
