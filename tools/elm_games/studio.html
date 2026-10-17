@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>ELM369 Game Studio</title>
+<style>
+:root { color-scheme: dark; font: 16px system-ui, sans-serif; background: #101725; color: #edf3ff; }
+body { max-width: 1150px; margin: auto; padding: 1rem; }
+h1 { margin-bottom: .2rem; } p { line-height: 1.5; }
+main { display: grid; grid-template-columns: minmax(230px, 1fr) minmax(0, 2fr); gap: 1.5rem; }
+section { background: #192438; border-radius: 12px; padding: 1rem; min-width: 0; }
+label { display: block; margin: .7rem 0; }
+input, select, button { font: inherit; padding: .6rem; border-radius: 6px; border: 1px solid #71829d; }
+input:not([type=file]), select { box-sizing: border-box; width: 100%; }
+input[type=file] { max-width: 100%; box-sizing: border-box; }
+button { background: #263d5a; color: white; cursor: pointer; margin: .2rem; min-height: 44px; }
+button:hover, button:focus-visible { background: #3c5d85; }
+canvas { width: 100%; display: block; background: #0a101c; border: 1px solid #71829d; box-sizing: border-box; }
+canvas:focus-visible { outline: 3px solid #69e0af; }
+.controls { display: flex; flex-wrap: wrap; justify-content: center; gap: .3rem; margin-top: .7rem; }
+.controls button { touch-action: none; user-select: none; min-width: 60px; }
+#message { min-height: 1.5em; color: #ffe1a3; }
+#hud { font-variant-numeric: tabular-nums; }
+small { color: #c3cee1; }
+@media (max-width: 720px) { main { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>ELM369 Game Studio</h1>
+<p>Make, generate, preview, and play offline arcade games. No accounts, downloads, or external services required.</p>
+<main>
+<section aria-labelledby="maker-heading">
+<h2 id="maker-heading">Maker / generator</h2>
+<form id="maker">
+<label>Title <input id="title" maxlength="80" required></label>
+<label>Playable template <select id="genre"><option value="snake">Snake — grid strategy</option><option value="breakout">Breakout — paddle action</option><option value="dodge">Dodge — survival</option></select></label>
+<label>Session <select id="mode"><option value="standard">Standard — unlimited restarts</option><option value="arcade">Arcade — local credits</option></select></label>
+<label>Seed <input id="seed" type="number" min="0" max="4294967295" step="1" required></label>
+<label>Difficulty (1–5) <input id="difficulty" type="number" min="1" max="5" step="1" required></label>
+<label>Accent <input id="color" type="color"></label>
+<button type="submit">Generate / preview</button>
+</form>
+<button id="save-project">Export project JSON</button>
+<button id="save-game">Export playable HTML</button>
+<label>Import project JSON (8 KiB maximum)<input id="import" type="file" accept=".json,application/json"></label>
+<p><small>Exports use the last generated project. Imports are validated data, never scripts. Seeded generation is repeatable with the same inputs.</small></p>
+<p id="message" role="status" aria-live="polite"></p>
+</section>
+<section aria-labelledby="game-title">
+<h2 id="game-title"></h2>
+<p id="hud" role="status" aria-live="off"></p>
+<canvas id="screen" width="576" height="432" tabindex="0" aria-label="Game preview. Use direction keys or the touch buttons."></canvas>
+<div class="controls">
+<button id="start">Start / restart</button><button id="pause">Pause / resume</button><button id="credit">Add arcade credit</button>
+</div>
+<div class="controls" aria-label="Touch direction controls">
+<button data-direction="left" aria-label="Move left">←</button><button data-direction="up" aria-label="Move up">↑</button>
+<button data-direction="down" aria-label="Move down">↓</button><button data-direction="right" aria-label="Move right">→</button>
+</div>
+<p id="instructions"></p>
+<small>Keyboard: arrows / WASD, Enter to start, Space to pause. Standard gamepad: D-pad / left stick, A to start, Start to pause. Touch: hold direction buttons. Arcade credits are free local counters, not payments.</small>
+</section>
+</main>
+<p><small>Browser prototype for modern personal devices and compatible controller-equipped browsers. Static hosting supports online distribution, not multiplayer. Native consoles require vendor SDKs, certification, and separate adapters. Other genres, 3D, asset pipelines, and network play are not implemented.</small></p>
+<script id="project-data" type="application/json">__ELM_PROJECT_JSON__</script>
+<script>
+"use strict";
+(() => {
+  const $ = id => document.getElementById(id);
+  const fields = ["version", "title", "genre", "mode", "seed", "difficulty", "color"];
+  const genres = ["snake", "breakout", "dodge"];
+  const canvas = $("screen"), ctx = canvas.getContext("2d");
+  const W = canvas.width, H = canvas.height, STEP = 1 / 60;
+  const keys = new Set(), touches = new Map();
+  let project, state, phase = "ready", credits = 3, best = 0, rng;
+  let accumulator = 0, last = 0, padStart = false, padPause = false;
+  let padX = 0, padY = 0;
+
+  function validate(data) {
+    if (!data || typeof data !== "object" || Array.isArray(data) ||
+        Object.keys(data).length !== fields.length || !fields.every(k => Object.hasOwn(data, k))) {
+      throw new Error("Project fields do not match version 1.");
+    }
+    if (data.version !== 1 || typeof data.title !== "string" ||
+        data.title.trim().length < 1 || Array.from(data.title.trim()).length > 80 ||
+        /[\u0000-\u001f\u007f-\u009f]/u.test(data.title)) throw new Error("Invalid version or title.");
+    if (!genres.includes(data.genre) || !["standard", "arcade"].includes(data.mode)) throw new Error("Unsupported genre or mode.");
+    if (!Number.isInteger(data.seed) || data.seed < 0 || data.seed > 4294967295 ||
+        !Number.isInteger(data.difficulty) || data.difficulty < 1 || data.difficulty > 5) throw new Error("Invalid seed or difficulty.");
+    if (typeof data.color !== "string" || !/^#[0-9a-f]{6}$/i.test(data.color)) throw new Error("Invalid accent color.");
+    return {...data, title: data.title.trim()};
+  }
+  function randomSource(seed) {
+    let value = seed >>> 0;
+    return () => {
+      value = (Math.imul(1664525, value) + 1013904223) >>> 0;
+      return value / 4294967296;
+    };
+  }
+  function scoreKey() { return `elm369.games.v1.${project.genre}.${project.mode}.${project.difficulty}`; }
+  function readBest() {
+    try {
+      const value = Number(localStorage.getItem(scoreKey()));
+      return Number.isSafeInteger(value) && value >= 0 ? value : 0;
+    } catch (_) { return 0; }
+  }
+  function recordBest() {
+    if (state.score > best) {
+      best = state.score;
+      try { localStorage.setItem(scoreKey(), String(best)); } catch (_) { /* Storage is optional. */ }
+    }
+  }
+  function clearInput() { keys.clear(); touches.clear(); padX = 0; padY = 0; }
+  function food() {
+    const empty = [];
+    for (let y = 0; y < 18; y++) for (let x = 0; x < 24; x++) {
+      if (!state.body.some(p => p.x === x && p.y === y)) empty.push({x, y});
+    }
+    return empty.length ? empty[Math.floor(rng() * empty.length)] : null;
+  }
+  function reset() {
+    rng = randomSource(project.seed);
+    state = {score: 0, lives: 3, elapsed: 0, clock: 0, outcome: ""};
+    if (project.genre === "snake") {
+      Object.assign(state, {body: [{x: 6, y: 9}, {x: 5, y: 9}, {x: 4, y: 9}], dx: 1, dy: 0});
+      state.food = food();
+    } else if (project.genre === "breakout") {
+      state.paddle = W / 2;
+      state.bricks = [];
+      for (let row = 0; row < 4 + project.difficulty; row++) for (let col = 0; col < 9; col++) {
+        state.bricks.push({x: 18 + col * 60, y: 35 + row * 20, color: Math.floor(rng() * 3)});
+      }
+      resetBall();
+    } else Object.assign(state, {x: W / 2 - 12, obstacles: [], spawn: 0});
+    accumulator = 0;
+    clearInput();
+  }
+  function resetBall() {
+    const speed = 170 + 35 * Math.log2(project.difficulty + 1);
+    Object.assign(state, {x: W / 2, y: H - 55, vx: (rng() < .5 ? -1 : 1) * speed * .6, vy: -speed});
+  }
+  function apply(data) {
+    project = validate(data);
+    for (const key of fields) if (key !== "version") $(key).value = project[key];
+    $("game-title").textContent = project.title;
+    $("instructions").textContent = {
+      snake: "Eat gold squares. Avoid walls and yourself; filling the grid wins.",
+      breakout: "Move the paddle to bounce the ball. Clear every brick; three misses end the game.",
+      dodge: "Move left/right to avoid falling blocks. Survive 60 seconds to win.",
+    }[project.genre];
+    phase = "ready"; best = readBest(); reset(); draw();
+    $("message").textContent = "Project ready. Start to play, or export to share.";
+  }
+  function start() {
+    if (project.mode === "arcade" && credits < 1) {
+      $("message").textContent = "Add a free arcade credit before starting."; return;
+    }
+    recordBest();
+    if (project.mode === "arcade") credits--;
+    reset(); phase = "running"; canvas.focus();
+    $("message").textContent = "Playing.";
+  }
+  function pause() {
+    if (phase === "running") phase = "paused";
+    else if (phase === "paused") phase = "running";
+    accumulator = 0; clearInput(); draw();
+  }
+  function finish(won) {
+    phase = "over"; state.outcome = won ? "You win!" : "Game over";
+    recordBest(); clearInput();
+    $("message").textContent = `${state.outcome} Score: ${state.score}.`;
+  }
+  function axis() {
+    const held = direction => keys.has(direction) || [...touches.values()].includes(direction);
+    return {
+      x: Math.max(-1, Math.min(1, Number(held("right")) - Number(held("left")) + padX)),
+      y: Math.max(-1, Math.min(1, Number(held("down")) - Number(held("up")) + padY)),
+    };
+  }
+  function overlap(a, b) {
+    return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+  }
+  function update(dt) {
+    const input = axis(), scale = 1 + Math.log2(project.difficulty);
+    state.elapsed += dt;
+    if (project.genre === "snake") {
+      state.clock += dt;
+      if (state.clock < 1 / (5 + 2 * scale)) return;
+      state.clock = 0;
+      if (input.x && state.dx === 0) { state.dx = Math.sign(input.x); state.dy = 0; }
+      else if (input.y && state.dy === 0) { state.dy = Math.sign(input.y); state.dx = 0; }
+      const head = {x: state.body[0].x + state.dx, y: state.body[0].y + state.dy};
+      const eats = head.x === state.food.x && head.y === state.food.y;
+      const occupied = eats ? state.body : state.body.slice(0, -1);
+      if (head.x < 0 || head.y < 0 || head.x >= 24 || head.y >= 18 ||
+          occupied.some(p => p.x === head.x && p.y === head.y)) { finish(false); return; }
+      state.body.unshift(head);
+      if (eats) {
+        state.score += 10; state.food = food();
+        if (!state.food) finish(true);
+      } else state.body.pop();
+    } else if (project.genre === "breakout") {
+      state.paddle = Math.max(42, Math.min(W - 42, state.paddle + input.x * 360 * dt));
+      state.x += state.vx * dt; state.y += state.vy * dt;
+      if (state.x < 6 || state.x > W - 6) { state.vx *= -1; state.x = Math.max(6, Math.min(W - 6, state.x)); }
+      if (state.y < 6) { state.y = 6; state.vy = Math.abs(state.vy); }
+      const ball = {x: state.x - 6, y: state.y - 6, w: 12, h: 12};
+      if (state.vy > 0 && overlap(ball, {x: state.paddle - 42, y: H - 26, w: 84, h: 12})) {
+        state.y = H - 33; state.vy = -Math.abs(state.vy);
+        state.vx = (state.x - state.paddle) * 5;
+      }
+      const hit = state.bricks.findIndex(b => overlap(ball, {...b, w: 54, h: 14}));
+      if (hit >= 0) {
+        state.bricks.splice(hit, 1); state.vy *= -1; state.score += 10;
+        if (!state.bricks.length) { finish(true); return; }
+      }
+      if (state.y > H + 6) {
+        state.lives--;
+        if (!state.lives) finish(false);
+        else resetBall();
+      }
+    } else {
+      state.x = Math.max(0, Math.min(W - 24, state.x + input.x * 330 * dt));
+      state.spawn -= dt;
+      if (state.spawn <= 0) {
+        state.obstacles.push({x: rng() * (W - 28), y: -28, w: 28, h: 28});
+        state.spawn = .8 / scale;
+      }
+      for (const block of state.obstacles) block.y += (90 + 40 * scale) * dt;
+      state.obstacles = state.obstacles.filter(block => block.y < H + 28);
+      state.score = Math.floor(state.elapsed * 10);
+      if (state.obstacles.some(block => overlap(block, {x: state.x, y: H - 38, w: 24, h: 24}))) finish(false);
+      else if (state.elapsed >= 60) finish(true);
+    }
+  }
+  function draw() {
+    ctx.fillStyle = "#0a101c"; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = project.color;
+    if (project.genre === "snake") {
+      for (const p of state.body) ctx.fillRect(p.x * 24 + 1, p.y * 24 + 1, 22, 22);
+      if (state.food) { ctx.fillStyle = "#ffd166"; ctx.fillRect(state.food.x * 24 + 4, state.food.y * 24 + 4, 16, 16); }
+    } else if (project.genre === "breakout") {
+      for (const b of state.bricks) {
+        ctx.fillStyle = [project.color, "#ffd166", "#91bfff"][b.color]; ctx.fillRect(b.x, b.y, 54, 14);
+      }
+      ctx.fillStyle = project.color; ctx.fillRect(state.paddle - 42, H - 26, 84, 12);
+      ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(state.x, state.y, 6, 0, Math.PI * 2); ctx.fill();
+    } else {
+      ctx.fillRect(state.x, H - 38, 24, 24); ctx.fillStyle = "#ff7e88";
+      for (const b of state.obstacles) ctx.fillRect(b.x, b.y, b.w, b.h);
+    }
+    if (phase !== "running") {
+      ctx.fillStyle = "#000b"; ctx.fillRect(0, H / 2 - 40, W, 80);
+      ctx.fillStyle = "#fff"; ctx.font = "24px system-ui"; ctx.textAlign = "center";
+      ctx.fillText(phase === "ready" ? "Preview — press Start" : phase === "paused" ? "Paused" : state.outcome, W / 2, H / 2 + 8);
+    }
+    $("hud").textContent = `State: ${phase} | Score: ${state.score} | Best: ${best}` +
+      (project.genre === "breakout" ? ` | Lives: ${state.lives}` : "") +
+      (project.mode === "arcade" ? ` | Credits: ${credits}` : "");
+    $("pause").textContent = phase === "paused" ? "Resume" : "Pause";
+  }
+  function gamepad() {
+    const pad = navigator.getGamepads ? [...navigator.getGamepads()].find(p => p && p.mapping === "standard") : null;
+    const pressed = n => Boolean(pad && pad.buttons[n] && pad.buttons[n].pressed);
+    padX = pad ? (pressed(15) ? 1 : pressed(14) ? -1 : Math.abs(pad.axes[0] || 0) > .25 ? pad.axes[0] : 0) : 0;
+    padY = pad ? (pressed(13) ? 1 : pressed(12) ? -1 : Math.abs(pad.axes[1] || 0) > .25 ? pad.axes[1] : 0) : 0;
+    const a = pressed(0), menu = pressed(9);
+    if (a && !padStart && ["ready", "over"].includes(phase)) start();
+    if (menu && !padPause) pause();
+    padStart = a; padPause = menu;
+  }
+  function frame(now) {
+    const delta = last ? Math.min((now - last) / 1000, .1) : 0; last = now;
+    // Hidden tabs neither advance a session nor poll a connected controller.
+    if (!document.hidden) {
+      gamepad();
+      if (phase === "running") {
+        accumulator += delta;
+        while (accumulator >= STEP && phase === "running") { accumulator -= STEP; update(STEP); }
+      }
+    }
+    draw(); requestAnimationFrame(frame);
+  }
+  const directionKeys = {ArrowLeft: "left", a: "left", ArrowRight: "right", d: "right", ArrowUp: "up", w: "up", ArrowDown: "down", s: "down"};
+  window.addEventListener("keydown", event => {
+    if (event.target.closest("input,select,textarea,button")) return;
+    const direction = directionKeys[event.key];
+    if (direction) { event.preventDefault(); keys.add(direction); }
+    if (event.code === "Space") { event.preventDefault(); if (!event.repeat) pause(); }
+    if (event.key === "Enter" && !event.repeat) { event.preventDefault(); start(); }
+  });
+  window.addEventListener("keyup", event => { if (directionKeys[event.key]) keys.delete(directionKeys[event.key]); });
+  window.addEventListener("blur", () => { if (phase === "running") pause(); clearInput(); });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && phase === "running") pause();
+    last = 0;
+  });
+  for (const button of document.querySelectorAll("[data-direction]")) {
+    button.addEventListener("pointerdown", event => {
+      event.preventDefault(); button.setPointerCapture(event.pointerId);
+      touches.set(event.pointerId, button.dataset.direction);
+    });
+    for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) {
+      button.addEventListener(type, event => touches.delete(event.pointerId));
+    }
+  }
+  $("start").onclick = start; $("pause").onclick = pause;
+  $("credit").onclick = () => { credits = Math.min(99, credits + 1); draw(); };
+  $("maker").onsubmit = event => {
+    event.preventDefault();
+    try { apply({version: 1, title: $("title").value, genre: $("genre").value, mode: $("mode").value,
+      seed: Number($("seed").value), difficulty: Number($("difficulty").value), color: $("color").value}); }
+    catch (error) { $("message").textContent = error.message; }
+  };
+  function download(content, name, type) {
+    const url = URL.createObjectURL(new Blob([content], {type}));
+    const anchor = document.createElement("a"); anchor.href = url; anchor.download = name;
+    anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function safeJSON(data) {
+    return JSON.stringify(data).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026");
+  }
+  $("save-project").onclick = () => download(JSON.stringify(project, null, 2), "elm369-game.json", "application/json");
+  $("save-game").onclick = () => {
+    // Export a clean copy, not live UI text which may contain untrusted titles.
+    const copy = document.documentElement.cloneNode(true);
+    copy.querySelector("#project-data").textContent = safeJSON(project);
+    copy.querySelector("#message").textContent = "";
+    copy.querySelector("#game-title").textContent = "";
+    download("<!doctype html>\n" + copy.outerHTML, "elm369-game.html", "text/html");
+  };
+  $("import").onchange = async event => {
+    const file = event.target.files[0]; if (!file) return;
+    try {
+      if (file.size > 8192) throw new Error("Project exceeds 8192 bytes.");
+      apply(JSON.parse(await file.text()));
+    } catch (error) { $("message").textContent = `Import rejected: ${error.message}`; }
+    event.target.value = "";
+  };
+  apply(JSON.parse($("project-data").textContent));
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
