@@ -262,7 +262,10 @@ small { color: #c3cee1; }
     $("pause").textContent = phase === "paused" ? "Resume" : "Pause";
   }
   function gamepad() {
-    const pad = navigator.getGamepads ? [...navigator.getGamepads()].find(p => p && p.mapping === "standard") : null;
+    let pad = null;
+    try {
+      pad = navigator.getGamepads ? [...navigator.getGamepads()].find(p => p && p.mapping === "standard") : null;
+    } catch (_) { /* Permissions Policy may disable optional controller access. */ }
     const pressed = n => Boolean(pad && pad.buttons[n] && pad.buttons[n].pressed);
     padX = pad ? (pressed(15) ? 1 : pressed(14) ? -1 : Math.abs(pad.axes[0] || 0) > .25 ? pad.axes[0] : 0) : 0;
     padY = pad ? (pressed(13) ? 1 : pressed(12) ? -1 : Math.abs(pad.axes[1] || 0) > .25 ? pad.axes[1] : 0) : 0;

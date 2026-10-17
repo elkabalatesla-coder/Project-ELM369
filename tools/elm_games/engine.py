@@ -49,7 +49,11 @@ def load_project(path):
         content = handle.read(MAX_PROJECT_BYTES + 1)
     if len(content) > MAX_PROJECT_BYTES:
         raise ValueError("Project exceeds 8192 bytes")
-    return validate_project(json.loads(content))
+    try:
+        project = json.loads(content)
+    except RecursionError as exc:
+        raise ValueError("Project JSON nesting is too deep") from exc
+    return validate_project(project)
 
 
 def render_html(project):

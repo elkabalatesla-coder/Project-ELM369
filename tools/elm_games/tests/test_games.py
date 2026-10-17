@@ -55,7 +55,7 @@ class GameProjectTests(unittest.TestCase):
     def test_load_limits_and_invalid_json(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "game.json"
-            for content in (" " * 8193, "{", "[]", "null"):
+            for content in (" " * 8193, "{", "[]", "null", "[" * 2000 + "]" * 2000):
                 path.write_text(content)
                 with self.assertRaises(ValueError):
                     load_project(path)
