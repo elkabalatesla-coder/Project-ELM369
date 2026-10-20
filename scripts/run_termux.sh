@@ -21,10 +21,17 @@ try:
 except (OSError, json.JSONDecodeError) as exc:
     print(f"[termux-runner] Cannot read config {config_path}: {exc}", file=sys.stderr)
     raise SystemExit(2)
+if not isinstance(config, dict):
+    print("[termux-runner] Config must contain a JSON object.", file=sys.stderr)
+    raise SystemExit(2)
 
 env = os.environ.copy()
-for key, value in config.get("env", {}).items():
-    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key) or not isinstance(value, str):
+configured_env = config.get("env", {})
+if not isinstance(configured_env, dict):
+    print("[termux-runner] 'env' must be a JSON object.", file=sys.stderr)
+    raise SystemExit(2)
+for key, value in configured_env.items():
+    if not isinstance(key, str) or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key) or not isinstance(value, str):
         print(f"[termux-runner] Invalid environment entry: {key!r}", file=sys.stderr)
         raise SystemExit(2)
     env[key] = value
