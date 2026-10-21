@@ -141,7 +141,7 @@ async function start(id, {fresh = false, replay = null} = {}) {
     canvas, ctx, input: proxyInput, random, settings,
     camera: {
       follow(subject) {
-        if ($('camera-mode').value !== 'follow' || settings.quality === 'low') return;
+        if ($('camera-mode').value !== 'follow' || settings.quality === 'low' || settings.reducedMotion) return;
         camera.follow(() => {
           const target = typeof subject === 'function' ? subject() : subject;
           return {x: (target.x - 480) / 96, y: (270 - target.y) / 96, z: 0};

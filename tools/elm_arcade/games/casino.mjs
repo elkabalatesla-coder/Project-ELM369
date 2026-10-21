@@ -511,15 +511,24 @@ const definitions = [
   { id: 'scratch', title: 'Virtual Scratch', kind: 'scratch', minimal: true, rules: 'Reveal 3 independent symbols, each 0–5. Three equal symbols return gross 20×; otherwise 0×.' },
 ];
 
+const casinoVoices = {
+  poker: ['sine', 440], slots: ['triangle', 330], blackjack: ['triangle', 220],
+  roulette: ['sine', 330], baccarat: ['sine', 550], keno: ['triangle', 550],
+  craps: ['square', 220], scratch: ['sawtooth', 110],
+};
+
 // Minimal table games intentionally omit side bets and advanced betting interfaces.
-export const casinoPlugins = definitions.map(definition => ({
+export const casinoPlugins = definitions.map((definition, index) => ({
   manifest: {
     id: definition.id, title: definition.title, version: '1.0.0', genre: 'casino',
     status: definition.minimal ? 'minimal' : 'complete',
     config: { startingCredits: START, maximumBet: 100, virtualOnly: true, hands: definition.hands || 1 },
     features: ['virtual credits', 'saved bankroll', 'keyboard', 'pointer', 'gross paytable', 'optional rules guide'],
     upgrades: [{ id: `${definition.id}-rules-guide`, cost: 25, title: 'Quick rules guide (display only; odds unchanged)' }],
-    sound: { profile: 'casino', bus: 'sfx', type: 'sine', base: 660 },
+    sound: {
+      profile: 'casino', bus: 'sfx', type: casinoVoices[definition.kind][0],
+      base: casinoVoices[definition.kind][1] + index * 7,
+    },
     description: `${NOTICE} ${definition.kind === 'poker' ? pokerDescription(definition.variant || 'jacks', definition.ultimate) : definition.rules || 'See in-game rules and gross returns.'}`,
     controls: '←/→ select; ↑ hold or increase stake; ↓ decrease stake; Space/Enter play. Click cards, numbers and buttons. Reset button only when bankrupt.',
   },

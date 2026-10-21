@@ -62,6 +62,16 @@ test('every casino manifest is unique, safe and renderable, with genuinely playa
   }
 });
 
+test('all casino games declare distinct valid waveform and pitch profiles', () => {
+  const profiles = new Set();
+  for (const { manifest } of casinoPlugins) {
+    assert.ok(['sine', 'triangle', 'square', 'sawtooth'].includes(manifest.sound.type));
+    assert.ok(Number.isFinite(manifest.sound.base) && manifest.sound.base > 0);
+    profiles.add(`${manifest.sound.type}:${manifest.sound.base}`);
+  }
+  assert.equal(profiles.size, casinoPlugins.length);
+});
+
 test('poker debits once on deal; hold controls preserve cards; draw returns gross rather than profit', () => {
   const instance = harness('video-poker-jacks');
   instance.press('fire');
