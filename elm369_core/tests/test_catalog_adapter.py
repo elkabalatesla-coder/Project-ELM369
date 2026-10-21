@@ -1,6 +1,6 @@
 import unittest
 
-from elm369_core.catalog_adapter import register_catalog
+from elm369_core.catalog_adapter import register_catalog, register_repository_catalog
 from elm369_core.registry import AppendOnlyRegistry
 
 
@@ -31,6 +31,13 @@ class CatalogAdapterTests(unittest.TestCase):
             register_catalog({"artifacts": [
                 {"issue": 25}, {"issue": 25}
             ]}, AppendOnlyRegistry(), source_record_id="fixture")
+
+    def test_repository_artifact_catalog_adapter_smoke(self):
+        result = register_repository_catalog(source_record_id="repository-catalog-smoke")
+        self.assertGreater(result["catalog_count"], 0)
+        self.assertEqual(result["catalog_count"], result["registered_count"])
+        self.assertTrue(result["registry_integrity_ok"])
+        self.assertTrue(result["existing_catalog_verification"]["ok"])
 
 
 if __name__ == "__main__":
