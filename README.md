@@ -1,6 +1,29 @@
 # Project-ELM369
 Visioning advanced Technology of Today and the future and pre-developing programming code for it in advance and coming up with our own intellectual designs
 
+## GitHub push script
+
+Run `./push_to_github.sh "Updated full ELM369 master pipeline and telemetry logs"`
+from your checkout, or run `~/ELM369_Workspace/push_to_github.sh "Your commit message"`
+if the checkout is at `~/ELM369_Workspace`. Without a message, it uses a timestamp.
+If needed, make it executable with `chmod +x push_to_github.sh`.
+
+The script operates in its own directory, initializes a new repository on `main`
+when needed, and pushes the **current branch** to `origin` without switching
+branches or force-pushing. Configure Git `user.name` and `user.email` yourself;
+existing identity settings are never overwritten. GitHub authentication must
+already be available through your Git credential helper or SSH setup. If `origin`
+is missing, the script prompts for its URL.
+
+**Review your files and `.gitignore` first:** the script stages all non-ignored
+changes, including deletions. Do not commit credentials or private telemetry.
+Ignored logs are not added. A clean checkout skips the commit but still pushes
+existing commits. Any Git failure stops the script without reporting success.
+
+Run the isolated script tests with
+`python -m unittest discover -s scripts/tests -v`; Git calls are mocked, so these
+tests never push to GitHub.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today
