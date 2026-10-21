@@ -10,6 +10,22 @@
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#102a42 0,transparent 45%),radial-gradient(ellipse at 90% 20%,#241038 0,transparent 36%),var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer;color:inherit}.shell{max-width:1440px;margin:auto;padding:16px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 4px 18px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px}.mark{width:48px;height:48px;border:2px solid var(--cyan);border-radius:50%;display:grid;place-items:center;color:var(--cyan);font-weight:900;font-size:22px;box-shadow:0 0 18px #00ffd533}.brand h1{margin:0;font-size:clamp(18px,3vw,28px);letter-spacing:.12em}.brand h1 span{color:var(--cyan)}.sub,.muted{color:var(--muted);font-size:12px}.status{color:var(--good);font-size:12px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;margin-top:16px}.sidebar,.panel,.mode-card,.folder{background:linear-gradient(145deg,#0b192bdf,#060d1bdc);border:1px solid var(--line);border-radius:14px}.sidebar{padding:14px;height:max-content}.section-label{font-size:11px;color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;margin:4px 0 10px}.nav{display:grid;gap:6px}.nav button,.mode-card,.tool,.folder button,.program button{background:#091528;border:1px solid #17334c;border-radius:9px;padding:10px;text-align:left}.nav button:hover,.tool:hover,.folder button:hover,.program button:hover{border-color:var(--cyan)}.nav button.active,.mode-card.active{border-color:var(--cyan);box-shadow:inset 0 0 0 1px #00ffd544,0 0 14px #00ffd51a;background:#0b2436}.divider{height:1px;background:var(--line);margin:16px 0}.main{min-width:0;display:grid;gap:16px}.panel{padding:16px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.panel h2{font-size:16px;letter-spacing:.08em;margin:0;color:#bde8ff}.tag{font-size:11px;color:var(--good);border:1px solid #1e6e5b;border-radius:20px;padding:4px 9px}.keyboard-wrap{border:1px solid #16618b;border-radius:12px;background:#030a14;padding:10px;overflow:auto}.keyrows{display:grid;gap:6px;min-width:620px}.keyrow{display:flex;gap:5px;justify-content:center}.key{flex:1;min-width:0;height:38px;border:1px solid #176187;border-radius:6px;background:linear-gradient(180deg,#11243a,#07111f);box-shadow:inset 0 1px #ffffff12,0 2px 0 #02050b;color:#dff8ff;font-size:12px;transition:transform .06s,border-color .06s}.key:hover,.key:focus-visible{border-color:var(--pink);outline:none;color:white}.key:active,.key.pressed{transform:translateY(2px);background:#12334b}.key.wide{flex:1.6}.key.space{flex:5}.key.accent{color:var(--cyan)}.editor{width:100%;min-height:86px;resize:vertical;background:#030a14;border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--text);outline:none}.editor:focus{border-color:var(--cyan)}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.action{border:1px solid #176187;background:#0a2235;border-radius:8px;padding:8px 12px}.action.primary{background:var(--cyan);color:#001018;border-color:var(--cyan);font-weight:700}.action:hover{filter:brightness(1.15)}.modes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}.mode-card{min-height:105px;display:flex;flex-direction:column;gap:6px}.mode-card .emoji{font-size:23px}.mode-card strong{font-size:13px}.mode-card small{color:var(--muted);font-size:11px}.grid-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.toolgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tool{font-size:12px;min-height:58px}.program{display:grid;gap:8px}.program button{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px}.folders{display:grid;gap:7px}.folder button{width:100%;font-size:12px}.notice{font-size:12px;color:var(--muted);margin-top:8px}.hidden{display:none!important}.result{min-height:20px;color:var(--cyan);font-size:12px;margin-top:8px}footer{padding:18px 4px;color:var(--muted);font-size:11px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media(max-width:1050px){.modes{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-bottom{grid-template-columns:1fr 1fr}.grid-bottom .panel:last-child{grid-column:1/-1}}
 @media(max-width:700px){.shell{padding:10px}.layout{grid-template-columns:1fr}.sidebar{order:2}.main{order:1}.sidebar .nav{grid-template-columns:repeat(2,minmax(0,1fr))}.modes{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-bottom{grid-template-columns:1fr}.grid-bottom .panel:last-child{grid-column:auto}.panel{padding:12px}.top{align-items:flex-start}.status{max-width:90px;text-align:right}.key{height:35px}}
+
+/* Display optics, visual tuning, audio controls, and behind-content pin */
+.display-studio{margin:16px 0;padding:16px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,#0b192bef,#060d1be8)}
+.display-studio h2{font-size:16px;letter-spacing:.08em;color:#bde8ff;margin:0 0 12px}
+.studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.studio-group{padding:12px;border:1px solid var(--line);border-radius:12px;background:#050d19}
+.studio-group label{display:flex;justify-content:space-between;gap:12px;font-size:12px;margin:10px 0;color:var(--muted)}
+.studio-group input[type=range],.studio-group select{width:100%;accent-color:var(--cyan)}
+.studio-group select{background:#091528;color:var(--text);border:1px solid #176187;border-radius:8px;padding:8px}
+.display-preview{height:100px;border:1px solid #176187;border-radius:10px;margin-top:10px;display:grid;place-items:center;text-align:center;background:radial-gradient(circle at 35% 25%,#256b80,#081321 68%);font-weight:700;letter-spacing:.12em;transition:filter .15s}
+.display-studio .action{margin:4px 4px 0 0}
+body.display-pinned-behind .display-studio{position:fixed;z-index:1;left:12px;right:12px;bottom:12px;opacity:.32;pointer-events:none;max-height:28vh;overflow:hidden;backdrop-filter:blur(4px)}
+body.display-pinned-behind .display-studio .studio-grid{display:none}
+body.display-pinned-behind .display-studio h2:after{content:" · PINNED BEHIND PAGE CONTENT"}
+@media(max-width:650px){.studio-grid{grid-template-columns:1fr}.display-studio{padding:12px}}
+@media(prefers-reduced-motion:reduce){.display-preview{transition:none}}
 </style>
 </head>
 <body>
@@ -47,7 +63,41 @@
 <section class="panel"><div class="panel-head"><h2>STUDIO PROGRAMS</h2></div><div class="program" id="studioList"></div><div class="panel-head" style="margin-top:16px"><h2>NFT CREATOR</h2></div><div class="program" id="nftList"></div></section>
 <section class="panel"><div class="panel-head"><h2>APP FOLDERS</h2></div><div class="folders" id="appFolders"></div><div class="result" id="folderResult" aria-live="polite"></div></section>
 </div>
-</main></div><footer><span>Project ELM369 · Control Center prototype</span><span>Local-only demo · No system-wide keyboard permissions · No NFT minting or blockchain transactions</span></footer>
+</main></div>
+<section class="display-studio" id="displayStudio" aria-label="Display optics and audio controls">
+ <div class="panel-head"><div><h2>DISPLAY LENS · LIGHT · AUDIO LAB</h2><div class="sub">Adjust this prototype's viewing effect, brightness, contrast, and audio demo controls.</div></div><button class="action" id="pinDisplayBehind" type="button" aria-pressed="false">📌 Pin behind content</button></div>
+ <div class="studio-grid">
+  <div class="studio-group"><strong>Camera-lens viewing presets</strong>
+   <label for="lensPreset">Lens simulation <span id="lensValue">Normal</span></label>
+   <select id="lensPreset"><option value="normal">Normal / neutral</option><option value="wide">Wide-angle</option><option value="ultrawide">Ultra-wide / fisheye</option><option value="telephoto">Telephoto / zoomed</option><option value="macro">Macro / detail</option><option value="portrait">Portrait / softened edges</option><option value="night">Night-vision style</option><option value="thermal">Thermal palette style</option><option value="monochrome">Monochrome</option><option value="vivid">Vivid color</option></select>
+   <div class="display-preview" id="displayPreview">ELM369 DISPLAY PREVIEW</div>
+   <p class="notice">These are visual simulations applied to this page, not a real camera feed or a system-wide optical lens.</p>
+  </div>
+  <div class="studio-group"><strong>Display enhancement</strong>
+   <label for="brightnessControl">Brightness <span id="brightnessValue">100%</span></label><input id="brightnessControl" type="range" min="40" max="160" value="100">
+   <label for="contrastControl">Contrast <span id="contrastValue">100%</span></label><input id="contrastControl" type="range" min="50" max="180" value="100">
+   <label for="saturationControl">Color saturation <span id="saturationValue">100%</span></label><input id="saturationControl" type="range" min="0" max="200" value="100">
+   <label for="darknessControl">Darkness overlay <span id="darknessValue">0%</span></label><input id="darknessControl" type="range" min="0" max="65" value="0">
+   <label for="blueLightControl">Blue-light reduction <span id="blueLightValue">0%</span></label><input id="blueLightControl" type="range" min="0" max="70" value="0">
+   <button class="action" id="resetDisplay" type="button">Reset display</button>
+  </div>
+  <div class="studio-group"><strong>Audio enhancement</strong>
+   <label for="volumeControl">Demo output level <span id="volumeValue">70%</span></label><input id="volumeControl" type="range" min="0" max="100" value="70">
+   <label for="bassControl">Bass / low frequencies <span id="bassValue">0 dB</span></label><input id="bassControl" type="range" min="-12" max="12" value="0">
+   <label for="midControl">Mid frequencies <span id="midValue">0 dB</span></label><input id="midControl" type="range" min="-12" max="12" value="0">
+   <label for="trebleControl">Treble / high frequencies <span id="trebleValue">0 dB</span></label><input id="trebleControl" type="range" min="-12" max="12" value="0">
+   <label for="balanceControl">Left ↔ right balance <span id="balanceValue">Center</span></label><input id="balanceControl" type="range" min="-100" max="100" value="0">
+   <button class="action primary" id="audioTest" type="button">▶ Test tone</button><button class="action" id="stopAudio" type="button">■ Stop audio</button>
+   <p class="notice" id="audioNotice">Audio controls affect a generated test tone only. They do not change device-wide volume or other apps.</p>
+  </div>
+  <div class="studio-group"><strong>Workspace placement</strong>
+   <p class="notice">Enlarge an app to use the full in-page workspace. Pinning behind content keeps this panel as a translucent background layer within this prototype.</p>
+   <button class="action" id="enlargeDisplay" type="button">⛶ Enlarge display lab</button><button class="action" id="unpinDisplayBehind" type="button">Unpin from background</button>
+   <p class="notice">A true always-behind overlay across Android apps requires a native app and explicit OS permissions; a web page cannot place itself behind unrelated apps.</p>
+  </div>
+ </div>
+</section>
+\n<footer><span>Project ELM369 · Control Center prototype</span><span>Local-only demo · No system-wide keyboard permissions · No NFT minting or blockchain transactions</span></footer>
 </div>
 <script>
 const $=s=>document.querySelector(s);
@@ -211,4 +261,37 @@ renderApps();
 })();
 </script>
 
-</body></html>
+
+<script>
+(function(){
+ const $id=id=>document.getElementById(id);
+ const preview=$id("displayPreview"),body=document.body;
+ const presets={
+ normal:"none",wide:"perspective(500px) scaleX(1.08)",ultrawide:"perspective(400px) scaleX(1.2) saturate(1.15)",
+ telephoto:"scale(1.12)",macro:"contrast(1.15) saturate(1.15)",portrait:"contrast(.96) saturate(1.05)",
+ night:"hue-rotate(75deg) saturate(.8)",thermal:"hue-rotate(155deg) saturate(2)",monochrome:"grayscale(1)",vivid:"saturate(1.7) contrast(1.08)"
+ };
+ const lens=$id("lensPreset");
+ function updateDisplay(){
+  const b=+$id("brightnessControl").value,c=+$id("contrastControl").value,s=+$id("saturationControl").value,d=+$id("darknessControl").value,blue=+$id("blueLightControl").value;
+  const extra=" brightness("+b/100+") contrast("+c/100+") saturate("+s/100+")";
+  preview.style.filter=(presets[lens.value]||"none")+extra;
+  preview.style.backgroundImage="linear-gradient(rgba(0,0,0,"+(d/100)+"),rgba(0,0,0,"+(d/100)+")),linear-gradient(rgba(255,160,50,"+(blue/250)+"),rgba(255,160,50,"+(blue/250)+")),radial-gradient(circle at 35% 25%,#256b80,#081321 68%)";
+  $id("lensValue").textContent=lens.options[lens.selectedIndex].text;
+  ["brightness","contrast","saturation","darkness","blueLight"].forEach(k=>{$id(k+"Value").textContent=$id(k+"Control").value+"%"});
+ }
+ ["lensPreset","brightnessControl","contrastControl","saturationControl","darknessControl","blueLightControl"].forEach(id=>$id(id).addEventListener("input",updateDisplay));
+ $id("resetDisplay").addEventListener("click",()=>{lens.value="normal";Object.entries({brightnessControl:100,contrastControl:100,saturationControl:100,darknessControl:0,blueLightControl:0}).forEach(([id,v])=>$id(id).value=v);updateDisplay()});
+ const pin=$id("pinDisplayBehind");
+ pin.addEventListener("click",()=>{const on=!body.classList.contains("display-pinned-behind");body.classList.toggle("display-pinned-behind",on);pin.setAttribute("aria-pressed",String(on));pin.textContent=on?"📌 Pinned behind content":"📌 Pin behind content"});
+ $id("unpinDisplayBehind").addEventListener("click",()=>{body.classList.remove("display-pinned-behind");pin.setAttribute("aria-pressed","false");pin.textContent="📌 Pin behind content"});
+ $id("enlargeDisplay").addEventListener("click",()=>{const el=$id("displayStudio");if(el.requestFullscreen)el.requestFullscreen().catch(()=>{el.scrollIntoView({behavior:"smooth",block:"start"})});else el.scrollIntoView({behavior:"smooth",block:"start"})});
+ ["volume","bass","mid","treble","balance"].forEach(k=>$id(k+"Control").addEventListener("input",()=>{$id(k+"Value").textContent=k==="balance"?($id("balanceControl").value==0?"Center":($id("balanceControl").value<0?"Left ":"Right ")+Math.abs($id("balanceControl").value)+"%"):k==="volume"?$id("volumeControl").value+"%":$id(k+"Control").value+" dB"}));
+ let ctx=null,osc=null,gain=null,pan=null;
+ function stop(){if(osc){try{osc.stop()}catch(e){}osc.disconnect();osc=null}if(gain){gain.disconnect();gain=null}if(pan){pan.disconnect();pan=null}}
+ $id("audioTest").addEventListener("click",async()=>{stop();try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error("Web Audio is unavailable in this browser.");ctx=ctx||new AC();await ctx.resume();osc=ctx.createOscillator();gain=ctx.createGain();pan=ctx.createStereoPanner?ctx.createStereoPanner():null;osc.type="sine";osc.frequency.value=440;gain.gain.value=(+$id("volumeControl").value/100)*0.12;osc.connect(gain);if(pan){pan.pan.value=+$id("balanceControl").value/100;gain.connect(pan);pan.connect(ctx.destination)}else gain.connect(ctx.destination);osc.start();$id("audioNotice").textContent="Playing a 440 Hz test tone. Stop it before leaving this page.";osc.stop(ctx.currentTime+1.2);osc.onended=()=>{stop();$id("audioNotice").textContent="Test tone finished. EQ sliders are prototype settings and are not applied to system audio."}}catch(e){$id("audioNotice").textContent="Audio test unavailable: "+e.message}});
+ $id("stopAudio").addEventListener("click",()=>{stop();$id("audioNotice").textContent="Test tone stopped."});
+ updateDisplay();
+})();
+</script>
+\n</body></html>
