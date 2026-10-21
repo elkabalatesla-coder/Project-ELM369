@@ -37,11 +37,11 @@ class DependencyTests(unittest.TestCase):
 class LifecycleTests(unittest.TestCase):
     def test_missing_evidence_blocks_transition(self):
         with self.assertRaisesRegex(LifecycleError, "missing_evidence"):
-            advance("DISCOVER")
+            advance("SNAPSHOT")
 
-    def test_deploy_requires_human_authorization(self):
+    def test_canary_requires_human_authorization(self):
         with self.assertRaisesRegex(LifecycleError, "human_authorization_required"):
-            advance("SAFETY_CHECK", evidence=["safety_review", "authorization_record"], authorized=False)
+            advance("AUTHORIZATION", evidence=["authorization_record"], authorized=False)
 
     def test_reject_is_terminal(self):
         self.assertEqual(advance("PROPOSE", reject=True), "REJECTED")
