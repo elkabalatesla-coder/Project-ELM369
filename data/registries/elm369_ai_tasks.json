@@ -1,0 +1,91 @@
+{
+  "schema": "elm369.ai_task_registry.v1",
+  "version": "1.0.0",
+  "description": "Offline-first task contracts; provider execution is separate from OMNINET and orchestration.",
+  "tasks": [
+    {
+      "task_id": "text.keyword_extract",
+      "category": "language_retrieval",
+      "description": "Extract frequent non-stopword tokens using a deterministic local baseline; this is not a trained model.",
+      "status": "implemented",
+      "lifecycle": "sandbox",
+      "input_schema": {
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": "string"
+        },
+        "additional_properties": false
+      },
+      "output_schema": {
+        "required": [
+          "keywords"
+        ],
+        "properties": {
+          "keywords": "string_list"
+        }
+      },
+      "limits": {
+        "max_text_length": 8192
+      },
+      "allowed_data_classifications": [
+        "public",
+        "internal"
+      ],
+      "providers": [
+        "builtin_rules",
+        "mock"
+      ],
+      "models": {
+        "builtin_rules": "keyword-frequency-v1",
+        "mock": "fixed-mock-v1"
+      },
+      "default_provider": "builtin_rules",
+      "evaluation_required": true,
+      "consequential": false,
+      "requires_human_approval": false,
+      "evaluation_cases": [
+        {
+          "input": {
+            "text": "alpha beta alpha gamma"
+          },
+          "expected_outputs": {
+            "builtin_rules": {
+              "keywords": [
+                "alpha",
+                "beta",
+                "gamma"
+              ]
+            },
+            "mock": {
+              "keywords": [
+                "mock-result"
+              ]
+            }
+          }
+        },
+        {
+          "input": {
+            "text": "the robots build safe tools"
+          },
+          "expected_outputs": {
+            "builtin_rules": {
+              "keywords": [
+                "build",
+                "robots",
+                "safe",
+                "tools"
+              ]
+            },
+            "mock": {
+              "keywords": [
+                "mock-result"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
