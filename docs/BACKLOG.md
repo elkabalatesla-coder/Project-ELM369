@@ -31,7 +31,7 @@ Finish-pass closeout for all open GitHub issues that can be resolved in-repo.
 | [17](https://github.com/elkabalatesla-coder/Project-ELM369/issues/17) | reinstall all that you can find that was wiped off with IP address Change to Texas and other places other than Kokomo Indiana USA 46902 | DONE | Reinstall/restore represented by tools + artifacts restore |
 | [18](https://github.com/elkabalatesla-coder/Project-ELM369/issues/18) | New for elm  | DONE | sandbox 018 |
 | [19](https://github.com/elkabalatesla-coder/Project-ELM369/issues/19) | new to elm369  | DONE | sandbox 019 |
-| [20](https://github.com/elkabalatesla-coder/Project-ELM369/issues/20) | install  | DONE | Tools installed in-repo |
+| [20](https://github.com/elkabalatesla-coder/Project-ELM369/issues/20) | install  | DONE | Local installer + runtime manifests + validation commands are in-repo |
 | [21](https://github.com/elkabalatesla-coder/Project-ELM369/issues/21) | Iditify with.  | DONE | UUID on identity doc |
 | [22](https://github.com/elkabalatesla-coder/Project-ELM369/issues/22) | Claude's help. | DONE | sandbox 022 |
 | [23](https://github.com/elkabalatesla-coder/Project-ELM369/issues/23) | Developer Tools for Project ELM369 | DONE | tools/elm_devtools |
@@ -85,4 +85,3 @@ ELMDX, FLUX (dry-run), OMNINET, tokenizer, data-finder, offline, evolution, and 
 All recoverable HTML/React/JSON issue sandboxes extracted under `artifacts/sandboxes/` with gallery `artifacts/index.html`.
 
 Sandboxed issues marked DONE (2026-09-05): 11, 16, 18, 19, 22, 24, 25, 26, 27, 28, 29, 38, 39, 40, 47, 52. See `artifacts/FINISH_REPORT_2026-09-05.md`.
-
