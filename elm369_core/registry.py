@@ -8,6 +8,14 @@ def _canonical_json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
+def _detached_json_copy(value: Any) -> Any:
+    """Detach JSON-compatible values so caller-owned nested objects cannot mutate records."""
+    try:
+        return json.loads(_canonical_json(value))
+    except (TypeError, ValueError) as exc:
+        raise ValueError("record_must_be_json_serializable") from exc
+
+
 class AppendOnlyRegistry:
     """Minimal reference implementation; persistence adapters are intentionally separate."""
     def __init__(self) -> None:
@@ -21,18 +29,16 @@ class AppendOnlyRegistry:
             raise ValueError("record_must_be_object")
         if record_id in self._records:
             raise ValueError("immutable_record_id_exists:" + record_id)
-        payload = dict(record)
+        payload = _detached_json_copy(record)
         digest = hashlib.sha256(_canonical_json(payload).encode("utf-8")).hexdigest()
-        stored = {"record_id": record_id, "record": payload, "sha256": digest}
-        self._records[record_id] = stored
+        self._records[record_id] = {"record_id": record_id, "record": payload, "sha256": digest}
         self._order.append(record_id)
         return self.get(record_id)
 
     def get(self, record_id: str) -> Dict[str, Any]:
         if record_id not in self._records:
             raise KeyError(record_id)
-        stored = self._records[record_id]
-        return json.loads(_canonical_json(stored))
+        return _detached_json_copy(self._records[record_id])
 
     def list_records(self) -> List[Dict[str, Any]]:
         return [self.get(record_id) for record_id in self._order]
