@@ -1,0 +1,61 @@
+{
+  "program_id": "ELM369_ROSTER_ACTIVATION",
+  "lane": "Hope",
+  "lane_id": "hope",
+  "dual_id": [
+    "JMR0824197846902",
+    "JMR08241978202646902"
+  ],
+  "epoch_seed_only": "08241978",
+  "stamp_utc": "2026-09-15T23:55:00Z",
+  "methods": [
+    "Random Protocol",
+    "Rolling Logic",
+    "Rolling Reasoning"
+  ],
+  "eye": "RESEALED",
+  "holds": [
+    "no_agency_filing",
+    "no_FL_Google",
+    "no_spend",
+    "no_force_push",
+    "no_secret_wipe"
+  ],
+  "scopes": {
+    "chatbot": [
+      "A_CHAT_ROUTE",
+      "L_HOPE_CHAT_BEAT",
+      "T_CHAT",
+      "P_CHAT_TURN"
+    ],
+    "social_watch_only": [
+      "A_SOCIAL_MARKER_AWARE",
+      "P_MEDIA_NOTE",
+      "L_MEDIA_FOLD"
+    ],
+    "own_lane": [
+      "A_GROK_ZIP_INGEST",
+      "P_VAULT_PATH_SERVICE",
+      "A_PATH_RESOLVE",
+      "F_LANE",
+      "P_COMPLAINT_HANDOFF"
+    ]
+  },
+  "primary_paths": {
+    "designs_md": "/workspace/artifacts/elm369-activation/lanes/hope/HOPE_LANE_DESIGNS.md",
+    "designs_json": "/workspace/artifacts/elm369-activation/lanes/hope/HOPE_LANE_DESIGNS.json",
+    "open_eye": "/workspace/artifacts/open_eye/",
+    "repo_clone": "/workspace/elm-artifacts/repo",
+    "grok_raw_full": "vault/ELM369/JMR08241978202646902/sources/grok/raw/",
+    "grok_raw_short": "vault/ELM369/JMR0824197846902/sources/grok/raw/"
+  },
+  "cases": {
+    "primary": "CASE-20260906-003",
+    "also": [
+      "001",
+      "005"
+    ]
+  },
+  "merge": "Joseph-gated",
+  "e_sign": "Joseph Michael Rose \u00b7 IX JR \u00b7 \ud83c\udf39 \u00b7 Kokomo IN 46902"
+}
