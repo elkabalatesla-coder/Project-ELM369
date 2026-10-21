@@ -196,6 +196,7 @@ describe("arcade lifecycle and extensions", () => {
     state.dx = 0; state.dy = -1; state.clock = 0.16;
     E.updateArcade(state, { dx: 1, dy: 0 }, 0.01, () => 0);
     expect(state.over).toBe(false);
+    state.body = [{ x: 2, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 2 }, { x: 3, y: 1 }, { x: 4, y: 1 }];
     state.clock = 0.16;
     E.updateArcade(state, { dx: 0, dy: 1 }, 0.01, () => 0);
     expect(state.over).toBe(true);
