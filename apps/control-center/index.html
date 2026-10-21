@@ -127,8 +127,8 @@ body.keyboard-collapsed .keyboard-control-panel #collapseKeyboard{font-size:12px
 .coin-stage.flip-back .coin-front{transform:translateX(-130%) rotateY(-180deg) rotateZ(-18deg);opacity:0}.coin-stage.flip-back .layer-two{transform:translate(0,0) rotateY(0) scale(1);opacity:1;z-index:5}
 .coin-controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 12px}.coin-position{font-size:11px;color:var(--cyan);font-variant-numeric:tabular-nums}
 .coin-shortcuts{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}.coin-shortcuts button{border:1px solid var(--line);background:#081526;border-radius:999px;padding:7px 10px;font-size:11px}.coin-shortcuts button[aria-current="true"]{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 12px #00ffd51b}
-body[data-shape="round"] .coin-layer,body[data-shape="round"] .coin-console,body[data-shape="round"] .panel,body[data-shape="round"] .wallet-app,body[data-shape="round"] .app-window{border-radius:50%}
-body[data-shape="round"] .coin-layer{width:min(68vw,230px);height:190px}
+body[data-shape="round"] .coin-layer{border-radius:50%;width:min(68vw,230px);height:190px}
+body[data-shape="round"] .coin-console,body[data-shape="round"] .panel,body[data-shape="round"] .wallet-app,body[data-shape="round"] .app-window{border-radius:16px}
 body[data-shape="rounded"] .coin-layer,body[data-shape="rounded"] .panel,body[data-shape="rounded"] .wallet-app,body[data-shape="rounded"] .app-window{border-radius:24px}
 body[data-shape="hex"] .coin-layer{border-radius:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
 body[data-shape="hex"] .panel,body[data-shape="hex"] .wallet-app,body[data-shape="hex"] .app-window{border-radius:4px}
@@ -198,6 +198,7 @@ function activateCoin(item){
 }
 function paintCoin(){const item=coinItems[coinIndex];document.getElementById("frontCoinIcon").textContent=item.icon;document.getElementById("frontCoinTitle").textContent=item.title;document.getElementById("frontCoinHint").textContent=item.desc;front.setAttribute("aria-label","Current coin: "+item.title);document.getElementById("coinPosition").textContent=(coinIndex+1)+" / "+coinItems.length;const shortcuts=document.getElementById("coinShortcuts");shortcuts.innerHTML="";coinItems.forEach((it,i)=>{const b=document.createElement("button");b.textContent=it.icon+" "+it.title;b.setAttribute("aria-current",String(i===coinIndex));b.addEventListener("click",()=>switchCoin(i));shortcuts.appendChild(b)});}
 function switchCoin(next){if(coinBusy||next===coinIndex)return;coinBusy=true;const forward=(next-coinIndex+coinItems.length)%coinItems.length<=coinItems.length/2;stage.classList.toggle("flip-back",!forward);stage.classList.add("flipping");setTimeout(()=>{coinIndex=next;paintCoin();stage.classList.remove("flipping","flip-back");coinBusy=false;activateCoin(coinItems[coinIndex]);},matchMedia("(prefers-reduced-motion: reduce)").matches?0:300);}
+document.querySelectorAll("[data-coin]").forEach(b=>b.addEventListener("click",()=>{const id=b.dataset.coin;const i=coinItems.findIndex(item=>item.id===id);if(i>=0)switchCoin(i)}));
 document.getElementById("coinNext").addEventListener("click",()=>switchCoin((coinIndex+1)%coinItems.length));
 document.getElementById("coinPrev").addEventListener("click",()=>switchCoin((coinIndex-1+coinItems.length)%coinItems.length));
 front.addEventListener("click",()=>switchCoin((coinIndex+1)%coinItems.length));
