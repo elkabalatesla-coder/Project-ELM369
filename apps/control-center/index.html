@@ -58,4 +58,71 @@ $("#folderNav").addEventListener("click",e=>{const b=e.target.closest("[data-fol
 $("#sendText").onclick=runTool;$("#clearText").onclick=()=>{$("#typingArea").value="";$("#typingResult").textContent="Typing area cleared."};$("#backspace").onclick=()=>pressKey("Backspace",$("#backspace"));$("#copyText").onclick=async()=>{try{await navigator.clipboard.writeText($("#typingArea").value);$("#typingResult").textContent="Text copied."}catch{$("#typingResult").textContent="Clipboard permission unavailable; select and copy the text manually."}};
 buildKeyboard();renderModeCards();renderPrograms();renderFolders();renderMode();
 </script>
+
+<style>
+/* ELM369 app-wallet and pull-out workspace layer */
+.wallet-launch{position:fixed;z-index:80;right:16px;bottom:16px;display:flex;gap:8px;align-items:center}
+.wallet-launch button{border:1px solid var(--cyan);border-radius:999px;background:#071a2aee;box-shadow:0 0 18px #00ffd533;padding:11px 15px;color:var(--cyan);font-weight:700}
+.wallet-launch button:focus-visible,.window-action:focus-visible{outline:2px solid white;outline-offset:3px}
+.wallet-drawer{position:fixed;z-index:90;inset:auto 0 0;background:#07101cf7;border:1px solid #176187;border-bottom:0;border-radius:20px 20px 0 0;padding:18px;transform:translateY(110%);transition:transform .28s ease;max-height:78dvh;overflow:auto;box-shadow:0 -16px 50px #000a;backdrop-filter:blur(16px)}
+.wallet-drawer.open{transform:translateY(0)}
+.wallet-handle{width:44px;height:4px;background:#53758a;border-radius:9px;margin:0 auto 14px}
+.wallet-apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin-top:14px}
+.wallet-app{min-height:100px;text-align:left;border:1px solid var(--line);border-radius:12px;background:linear-gradient(145deg,#10243a,#08111f);padding:12px}
+.wallet-app span{display:block;font-size:24px;margin-bottom:8px}.wallet-app strong{display:block;font-size:12px}.wallet-app small{color:var(--muted);font-size:10px}
+.app-window-layer{position:fixed;z-index:100;inset:0;background:#020610b8;display:flex;align-items:center;justify-content:center;padding:18px;opacity:0;pointer-events:none;transition:opacity .2s}
+.app-window-layer.open{opacity:1;pointer-events:auto}
+.app-window{width:min(820px,100%);height:min(78dvh,720px);background:linear-gradient(160deg,#0c1c30,#050a14);border:1px solid var(--cyan);border-radius:16px;box-shadow:0 0 32px #00ffd522;display:flex;flex-direction:column;overflow:hidden;transform:translateY(28px) scale(.97);transition:transform .24s}
+.app-window-layer.open .app-window{transform:translateY(0) scale(1)}
+.window-head{display:flex;align-items:center;gap:10px;padding:13px 15px;border-bottom:1px solid var(--line);background:#0a1929}
+.window-icon{font-size:23px}.window-title{flex:1;min-width:0}.window-title strong{display:block}.window-title small{color:var(--muted)}
+.window-actions{display:flex;gap:6px}.window-action{border:1px solid #23506a;border-radius:8px;background:#0a2235;padding:7px 10px}.window-action.confirm{background:var(--cyan);color:#001018;border-color:var(--cyan);font-weight:800}
+.window-body{padding:18px;overflow:auto;flex:1}.window-body h3{margin:0 0 8px}.window-body p{color:var(--muted);font-size:13px}.workspace-preview{margin-top:14px;min-height:180px;border:1px dashed #1d607d;border-radius:12px;padding:16px;background:radial-gradient(circle at 50% 0,#00ffd512,transparent 65%)}
+.workspace-items{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.workspace-items button{border:1px solid var(--line);border-radius:8px;background:#091528;padding:9px}
+.pinned-app{position:fixed;z-index:110;right:14px;bottom:76px;width:min(270px,calc(100vw - 28px));background:#081626f5;border:1px solid var(--cyan);border-radius:12px;box-shadow:0 0 20px #00ffd522;padding:11px;backdrop-filter:blur(14px)}
+.pinned-app header{display:flex;align-items:center;gap:8px}.pinned-app header strong{font-size:12px;flex:1}.pinned-app p{font-size:11px;color:var(--muted);margin:8px 0}.pin-actions{display:flex;gap:6px}.pin-actions button{font-size:11px;border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:#0a2235}
+@media(max-width:600px){.wallet-launch{right:10px;bottom:10px}.wallet-launch button{padding:10px 12px}.wallet-drawer{padding:14px}.window-head{padding:10px}.window-action{padding:7px}.app-window-layer{padding:8px}.app-window{height:86dvh}}
+@media(prefers-reduced-motion:reduce){.wallet-drawer,.app-window-layer,.app-window{transition:none}}
+</style>
+<div class="wallet-launch" aria-label="ELM369 wallet launcher">
+<button id="walletToggle" aria-expanded="false" aria-controls="appWallet">▦ ELM369 WALLET</button>
+</div>
+<section class="wallet-drawer" id="appWallet" aria-label="ELM369 app wallet" aria-hidden="true">
+<div class="wallet-handle"></div>
+<div class="panel-head"><div><h2>ELM369 APP WALLET</h2><div class="sub">Pull an app into its own workspace, then return it, shrink it, or pin it.</div></div><button class="action" id="closeWallet" aria-label="Close app wallet">✕</button></div>
+<div class="toolbar"><button class="action" data-wallet-filter="All">All apps</button><button class="action" data-wallet-filter="Studio">Studio</button><button class="action" data-wallet-filter="Creator">Creator</button><button class="action" data-wallet-filter="System">System</button></div>
+<div class="wallet-apps" id="walletApps"></div>
+<p class="notice">Prototype workspace: apps open inside this page. Real app execution, filesystem access, OS overlays, and NFT minting require separate platform integrations and permissions.</p>
+</section>
+<div class="app-window-layer" id="appWindowLayer" aria-hidden="true">
+<section class="app-window" role="dialog" aria-modal="true" aria-labelledby="windowAppTitle">
+<header class="window-head"><span class="window-icon" id="windowAppIcon">▦</span><div class="window-title"><strong id="windowAppTitle">App Workspace</strong><small id="windowAppCategory">ELM369 app window</small></div><div class="window-actions"><button class="window-action" id="shrinkWindow" title="Shrink and pin">↘</button><button class="window-action confirm" id="returnWindow" title="Return to wallet">✔</button></div></header>
+<div class="window-body" id="windowAppBody"></div>
+</section>
+</div>
+<script>
+(function(){
+const apps=[
+{name:"ELM369 Studio",icon:"🎨",category:"Studio",desc:"Create and organize Project ELM369 creative workspaces.",actions:["Open project","New workspace","Assets"]},
+{name:"3D Creator",icon:"🧊",category:"Studio",desc:"A workspace for 3D scenes, objects, and visual assets.",actions:["New scene","Model library","Export settings"]},
+{name:"Video Editor",icon:"🎬",category:"Studio",desc:"A workspace for clips, timeline planning, and effects.",actions:["New timeline","Media bin","Effects"]},
+{name:"Audio Studio",icon:"🎚️",category:"Studio",desc:"A workspace for recording plans, audio assets, and mix sessions.",actions:["New session","Track list","Audio settings"]},
+{name:"NFT Creator",icon:"🪙",category:"Creator",desc:"Design NFT artwork and metadata. Minting is not connected.",actions:["Create artwork draft","Edit metadata","Review collection"]},
+{name:"Collection Manager",icon:"🗂️",category:"Creator",desc:"Organize collection drafts, assets, and metadata records.",actions:["New collection draft","Asset inventory","Metadata checklist"]},
+{name:"Blockchain Tools",icon:"⛓️",category:"Creator",desc:"Inspect blockchain integration options without signing or submitting transactions.",actions:["Network settings","Metadata preview","Transaction checklist"]},
+{name:"Code Workspace",icon:"⌨️",category:"System",desc:"A focused area for code notes and implementation planning.",actions:["New code note","Module map","Test checklist"]},
+{name:"Device & Controller Lab",icon:"🎮",category:"System",desc:"Plan keyboard, gamepad, toggle, and custom-controller mappings.",actions:["Input profiles","Controller map","Capability checklist"]},
+{name:"Security & Provenance",icon:"🛡️",category:"System",desc:"Review identity, evidence, version, and provenance concepts.",actions:["Identity records","Evidence checklist","Audit overview"]}
+];
+const drawer=document.getElementById("appWallet"),toggle=document.getElementById("walletToggle"),grid=document.getElementById("walletApps"),layer=document.getElementById("appWindowLayer");
+let current=null,pinned=new Map(),filter="All";
+function showWallet(open){drawer.classList.toggle("open",open);drawer.setAttribute("aria-hidden",String(!open));toggle.setAttribute("aria-expanded",String(open));if(open)document.getElementById("closeWallet").focus()}
+function renderApps(){grid.innerHTML="";apps.filter(a=>filter==="All"||a.category===filter).forEach(a=>{const b=document.createElement("button");b.className="wallet-app";b.innerHTML="<span>"+a.icon+"</span><strong>"+a.name+"</strong><small>"+a.category+" · Open workspace →</small>";b.addEventListener("click",()=>openApp(a));grid.appendChild(b)})}
+function openApp(app){current=app;document.getElementById("windowAppIcon").textContent=app.icon;document.getElementById("windowAppTitle").textContent=app.name;document.getElementById("windowAppCategory").textContent=app.category+" · ELM369 workspace";const body=document.getElementById("windowAppBody");body.innerHTML="";const h=document.createElement("h3");h.textContent=app.name;const p=document.createElement("p");p.textContent=app.desc;const preview=document.createElement("div");preview.className="workspace-preview";const title=document.createElement("strong");title.textContent="Workspace";const text=document.createElement("p");text.textContent="This is the app's dedicated window area. Its real program adapter can be connected in a later integration step.";const items=document.createElement("div");items.className="workspace-items";app.actions.forEach(label=>{const b=document.createElement("button");b.textContent=label;b.addEventListener("click",()=>{const note=document.createElement("p");note.textContent=label+" selected (prototype action only).";items.appendChild(note)});items.appendChild(b)});preview.append(title,text,items);body.append(h,p,preview);showWallet(false);layer.classList.add("open");layer.setAttribute("aria-hidden","false");document.getElementById("returnWindow").focus()}
+function closeToWallet(){layer.classList.remove("open");layer.setAttribute("aria-hidden","true");showWallet(true);toggle.focus()}
+function shrinkAndPin(){if(!current)return;const old=pinned.get(current.name);if(old)old.remove();const card=document.createElement("section");card.className="pinned-app";card.innerHTML="<header><span>"+current.icon+"</span><strong></strong><button class='window-action' aria-label='Unpin app'>×</button></header><p>Mini workspace pinned on this screen.</p><div class='pin-actions'><button data-reopen>Expand</button><button data-return>Return</button></div>";card.querySelector("strong").textContent=current.name;card.querySelector("[aria-label='Unpin app']").addEventListener("click",()=>{card.remove();pinned.delete(current.name)});card.querySelector("[data-reopen]").addEventListener("click",()=>openApp(current));card.querySelector("[data-return]").addEventListener("click",()=>{card.remove();pinned.delete(current.name);closeToWallet()});document.body.appendChild(card);pinned.set(current.name,card);layer.classList.remove("open");layer.setAttribute("aria-hidden","true");current=null}
+toggle.addEventListener("click",()=>showWallet(!drawer.classList.contains("open")));document.getElementById("closeWallet").addEventListener("click",()=>showWallet(false));document.getElementById("returnWindow").addEventListener("click",closeToWallet);document.getElementById("shrinkWindow").addEventListener("click",shrinkAndPin);document.querySelectorAll("[data-wallet-filter]").forEach(b=>b.addEventListener("click",()=>{filter=b.dataset.walletFilter;renderApps()}));layer.addEventListener("click",e=>{if(e.target===layer)closeToWallet()});document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(layer.classList.contains("open"))closeToWallet();else if(drawer.classList.contains("open"))showWallet(false)}});renderApps();
+})();
+</script>
+
 </body></html>
