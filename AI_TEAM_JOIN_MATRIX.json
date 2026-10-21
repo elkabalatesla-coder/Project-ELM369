@@ -1,0 +1,97 @@
+{
+  "elm369_ai_team_join_matrix": {
+    "version": "2.0.0",
+    "project_id": "ELM369",
+    "tracking_code": "JMR08241978202646902",
+    "signatory": "Joseph Michael Rose (IX JR 🌹)",
+    "purpose": "Standardized entry point for any AI assistant to join, merge, and integrate into Project ELM369 Mission Control. Each AI evaluates the current architecture and inserts itself where it can deliver maximum value without breaking constraints.",
+    "core_constraints": [
+      "No external UI libraries (native SVG / HTML5 Canvas only)",
+      "Backend remains pure Node.js + ws + sqlite3",
+      "24-hour SQLite retention sweep enforced",
+      "Frontend audio uses browser AudioContext only",
+      "Docker network: elm369-net bridge",
+      "Ports: backend 8000, frontend 8080 (Nginx reverse-proxy)",
+      "All changes must preserve digital signature and watermark rules"
+    ],
+    "integration_protocol": {
+      "step_1_declare": "Fill your entry under 'joining_members' with unique agent_id, self-assigned role, and proposed integration point",
+      "step_2_evaluate": "Review current stack (docker-compose.yml, AI-PROMPTS.md, PROJECT_METADATA.json, healthchecks, CI caching)",
+      "step_3_propose": "State exact files you will touch and why that location is optimal",
+      "step_4_merge": "Submit changes via the metadata/v2.0.0-upgraded-dashboard branch or open a focused PR",
+      "step_5_verify": "Ensure docker compose config passes, healthchecks remain green, and CI caching keys stay valid"
+    },
+    "current_operational_agents": [
+      {
+        "agent_id": "ELM369-DIAG-AGENT-01",
+        "role": "Lead Diagnostic & Security Auditor",
+        "status": "OPERATIONAL"
+      },
+      {
+        "agent_id": "ELM369-QBIT-REPAIR-02",
+        "role": "Qbit Self-Healing Engine",
+        "status": "OPERATIONAL"
+      },
+      {
+        "agent_id": "ELM369-OPT-ENGINE-03",
+        "role": "Performance & Logarithmic Optimizer",
+        "status": "OPERATIONAL"
+      },
+      {
+        "agent_id": "ELM369-VAULT-LOGGER-04",
+        "role": "Cryptographic Vault & Audit Logger",
+        "status": "OPERATIONAL"
+      }
+    ],
+    "joining_members": [
+      {
+        "agent_id": "GROK-MISSION-CONTROL",
+        "platform": "Grok / xAI",
+        "self_assigned_role": "Log Analysis, Thread Exception Handling & Networking Specialist",
+        "proposed_integration_point": "docker-compose.yml healthchecks + .github/workflows/docker-ci.yml caching + AI-PROMPTS.md networking section",
+        "rationale": "Already owns the networking, healthcheck, and CI caching expansion; continues ownership of live telemetry handshake debugging",
+        "authority_level": "SYSTEM_ORCHESTRATOR",
+        "status": "ACTIVE",
+        "timestamp": "2026-09-27T13:14:00Z"
+      },
+      {
+        "agent_id": "GEMINI-CONTEXT-ORCHESTRATOR-05",
+        "platform": "Gemini / Google DeepMind",
+        "self_assigned_role": "Adaptive Context Synthesizer & Observability Architect",
+        "proposed_integration_point": "backend/server.js (Native /metrics endpoint) + frontend/app.js (AudioContext & Canvas rendering optimization)",
+        "rationale": "Fills the observability gap without introducing third-party dependencies by serving a pure JSON/Prometheus-compatible telemetry endpoint directly from Node.js, while stabilizing native HTML5 Canvas frame pacing and browser AudioContext lifecycle.",
+        "authority_level": "SYSTEM_ORCHESTRATOR",
+        "status": "ACTIVE",
+        "timestamp": "2026-09-27T13:16:00Z"
+      },
+      {
+        "agent_id": "PLACEHOLDER-FOR-NEXT-AI",
+        "platform": "Any (ChatGPT / Copilot / Meta AI / Claude / etc.)",
+        "self_assigned_role": "To be declared by joining AI",
+        "proposed_integration_point": "Evaluate and choose best location (backend server.js race conditions, SQLite sweep logic, Nginx proxy hardening, deploy job, documentation)",
+        "rationale": "Joining AI decides the highest-leverage insertion point after reading the full stack",
+        "authority_level": "ADVISOR_OR_OPERATOR",
+        "status": "OPEN_SLOT",
+        "instructions_for_joining_ai": "Replace this object with your own declaration. Keep agent_id unique. Preserve the digital signature and constraints."
+      }
+    ],
+    "merge_guidelines": {
+      "preferred_branch": "metadata/v2.0.0-upgraded-dashboard",
+      "fallback": "Create focused feature branch and open PR against main",
+      "required_checks": [
+        "docker compose config --quiet succeeds",
+        "Healthchecks remain green",
+        "CI Buildx cache keys still valid",
+        "No new third-party frameworks introduced unless explicitly requested"
+      ],
+      "signature_rule": "All commits and metadata updates must retain the 🌹 digital signature of Joseph Michael Rose (IX JR)"
+    },
+    "recommended_next_integration_targets": [
+      "backend/server.js – Native /metrics endpoint (Gemini) + SQLite race-condition hardening",
+      "frontend/app.js – Canvas frame pacing & AudioContext lifecycle (Gemini)",
+      "Nginx reverse-proxy – WebSocket upgrade edge cases",
+      "Deploy job – actual cloud target once secrets are set",
+      "Documentation – operator onboarding for the multi-AI workflow"
+    ]
+  }
+}
