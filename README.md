@@ -25,6 +25,29 @@ Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 Overall Weighted Completion: ~70%
 
+## Unity acoustic engine
+
+Import `Assets/Scripts/ELM369BinauralAcousticEngine.cs` into a Unity project and
+attach it to the sound-emitting GameObject. Unity adds the required `AudioSource`
+and `AudioReverbFilter`; assign an audio clip and playback settings separately.
+Select the room geometry layers in `roomGeometryLayer` and add non-trigger
+colliders to the room surfaces. Exclude the emitter's own colliders from those layers.
+
+Optionally define and assign the tags `Wood`, `Felt`, or `Cloth` on those colliders.
+Other tags (including untagged, glass, and stone surfaces) use the hard-surface
+absorption coefficient. The default scan samples 32 random directions over 25 metres.
+Acoustics are computed at startup; call `ComputeRoomAcoustics()` again after moving
+the emitter or changing the room. A scan with no hits disables the filter to avoid
+retaining a previous room's reverb.
+
+The engine selects the `User` reverb preset for custom parameters. Unity's
+`AudioReverbFilter` has no `roomSize` property: the normalized room estimate drives
+the `room` level (millibels), while distance and absorption drive decay and
+high-frequency damping. This is a single-bounce room-reverb approximation, not
+an HRTF/binaural spatializer; binaural rendering requires separate Unity spatializer
+configuration. This repository does not include a Unity project or Unity test runner;
+validate playback and material changes in the target Unity Editor.
+
 
 ---
 
