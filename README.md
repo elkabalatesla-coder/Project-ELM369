@@ -37,3 +37,8 @@ Timestamps:
 E-signature: Esign Joseph Michael Rose
 Eintial: Eintial IX JR
 E-Symbol: 🌹
+
+## Termux
+
+See [the Termux workflow](docs/TERMUX_WORKFLOW.md) for setup, validation,
+focused tests, and device smoke checks.
