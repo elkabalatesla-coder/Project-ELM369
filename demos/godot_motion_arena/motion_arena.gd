@@ -2,7 +2,8 @@ extends Node3D
 ## ELM369 Motion Arena v0.1 — engine adapter prototype.
 ## QBIT-inspired values here are classical deterministic scoring, not quantum computing.
 
-const ARENA_LIMIT := 7.0
+const ARENA_LIMIT_X := 7.0
+const ARENA_LIMIT_Z := 9.0
 const PLAYER_SPEED := 7.0
 const TILT_DEADZONE := 0.10
 const TILT_GAIN := 1.8
@@ -14,8 +15,6 @@ var lives := 3
 var status_label: Label
 var targets: Array[Area3D] = []
 var hazards: Array[Area3D] = []
-var previous_accel := Vector3.ZERO
-var gyro_enabled := false
 
 func _ready() -> void:
 	_build_lighting()
@@ -25,32 +24,31 @@ func _ready() -> void:
 	_build_hud()
 	_spawn_targets()
 	_spawn_hazards()
-	gyro_enabled = Input.get_accelerometer().length() > 0.1
 	_update_hud()
 
 func _process(delta: float) -> void:
 	if lives <= 0:
 		return
-	var axis := _read_horizontal_axis()
-	player.position.x = clampf(player.position.x + axis * PLAYER_SPEED * delta, -ARENA_LIMIT, ARENA_LIMIT)
+	var movement := _read_movement_axes()
+	player.position.x = clampf(player.position.x + movement.x * PLAYER_SPEED * delta, -ARENA_LIMIT_X, ARENA_LIMIT_X)
+	player.position.z = clampf(player.position.z + movement.y * PLAYER_SPEED * delta, -ARENA_LIMIT_Z, ARENA_LIMIT_Z)
 	camera.position = camera.position.lerp(player.position + Vector3(0, 8.5, 11.5), minf(1.0, delta * 3.0))
 	camera.look_at(player.position + Vector3(0, 0.5, 0), Vector3.UP)
 	_check_contacts()
 	_update_hud()
 
-func _read_horizontal_axis() -> float:
-	var keyboard_axis := Input.get_axis("ui_left", "ui_right")
-	if absf(keyboard_axis) > 0.01:
-		return keyboard_axis
-	# Android accelerometer provides gravity/linear-acceleration orientation depending on device.
-	# Calibrate and validate per device before treating this as production input.
+func _read_movement_axes() -> Vector2:
+	var keyboard := Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
+	if keyboard.length() > 0.01:
+		return keyboard.normalized()
+	# Accelerometer axes and neutral orientation vary by hardware and OS.
+	# Treat this as an experimental adapter; calibrate and filter before production use.
 	var accel := Input.get_accelerometer()
 	if accel.length() < 0.1:
-		return 0.0
-	var tilt := accel.x
-	if absf(tilt) < TILT_DEADZONE:
-		return 0.0
-	return clampf(tilt * TILT_GAIN, -1.0, 1.0)
+		return Vector2.ZERO
+	var x_axis := 0.0 if absf(accel.x) < TILT_DEADZONE else clampf(accel.x * TILT_GAIN, -1.0, 1.0)
+	var z_axis := 0.0 if absf(accel.y) < TILT_DEADZONE else clampf(-accel.y * TILT_GAIN, -1.0, 1.0)
+	return Vector2(x_axis, z_axis).limit_length(1.0)
 
 func _build_lighting() -> void:
 	var sun := DirectionalLight3D.new()
@@ -111,7 +109,7 @@ func _build_hud() -> void:
 	add_child(layer)
 	var panel := PanelContainer.new()
 	panel.position = Vector2(18, 18)
-	panel.custom_minimum_size = Vector2(360, 100)
+	panel.custom_minimum_size = Vector2(430, 110)
 	layer.add_child(panel)
 	status_label = Label.new()
 	status_label.add_theme_font_size_override("font_size", 18)
@@ -167,7 +165,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _update_hud() -> void:
 	if is_instance_valid(status_label) and lives > 0:
-		status_label.text = "ELM369 MOTION ARENA\nScore: %d   Lives: %d\nMove: ← / → or tilt phone | Avoid red hazards | Collect green targets" % [score, lives]
+		status_label.text = "ELM369 MOTION ARENA\nScore: %d   Lives: %d\nMove: arrows or tilt phone | Avoid red hazards | Collect green targets" % [score, lives]
 
 func _material(tint: Color, metallic_value: float, roughness_value: float) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
