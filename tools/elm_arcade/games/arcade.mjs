@@ -31,18 +31,89 @@ const positions = (value, visit, path = '', seen = new WeakSet()) => {
   if (Number.isFinite(value.x) && Number.isFinite(value.y)) visit(value, path);
   for (const [key, child] of Object.entries(value)) positions(child, visit, `${path}/${key}`, seen);
 };
-const finiteTree = value => {
-  if (typeof value === 'number') return Number.isFinite(value);
-  if (!value || typeof value !== 'object') return true;
-  return Object.values(value).every(finiteTree);
+const number = (lo = -1e9, hi = 1e9) => v => Number.isFinite(v) && v >= lo && v <= hi;
+const integer = (lo = 0, hi = 1e9) => v => Number.isInteger(v) && v >= lo && v <= hi;
+const oneOf = (...values) => v => values.includes(v);
+const boolean = v => typeof v === 'boolean';
+const list = (item, min = 0, max = 256) => v => Array.isArray(v) && v.length >= min &&
+  v.length <= max && Array.from(v).every(item);
+const record = (required, optional = {}) => v => v !== null && typeof v === 'object' &&
+  !Array.isArray(v) && Object.keys(required).every(k => Object.hasOwn(v, k) && required[k](v[k])) &&
+  Object.keys(v).every(k => Object.hasOwn(required, k) || (Object.hasOwn(optional, k) && optional[k](v[k])));
+const count = integer(), timer = number(), positive = number(0, 1e12);
+const point = { x: number(-100, W + 100), y: number(-100, H + 100) };
+const boxSchema = (w, h, extra = {}, optional = {}) => record({ ...point, w: oneOf(w), h: oneOf(h), ...extra }, optional);
+const cell = record({ x: integer(0, 29), y: integer(0, 13) });
+const direction = record({ x: integer(-1, 1), y: integer(-1, 1) });
+const directed = (v, allowStop = false) => direction(v) &&
+  (Math.abs(v.x) + Math.abs(v.y) === 1 || (allowStop && v.x === 0 && v.y === 0));
+const unique = (items, key) => new Set(items.map(key)).size === items.length;
+const cellKey = p => `${p.x},${p.y}`;
+const ballSchema = radius => record({ ...point, r: oneOf(radius), vx: number(-5000, 5000), vy: number(-5000, 5000) });
+const shotSchema = record({ ...point, w: oneOf(5, 6), h: oneOf(12, 14) }, { dead: boolean });
+const offsetSchema = v => list(integer(-1, 1), 2, 2)(v);
+const pieceSchema = record({ x: integer(0, 9), y: integer(0, 17), cells: list(offsetSchema, 3, 4) });
+const saveSchemas = {
+  'space-shooter': record({
+    player: boxSchema(30, 26), shots: list(shotSchema),
+    enemies: list(boxSchema(28, 25, { phase: number(0, 6.28), fire: timer }, { dead: boolean })),
+    hostile: list(boxSchema(7, 10, { vx: number(-85, 85) }, { dead: boolean })),
+    kills: count, spawn: timer, fire: timer, hurt: timer,
+  }),
+  'brick-breaker': record({
+    paddle: record({ ...point, w: oneOf(105, 145), h: oneOf(14) }), ball: ballSchema(8),
+    bricks: list(boxSchema(82, 20, { hp: integer(0, 2) }), 40, 70), waiting: boolean, cleared: count,
+  }),
+  snake: record({
+    body: list(cell, 3, 419), food: cell, direction: v => directed(v),
+    queued: v => directed(v), timer, eaten: count,
+  }),
+  'maze-chase': record({
+    player: record({ x: integer(0, 18), y: integer(0, 10) }),
+    ghosts: list(record({ x: integer(0, 18), y: integer(0, 10) }), 2, 2),
+    pellets: list(v => typeof v === 'string' && /^\d{1,2},\d{1,2}$/.test(v), 0, 209),
+    power: number(-1e9, 5), timer, ghostTimer: timer, invincible: number(-1e9, 4),
+    direction: v => directed(v, true), desired: v => directed(v, true),
+  }),
+  platformer: record({
+    player: boxSchema(25, 34, { vy: number(-1000, 2000) }),
+    coins: list(boolean, 3, 3), grounded: boolean, hurt: timer,
+  }),
+  'endless-runner': record({
+    player: boxSchema(28, 38, { vy: number(-1000, 2000) }),
+    obstacles: list(record({ ...point, w: integer(25, 39), h: oneOf(40) })),
+    distance: positive, spawn: timer,
+  }),
+  racing: record({
+    player: boxSchema(35, 60),
+    cars: list(boxSchema(48, 60, { baseX: oneOf(305, 415, 525, 625), phase: number(0, 6.28) })),
+    distance: positive, spawn: timer, hurt: timer,
+  }),
+  fighting: record({
+    player: boxSchema(48, 100), enemy: boxSchema(48, 100), hp: number(1, 100),
+    enemyHP: number(1, 2e7), cooldown: timer, enemyCooldown: timer, flash: timer, enemyFlash: timer,
+  }),
+  'falling-blocks': record({
+    board: list(list(oneOf(0, 1), 10, 10), 18, 18), piece: pieceSchema,
+    lines: count, timer, repeat: timer,
+  }),
+  pinball: record({ ball: ballSchema(9), waiting: boolean, hits: count }),
+  rhythm: record({
+    notes: list(record({ lane: integer(0, 3), y: number(60, 478) }, { dead: boolean }), 0, 32),
+    streak: count, hits: count, misses: count, health: integer(1, 8), spawn: timer,
+  }),
+  'tower-defense': record({
+    selected: integer(0, 4), gold: integer(0, 1e12),
+    towers: list(record({ ...point, pad: integer(0, 4), cooldown: timer }), 0, 5),
+    enemies: list(record({ ...point, hp: integer(1, 1e6), dead: oneOf(false) })),
+    spawned: count, killed: count, spawn: timer,
+  }),
 };
-const compatible = (template, value) => {
-  if (Array.isArray(template)) return Array.isArray(value) && value.length <= 4096 &&
-    (!template.length || value.every(item => compatible(template[0], item)));
-  if (template && typeof template === 'object') return value && typeof value === 'object' &&
-    !Array.isArray(value) && Object.keys(template).every(key => compatible(template[key], value[key]));
-  return typeof value === typeof template && (typeof value !== 'number' || Number.isFinite(value));
-};
+const validSave = (id, saved) => record({
+  game: oneOf(id), score: integer(0, 1e12), level: integer(1, 1e6),
+  lives: integer(1, id === 'tower-defense' ? 10 : ['snake', 'endless-runner', 'falling-blocks'].includes(id) ? 1 : 3),
+  time: number(0, 1e9), over: oneOf(false), rng: integer(0, 0xffffffff), data: saveSchemas[id],
+})(saved);
 
 function plugin(id, title, genre, status, description, controls, upgrades, build, color) {
   return {
@@ -86,10 +157,7 @@ function plugin(id, title, genre, status, description, controls, upgrades, build
       };
       const saved = context.load?.();
       const loaded = saved?.game === id ? saved : saved?.data?.game === id ? saved.data : null;
-      if (loaded && !loaded.over && compatible(snapshot(), loaded) && finiteTree(loaded) && loaded.score >= 0 &&
-          loaded.level >= 1 && loaded.lives > 0 && loaded.time >= 0 &&
-          Number.isInteger(loaded.rng) && loaded.rng >= 0 && loaded.rng < 0x100000000 &&
-          loaded.data && Object.keys(game.data()).every(key => Object.hasOwn(loaded.data, key))) {
+      if (validSave(id, loaded) && (!game.valid || game.valid(loaded.data, loaded))) {
         game.restore(copy(loaded.data));
         for (const key of Object.keys(state)) state[key] = loaded[key];
         randomState = loaded.rng;
@@ -271,6 +339,12 @@ function breaker(a) {
       if (waiting) text(g, 'FIRE / CONFIRM to launch', 345, 320, 22);
     },
     data: () => ({ paddle: p, ball, bricks, waiting, cleared }),
+    valid(d, saved) {
+      const rows = Math.min(7, 3 + saved.level);
+      return d.bricks.length === rows * 10 && unique(d.bricks, cellKey) &&
+        d.bricks.every(b => Number.isInteger((b.x - 35) / 90) && b.x >= 35 && b.x <= 845 &&
+          Number.isInteger((b.y - 65) / 28) && b.y >= 65 && b.y <= 65 + (rows - 1) * 28);
+    },
     restore(d) { Object.assign(p, d.paddle); Object.assign(ball, d.ball); ({ bricks, waiting, cleared } = d); },
   };
 }
@@ -317,6 +391,11 @@ function snake(a) {
       if (food) orb(g, ox + food.x * cell + cell / 2, oy + food.y * cell + cell / 2, 9, '#ff8c7a');
     },
     data: () => ({ body, food, direction: dir, queued, timer, eaten }),
+    valid(d) {
+      return unique(d.body, cellKey) && !d.body.some(p => cellKey(p) === cellKey(d.food)) &&
+        d.body.every((p, i) => !i || Math.abs(p.x - d.body[i - 1].x) + Math.abs(p.y - d.body[i - 1].y) === 1) &&
+        !(d.direction.x === -d.queued.x && d.direction.y === -d.queued.y);
+    },
     restore(d) { replace(body, d.body); ({ food, queued, timer, eaten } = d); dir = d.direction; },
   };
 }
@@ -393,6 +472,13 @@ function maze(a) {
       if (power > 0) text(g, `POWER ${Math.ceil(power)}`, 15, 80, 17);
     },
     data: () => ({ player: p, ghosts, pellets: [...pellets], power, timer, ghostTimer, invincible, direction, desired }),
+    valid(d) {
+      return walkable(d.player.x, d.player.y) && d.ghosts.every(e => walkable(e.x, e.y)) &&
+        new Set(d.pellets).size === d.pellets.length && d.pellets.every(key => {
+          const [x, y] = key.split(',').map(Number);
+          return key === `${x},${y}` && walkable(x, y);
+        });
+    },
     restore(d) {
       Object.assign(p, d.player); pellets = new Set(d.pellets);
       ({ ghosts, power, timer, ghostTimer, invincible, direction, desired } = d);
@@ -602,6 +688,20 @@ function blocks(a) {
       text(g, `Lines ${lines}`, 630, 220, 23);
     },
     data: () => ({ board, piece, lines, timer, repeat }),
+    valid(d) {
+      const key = cells => cells.map(([x, y]) => `${x},${y}`).sort().join(';');
+      const candidates = [];
+      for (const shape of shapes) {
+        let rotated = shape;
+        for (let i = 0; i < 4; i++) {
+          candidates.push(key(rotated)); rotated = rotated.map(([x, y]) => [-y, x]);
+        }
+      }
+      return candidates.includes(key(d.piece.cells)) && d.piece.cells.every(([dx, dy]) => {
+        const x = d.piece.x + dx, y = d.piece.y + dy;
+        return x >= 0 && x < cols && y >= 0 && y < rows && !d.board[y][x];
+      });
+    },
     restore(d) { replace(board, d.board); ({ piece, lines, timer, repeat } = d); },
   };
 }
@@ -734,6 +834,11 @@ function defense(a) {
       text(g, `Gold ${gold}   Build 50   Pad ${selected + 1}`, 280, 100, 22);
     },
     data: () => ({ selected, gold, towers, enemies, spawned, killed, spawn }),
+    valid(d) {
+      return unique(d.towers, t => t.pad) &&
+        d.towers.every(t => t.x === pads[t.pad].x && t.y === pads[t.pad].y) &&
+        d.enemies.every(e => e.y === 280 && e.x >= 0 && e.x <= W);
+    },
     restore(d) { replace(towers, d.towers); replace(enemies, d.enemies); ({ selected, gold, spawned, killed, spawn } = d); },
   };
 }

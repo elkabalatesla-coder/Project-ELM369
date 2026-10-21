@@ -355,3 +355,95 @@ test('supplied RNG drives deterministic sessions without Math.random fallback', 
     }
   } finally { Math.random = fallback; }
 });
+
+function rejectsSave(id, corrupt) {
+  const fresh = harness(id).game.serialize(), saved = structuredClone(fresh);
+  saved.score = 123; saved.time = 12;
+  corrupt(saved.data, saved);
+  const h = harness(id, [], saved);
+  assert.deepEqual(h.game.serialize(), fresh, `${id}: invalid save must not partially restore`);
+  assert.doesNotThrow(() => { h.step(180); h.game.render(0.5); });
+}
+
+const corruptions = {
+  'space-shooter': [
+    d => { d.shots = [null]; }, d => { d.enemies = [null]; }, d => { d.hostile = [null]; },
+    d => { d.shots = Array(1); }, d => { d.shots = [{ x: 0, y: 0 }]; },
+    d => { d.enemies = [{ x: 0, y: 0, w: 28, h: 25, phase: 0, fire: 'soon' }]; },
+  ],
+  'brick-breaker': [
+    d => { d.bricks = []; }, d => { d.bricks[0] = null; }, d => { d.bricks.pop(); },
+    d => { d.bricks[0].hp = 3; }, d => { d.bricks[1] = { ...d.bricks[0] }; },
+    d => { d.bricks[0].x = 36; },
+  ],
+  snake: [
+    d => { d.body = []; }, d => { d.body = [null]; }, d => { d.body.length = 1; },
+    d => { d.body[0].x = 30; }, d => { d.body[1] = { ...d.body[0] }; },
+    d => { d.body[1].y = 10; }, d => { d.food = { ...d.body[0] }; },
+    d => { d.queued = { x: 0, y: 0 }; }, d => { d.queued = { x: -1, y: 0 }; },
+  ],
+  'maze-chase': [
+    d => { d.ghosts = []; }, d => { d.ghosts = [null, null]; },
+    d => { d.ghosts[0].x = 19; }, d => { d.player = { x: 0, y: 0 }; },
+    d => { d.pellets = [null]; }, d => { d.pellets = ['0,0']; },
+    d => { d.pellets.push(d.pellets[0]); }, d => { d.direction = { x: 1, y: 1 }; },
+  ],
+  platformer: [
+    d => { d.coins = []; }, d => { d.coins[0] = null; }, d => { d.coins.push(true); },
+    d => { d.player = null; }, d => { d.player.w = -25; },
+  ],
+  'endless-runner': [
+    d => { d.obstacles = [null]; },
+    d => { d.obstacles = [{ x: 960, y: 418, w: -1, h: 40 }]; },
+    d => { d.player.vy = NaN; }, d => { d.spawn = Infinity; },
+  ],
+  racing: [
+    d => { d.cars = [null]; },
+    d => { d.cars = [{ x: 305, y: 60, w: 48, h: 60, baseX: 999, phase: 0 }]; },
+    d => { d.player.h = 0; },
+  ],
+  fighting: [
+    d => { d.player = null; }, d => { d.enemy = []; },
+    d => { d.hp = '100'; }, d => { d.enemyHP = 0; },
+  ],
+  'falling-blocks': [
+    d => { d.board = []; }, d => { d.board.pop(); }, d => { d.board[0].pop(); },
+    d => { d.board[0].push(0); }, d => { d.board[0] = null; },
+    d => { d.board[0] = Array(10); }, d => { d.board[0][0] = 2; },
+    d => { d.piece.cells = []; }, d => { d.piece.cells = [null, null, null]; },
+    d => { d.piece.x = 10; }, d => { d.piece.y = 18; },
+    d => { d.piece.cells = [[0, 0], [0, 0], [1, 0]]; },
+    d => { const [x, y] = d.piece.cells[0]; d.board[d.piece.y + y][d.piece.x + x] = 1; },
+    d => { d.piece.x = 0; d.piece.cells = [[-1, 0], [0, 0], [1, 0]]; },
+  ],
+  pinball: [
+    d => { d.ball = null; }, d => { d.ball.r = -9; }, d => { d.ball.vx = Infinity; },
+  ],
+  rhythm: [
+    d => { d.notes = [null]; }, d => { d.notes = [{ lane: 4, y: 60 }]; },
+    d => { d.notes = [{ lane: -1, y: 60 }]; }, d => { d.health = 0; },
+  ],
+  'tower-defense': [
+    d => { d.towers = [null]; }, d => { d.enemies = [null]; }, d => { d.selected = 5; },
+    d => { d.towers = [{ x: 170, y: 210, pad: 5, cooldown: 0 }]; },
+    d => { d.towers = [{ x: 171, y: 210, pad: 0, cooldown: 0 }]; },
+    d => { d.towers = Array(2).fill({ x: 170, y: 210, pad: 0, cooldown: 0 }); },
+    d => { d.enemies = [{ x: 0, y: 280, hp: 0, dead: false }]; },
+  ],
+};
+for (const [id, cases] of Object.entries(corruptions)) {
+  test(`${id}: rejects malformed saves and retains a healthy initialized state`, () => {
+    cases.forEach(corrupt => rejectsSave(id, corrupt));
+  });
+}
+
+test('all games reject malformed shared state before restoring entities', () => {
+  for (const { manifest } of arcadePlugins) {
+    for (const change of [
+      s => { s.score = NaN; }, s => { s.score = -1; }, s => { s.level = 0; },
+      s => { s.level = 1.5; }, s => { s.time = Infinity; }, s => { s.rng = 0x100000000; },
+      s => { s.lives = 11; }, s => { s.over = true; },
+      s => { s.data = {}; }, s => { s.data.unexpected = { nested: null }; },
+    ]) rejectsSave(manifest.id, (_, s) => change(s));
+  }
+});
