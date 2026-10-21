@@ -1,0 +1,237 @@
+{
+  "schema_version": "1.0.0",
+  "project": "ELM369",
+  "canonical_reference": "ELM369-JMR0824197846902-JMR08241978202646902",
+  "identifiers": {
+    "canonical": "JMR0824197846902",
+    "companion": "JMR08241978202646902",
+    "merge_policy": "forbidden_without_explicit_authorization"
+  },
+  "status_vocabulary": [
+    "PASS",
+    "FAIL",
+    "PARTIAL",
+    "UNKNOWN",
+    "N/A",
+    "ACCEPTED_RISK"
+  ],
+  "status_policy": "All tasks begin UNKNOWN until repository evidence is inspected. Do not infer completion from a plan.",
+  "tasks": [
+    {
+      "id": "ELM-AUD-001",
+      "phase": 0,
+      "title": "Inventory repository and implementation evidence",
+      "priority": "P0",
+      "status": "UNKNOWN",
+      "depends_on": [],
+      "acceptance": [
+        "Tracked-file inventory saved",
+        "Branches and latest commit recorded",
+        "Existing tests and CI located",
+        "Subsystems classified by evidence"
+      ]
+    },
+    {
+      "id": "ELM-AUD-002",
+      "phase": 0,
+      "title": "Audit identifier and provenance consistency",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "depends_on": [
+        "ELM-AUD-001"
+      ],
+      "acceptance": [
+        "Canonical and companion identifiers stored separately",
+        "Contradictory role labels logged",
+        "No silent identifier rewrite"
+      ]
+    },
+    {
+      "id": "ELM-FOUND-001",
+      "phase": 1,
+      "title": "Verify repository standards and ignore rules",
+      "priority": "P0",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-AUD-001"
+      ],
+      "acceptance": [
+        "Virtual environments ignored",
+        ".env ignored while example templates remain trackable",
+        "No existing rules removed without review"
+      ]
+    },
+    {
+      "id": "ELM-FOUND-002",
+      "phase": 1,
+      "title": "Establish test, lint, and CI baseline",
+      "priority": "P0",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-AUD-001"
+      ],
+      "acceptance": [
+        "Tests runnable from clean setup",
+        "CI executes tests and static checks",
+        "Failures block release"
+      ]
+    },
+    {
+      "id": "ELM-REG-001",
+      "phase": 1,
+      "title": "Implement or extend project/artifact registry",
+      "priority": "P0",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-FOUND-002",
+        "ELM-AUD-002"
+      ],
+      "acceptance": [
+        "Schema validation",
+        "Stable artifact ID",
+        "Version and provenance metadata",
+        "SHA-256 digest",
+        "Duplicate prevention tests"
+      ]
+    },
+    {
+      "id": "ELM-AUD-003",
+      "phase": 1,
+      "title": "Implement append-only audit event chain",
+      "priority": "P0",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-REG-001"
+      ],
+      "acceptance": [
+        "Append-only interface",
+        "Hash-chain verification detects alteration",
+        "Timestamp and actor/source fields validated"
+      ]
+    },
+    {
+      "id": "ELM-INF-001",
+      "phase": 1,
+      "title": "Define reproducible local development environment",
+      "priority": "P1",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-FOUND-002"
+      ],
+      "acceptance": [
+        "Dependencies documented",
+        "Health checks included",
+        "Secrets supplied through environment",
+        "Setup and teardown documented"
+      ]
+    },
+    {
+      "id": "ELM-PLT-001",
+      "phase": 2,
+      "title": "Implement authentication and authorization boundaries",
+      "priority": "P1",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-REG-001",
+        "ELM-AUD-003"
+      ],
+      "acceptance": [
+        "Default-deny authorization",
+        "Allow/deny role tests",
+        "High-risk actions require explicit authorization",
+        "Audit records emitted"
+      ]
+    },
+    {
+      "id": "ELM-REG-002",
+      "phase": 3,
+      "title": "Add versioned registry schema contracts",
+      "priority": "P1",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-REG-001"
+      ],
+      "acceptance": [
+        "Schema versions explicit",
+        "Compatibility policy documented",
+        "Invalid payload tests pass"
+      ]
+    },
+    {
+      "id": "ELM-EVT-001",
+      "phase": 3,
+      "title": "Implement reliable event adapter",
+      "priority": "P2",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-REG-002",
+        "ELM-AUD-003"
+      ],
+      "acceptance": [
+        "Idempotency",
+        "Bounded retries",
+        "Dead-letter path",
+        "Replay controls",
+        "Integration tests"
+      ]
+    },
+    {
+      "id": "ELM-KG-001",
+      "phase": 4,
+      "title": "Implement source-backed knowledge ingestion",
+      "priority": "P2",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-REG-002",
+        "ELM-AUD-003"
+      ],
+      "acceptance": [
+        "Source provenance preserved",
+        "Ingestion deduplicated",
+        "Untrusted text never treated as instructions",
+        "Retrieval evaluation recorded"
+      ]
+    },
+    {
+      "id": "ELM-AI-001",
+      "phase": 4,
+      "title": "Implement policy-gated AI tool routing",
+      "priority": "P2",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-PLT-001",
+        "ELM-AUD-003"
+      ],
+      "acceptance": [
+        "Tool allowlist",
+        "Timeout and quota controls",
+        "Human approval for high-risk actions",
+        "Audit trail",
+        "Prompt-injection tests"
+      ]
+    },
+    {
+      "id": "ELM-REL-001",
+      "phase": 6,
+      "title": "Define release and rollback gates",
+      "priority": "P1",
+      "status": "UNKNOWN",
+      "depends_on": [
+        "ELM-FOUND-002",
+        "ELM-PLT-001"
+      ],
+      "acceptance": [
+        "SBOM generated",
+        "Security checks recorded",
+        "Backup/restore tested",
+        "Rollback documented",
+        "Production release requires explicit approval"
+      ]
+    }
+  ],
+  "notes": [
+    "This backlog is a proposal, not evidence of implementation status.",
+    "Inspect existing code before creating duplicate modules.",
+    "Do not deploy or merge to main without explicit approval."
+  ]
+}
