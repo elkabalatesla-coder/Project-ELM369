@@ -1,0 +1,21 @@
+name: ELM369 Integration Control Plane
+on:
+  push:
+    branches: ["copilot/elm369-integration-control-plane-v0-1"]
+    paths: ["elm369_core/**", ".github/workflows/elm369-integration-control-plane.yml"]
+  pull_request:
+    paths: ["elm369_core/**", ".github/workflows/elm369-integration-control-plane.yml"]
+permissions:
+  contents: read
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile control-plane package
+        run: python -m compileall -q elm369_core
+      - name: Run control-plane tests
+        run: python -m unittest discover -s elm369_core/tests -v
