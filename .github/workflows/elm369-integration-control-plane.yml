@@ -17,5 +17,11 @@ jobs:
           python-version: "3.12"
       - name: Compile control-plane package
         run: python -m compileall -q elm369_core
+      - name: Validate identity schema JSON
+        run: python -c "import json; json.load(open('schemas/elm369_identity_record.schema.json', encoding='utf-8'))"
       - name: Run control-plane tests
         run: python -m unittest discover -s elm369_core/tests -v
+      - name: Run existing artifact catalog tests
+        run: python -m unittest tools.elm_artifacts.tests.test_catalog -v
+      - name: Run existing translator glossary tests
+        run: python -m unittest tools.elm_translator.tests.test_glossary -v
