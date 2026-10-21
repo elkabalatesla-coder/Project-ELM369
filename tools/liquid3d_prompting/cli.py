@@ -5,7 +5,13 @@ from __future__ import annotations
 import argparse
 from typing import Sequence
 
-from tools.liquid3d_prompting.compose import MODES, compose, list_templates, packet_to_json
+from tools.liquid3d_prompting.compose import (
+    MODES,
+    compose,
+    list_skillsets,
+    list_templates,
+    packet_to_json,
+)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -19,10 +25,18 @@ def main(argv: Sequence[str] | None = None) -> int:
     c.add_argument("--subject", required=True, help="What to depict / sound / animate")
     c.add_argument("--mode", default="visual", choices=sorted(MODES))
     c.add_argument("--tag", action="append", default=[])
+    c.add_argument(
+        "--skill",
+        action="append",
+        choices=sorted(list_skillsets()),
+        default=[],
+        help="Apply an ELM369 visual-media skillset (repeatable)",
+    )
     c.add_argument("--palette", action="append", default=None, help="Override palette hex (repeatable)")
     c.add_argument("--json", action="store_true", help="Emit JSON packet instead of text only")
 
     sub.add_parser("list-templates", help="Show template modes")
+    sub.add_parser("list-skills", help="Show visual-media skillsets")
 
     args = parser.parse_args(argv)
 
@@ -32,6 +46,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             mode=args.mode,
             tags=args.tag,
             palette=args.palette,
+            skills=args.skill,
         )
         if args.json:
             print(packet_to_json(packet))
@@ -45,6 +60,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"[{mode}]")
             print(text)
             print()
+        return 0
+
+    if args.command == "list-skills":
+        for skill_id, skillset in list_skillsets().items():
+            print(f"[{skill_id}] {skillset['name']}")
+            print(skillset["guidance"])
+            print(f"Practice: {skillset['practice']}\n")
         return 0
 
     return 2
