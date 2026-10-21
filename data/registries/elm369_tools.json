@@ -13,6 +13,15 @@
       "repo_path": "tools/elmdx"
     },
     {
+      "id": "GAMES",
+      "name": "ELM369 Game Maker and Arcade Player",
+      "phase": "Prototype",
+      "completion": 25,
+      "category": "Games/Creative",
+      "status": "SCAFFOLD",
+      "repo_path": "tools/elm_games"
+    },
+    {
       "id": "FLUX-UI",
       "name": "FLUX Image Gen UI",
       "phase": "Complete",
