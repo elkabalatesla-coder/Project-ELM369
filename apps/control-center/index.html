@@ -15,6 +15,23 @@
 <body>
 <div class="shell">
 <header class="top"><div class="brand"><div class="mark">E³</div><div><h1>PROJECT <span>ELM369</span></h1><div class="sub">CREATE · CONTROL · INNOVATE</div></div></div><div class="status">● LOCAL DEMO ACTIVE<br><span class="muted">Control Center v0.1.0</span></div></header>
+
+<section class="coin-console" id="coinConsole" aria-label="ELM369 coin switcher">
+  <div class="coin-console-head"><div><h2>ELM369 FLIP DECK</h2><p>Flip or slide between controls, apps, tools, and programs.</p></div>
+  <label class="shape-picker">Shape
+    <select id="shapePicker" aria-label="Choose interface shape">
+      <option value="round">Round coin</option><option value="rounded">Rounded tile</option><option value="hex">Hexagon</option><option value="diamond">Diamond</option><option value="capsule">Capsule</option>
+    </select>
+  </label></div>
+  <div class="coin-stage" id="coinStage" aria-label="Stack of switchable ELM369 coins">
+    <button class="coin-layer coin-back layer-two" data-coin="tools" aria-label="Switch to ELM369 tools"><span>◇</span><small>TOOLS</small></button>
+    <button class="coin-layer coin-back layer-one" data-coin="apps" aria-label="Switch to apps"><span>▦</span><small>APPS</small></button>
+    <button class="coin-layer coin-front" data-coin="keyboard" id="frontCoin" aria-label="Current coin: keyboard"><span id="frontCoinIcon">⌨️</span><strong id="frontCoinTitle">KEYBOARD</strong><small id="frontCoinHint">Tap to cycle · Swipe to slide</small></button>
+  </div>
+  <div class="coin-controls"><button class="action" id="coinPrev">↶ Flip back</button><button class="action primary" id="coinNext">Flip / slide next ↷</button><span class="coin-position" id="coinPosition">1 / 6</span></div>
+  <nav class="coin-shortcuts" id="coinShortcuts" aria-label="Direct coin selection"></nav>
+  <p class="notice">Shape changes apply to the coin deck and matching interface surfaces. Motion can be reduced using your device's accessibility setting.</p>
+</section>
 <div class="layout">
 <aside class="sidebar"><div class="section-label">Control modes</div><nav class="nav" id="modeNav">
 <button class="active" data-mode="keyboard">⌨️ Keyboard</button><button data-mode="gamepad">🎮 Gamepad</button><button data-mode="toggle">🎚️ Toggle Board</button><button data-mode="custom">🕹️ Custom Controller</button><button data-mode="voice">🎙️ Voice / AI</button><button data-mode="touch">👆 Touch / Gesture</button>
@@ -96,6 +113,34 @@ body.keyboard-collapsed .keyboard-control-panel #controlTitle{font-size:13px}
 body.keyboard-collapsed .keyboard-control-panel #modeStatus{font-size:9px;padding:3px 6px}
 body.keyboard-collapsed .keyboard-control-panel #collapseKeyboard{font-size:12px;padding:7px 9px}
 @media(prefers-reduced-motion:reduce){.keyboard-control-panel{transition:none}}
+
+/* ELM369 coin deck: stacked, sliding, rotating control/app selector */
+.coin-console{margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,#0b192beF,#060d1bE8);overflow:hidden}
+.coin-console-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.coin-console h2{font-size:16px;letter-spacing:.1em;margin:0;color:#bde8ff}.coin-console-head p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.shape-picker{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}.shape-picker select{background:#091528;color:var(--text);border:1px solid #176187;border-radius:9px;padding:8px}
+.coin-stage{position:relative;height:224px;max-width:560px;margin:10px auto 0;display:grid;place-items:center;perspective:1000px;touch-action:pan-y}
+.coin-layer{position:absolute;width:min(68vw,290px);height:168px;border:1px solid var(--cyan);border-radius:50%;background:radial-gradient(circle at 35% 20%,#173b50,#07101f 70%);box-shadow:inset 0 0 0 5px #00ffd50b,inset 0 0 0 8px #00ffd51c,0 12px 24px #0008;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;transform-style:preserve-3d;transition:transform .48s cubic-bezier(.2,.75,.25,1),opacity .3s,filter .3s;cursor:pointer}
+.coin-layer span{font-size:35px;color:var(--cyan);text-shadow:0 0 16px #00ffd566}.coin-layer strong{font-size:14px;letter-spacing:.16em}.coin-layer small{font-size:10px;color:var(--muted);letter-spacing:.12em}
+.coin-front{z-index:4;transform:translateY(0) rotateY(0deg);color:var(--text)}.coin-back{opacity:.65;color:var(--text)}.coin-back.layer-one{z-index:3;transform:translate(22px,12px) rotate(7deg) scale(.96);filter:saturate(.8)}.coin-back.layer-two{z-index:2;transform:translate(-22px,24px) rotate(-7deg) scale(.92);filter:saturate(.6)}
+.coin-stage.flipping .coin-front{transform:translateX(130%) rotateY(180deg) rotateZ(18deg);opacity:0}.coin-stage.flipping .layer-one{transform:translate(0,0) rotateY(0) scale(1);opacity:1;z-index:5}.coin-stage.flipping .layer-two{transform:translate(22px,12px) rotate(7deg) scale(.96);opacity:.65;z-index:3}
+.coin-stage.flip-back .coin-front{transform:translateX(-130%) rotateY(-180deg) rotateZ(-18deg);opacity:0}.coin-stage.flip-back .layer-two{transform:translate(0,0) rotateY(0) scale(1);opacity:1;z-index:5}
+.coin-controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 12px}.coin-position{font-size:11px;color:var(--cyan);font-variant-numeric:tabular-nums}
+.coin-shortcuts{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}.coin-shortcuts button{border:1px solid var(--line);background:#081526;border-radius:999px;padding:7px 10px;font-size:11px}.coin-shortcuts button[aria-current="true"]{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 12px #00ffd51b}
+body[data-shape="round"] .coin-layer,body[data-shape="round"] .coin-console,body[data-shape="round"] .panel,body[data-shape="round"] .wallet-app,body[data-shape="round"] .app-window{border-radius:50%}
+body[data-shape="round"] .coin-layer{width:min(68vw,230px);height:190px}
+body[data-shape="rounded"] .coin-layer,body[data-shape="rounded"] .panel,body[data-shape="rounded"] .wallet-app,body[data-shape="rounded"] .app-window{border-radius:24px}
+body[data-shape="hex"] .coin-layer{border-radius:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+body[data-shape="hex"] .panel,body[data-shape="hex"] .wallet-app,body[data-shape="hex"] .app-window{border-radius:4px}
+body[data-shape="diamond"] .coin-layer{border-radius:12px;transform:rotate(45deg) scale(.76)}
+body[data-shape="diamond"] .coin-layer>*{transform:rotate(-45deg)}
+body[data-shape="diamond"] .coin-stage.flipping .coin-front{transform:translateX(130%) rotate(45deg) rotateY(180deg) scale(.76)}
+body[data-shape="capsule"] .coin-layer{border-radius:999px}
+body[data-shape="capsule"] .panel,body[data-shape="capsule"] .wallet-app,body[data-shape="capsule"] .app-window{border-radius:28px}
+body[data-shape="round"] .coin-console{border-radius:28px}
+@media(max-width:600px){.coin-console{padding:12px}.coin-stage{height:200px}.coin-layer{height:146px}.coin-stage.flipping .coin-front, .coin-stage.flip-back .coin-front{transform:translateX(80%) rotateY(180deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){.coin-layer{transition:none}.coin-stage.flipping .coin-front,.coin-stage.flip-back .coin-front{transform:none;opacity:0}}
+
 </style>
 <div class="wallet-launch" aria-label="ELM369 wallet launcher">
 <button id="walletToggle" aria-expanded="false" aria-controls="appWallet">▦ ELM369 WALLET</button>
@@ -134,7 +179,34 @@ function renderApps(){grid.innerHTML="";apps.filter(a=>filter==="All"||a.categor
 function openApp(app){current=app;document.getElementById("windowAppIcon").textContent=app.icon;document.getElementById("windowAppTitle").textContent=app.name;document.getElementById("windowAppCategory").textContent=app.category+" · ELM369 workspace";const body=document.getElementById("windowAppBody");body.innerHTML="";const h=document.createElement("h3");h.textContent=app.name;const p=document.createElement("p");p.textContent=app.desc;const preview=document.createElement("div");preview.className="workspace-preview";const title=document.createElement("strong");title.textContent="Workspace";const text=document.createElement("p");text.textContent="This is the app's dedicated window area. Its real program adapter can be connected in a later integration step.";const items=document.createElement("div");items.className="workspace-items";app.actions.forEach(label=>{const b=document.createElement("button");b.textContent=label;b.addEventListener("click",()=>{const note=document.createElement("p");note.textContent=label+" selected (prototype action only).";items.appendChild(note)});items.appendChild(b)});preview.append(title,text,items);body.append(h,p,preview);showWallet(false);layer.classList.add("open");layer.setAttribute("aria-hidden","false");document.getElementById("returnWindow").focus()}
 function closeToWallet(){layer.classList.remove("open");layer.setAttribute("aria-hidden","true");showWallet(true);toggle.focus()}
 function shrinkAndPin(){if(!current)return;const old=pinned.get(current.name);if(old)old.remove();const card=document.createElement("section");card.className="pinned-app";card.innerHTML="<header><span>"+current.icon+"</span><strong></strong><button class='window-action' aria-label='Unpin app'>×</button></header><p>Mini workspace pinned on this screen.</p><div class='pin-actions'><button data-reopen>Expand</button><button data-return>Return</button></div>";card.querySelector("strong").textContent=current.name;card.querySelector("[aria-label='Unpin app']").addEventListener("click",()=>{card.remove();pinned.delete(current.name)});card.querySelector("[data-reopen]").addEventListener("click",()=>openApp(current));card.querySelector("[data-return]").addEventListener("click",()=>{card.remove();pinned.delete(current.name);closeToWallet()});document.body.appendChild(card);pinned.set(current.name,card);layer.classList.remove("open");layer.setAttribute("aria-hidden","true");current=null}
-toggle.addEventListener("click",()=>showWallet(!drawer.classList.contains("open")));document.getElementById("closeWallet").addEventListener("click",()=>showWallet(false));document.getElementById("returnWindow").addEventListener("click",closeToWallet);document.getElementById("shrinkWindow").addEventListener("click",shrinkAndPin);document.querySelectorAll("[data-wallet-filter]").forEach(b=>b.addEventListener("click",()=>{filter=b.dataset.walletFilter;renderApps()}));layer.addEventListener("click",e=>{if(e.target===layer)closeToWallet()});document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(layer.classList.contains("open"))closeToWallet();else if(drawer.classList.contains("open"))showWallet(false)}});const collapseButton=document.getElementById("collapseKeyboard");collapseButton.addEventListener("click",()=>{const collapsed=document.body.classList.toggle("keyboard-collapsed");collapseButton.setAttribute("aria-expanded",String(!collapsed));collapseButton.textContent=collapsed?"⌃ Expand keyboard":"⌄ Collapse";});renderApps();
+toggle.addEventListener("click",()=>showWallet(!drawer.classList.contains("open")));document.getElementById("closeWallet").addEventListener("click",()=>showWallet(false));document.getElementById("returnWindow").addEventListener("click",closeToWallet);document.getElementById("shrinkWindow").addEventListener("click",shrinkAndPin);document.querySelectorAll("[data-wallet-filter]").forEach(b=>b.addEventListener("click",()=>{filter=b.dataset.walletFilter;renderApps()}));layer.addEventListener("click",e=>{if(e.target===layer)closeToWallet()});document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(layer.classList.contains("open"))closeToWallet();else if(drawer.classList.contains("open"))showWallet(false)}});const collapseButton=document.getElementById("collapseKeyboard");collapseButton.addEventListener("click",()=>{const collapsed=document.body.classList.toggle("keyboard-collapsed");collapseButton.setAttribute("aria-expanded",String(!collapsed));collapseButton.textContent=collapsed?"⌃ Expand keyboard":"⌄ Collapse";});
+const coinItems=[
+{id:"keyboard",icon:"⌨️",title:"KEYBOARD",type:"mode",target:"keyboard",desc:"Text entry and shortcuts"},
+{id:"gamepad",icon:"🎮",title:"GAMEPAD",type:"mode",target:"gamepad",desc:"Game and 3D controls"},
+{id:"toggle",icon:"🎚️",title:"TOGGLE BOARD",type:"mode",target:"toggle",desc:"Dashboard switches"},
+{id:"apps",icon:"▦",title:"APP WALLET",type:"wallet",target:"All",desc:"Slide into app workspaces"},
+{id:"tools",icon:"◇",title:"ELM369 TOOLS",type:"tool",target:"Code Console",desc:"Project tools and utilities"},
+{id:"studio",icon:"🎨",title:"STUDIO / NFT",type:"app",target:"ELM369 Studio",desc:"Creative programs and creator tools"}
+];
+let coinIndex=0,coinBusy=false,touchX=null;
+const stage=document.getElementById("coinStage"),front=document.getElementById("frontCoin"),shapePicker=document.getElementById("shapePicker");
+function activateCoin(item){
+ if(item.type==="mode"){activeMode=item.target;renderMode();document.getElementById("keyboardControlPanel").scrollIntoView({behavior:"smooth",block:"nearest"});}
+ else if(item.type==="wallet"){filter="All";renderApps();showWallet(true);}
+ else if(item.type==="tool"){selectedTool=item.target;document.getElementById("typingResult").textContent="Selected tool: "+item.target+" (prototype action).";document.getElementById("keyboardControlPanel").scrollIntoView({behavior:"smooth",block:"nearest"});}
+ else if(item.type==="app"){const app=apps.find(a=>a.name===item.target)||apps[0];openApp(app);}
+}
+function paintCoin(){const item=coinItems[coinIndex];document.getElementById("frontCoinIcon").textContent=item.icon;document.getElementById("frontCoinTitle").textContent=item.title;document.getElementById("frontCoinHint").textContent=item.desc;front.setAttribute("aria-label","Current coin: "+item.title);document.getElementById("coinPosition").textContent=(coinIndex+1)+" / "+coinItems.length;const shortcuts=document.getElementById("coinShortcuts");shortcuts.innerHTML="";coinItems.forEach((it,i)=>{const b=document.createElement("button");b.textContent=it.icon+" "+it.title;b.setAttribute("aria-current",String(i===coinIndex));b.addEventListener("click",()=>switchCoin(i));shortcuts.appendChild(b)});}
+function switchCoin(next){if(coinBusy||next===coinIndex)return;coinBusy=true;const forward=(next-coinIndex+coinItems.length)%coinItems.length<=coinItems.length/2;stage.classList.toggle("flip-back",!forward);stage.classList.add("flipping");setTimeout(()=>{coinIndex=next;paintCoin();stage.classList.remove("flipping","flip-back");coinBusy=false;activateCoin(coinItems[coinIndex]);},matchMedia("(prefers-reduced-motion: reduce)").matches?0:300);}
+document.getElementById("coinNext").addEventListener("click",()=>switchCoin((coinIndex+1)%coinItems.length));
+document.getElementById("coinPrev").addEventListener("click",()=>switchCoin((coinIndex-1+coinItems.length)%coinItems.length));
+front.addEventListener("click",()=>switchCoin((coinIndex+1)%coinItems.length));
+stage.addEventListener("touchstart",e=>{touchX=e.changedTouches[0].clientX},{passive:true});
+stage.addEventListener("touchend",e=>{if(touchX===null)return;const dx=e.changedTouches[0].clientX-touchX;touchX=null;if(Math.abs(dx)>35)switchCoin((coinIndex+(dx<0?1:-1)+coinItems.length)%coinItems.length)},{passive:true});
+shapePicker.addEventListener("change",()=>{document.body.dataset.shape=shapePicker.value;});
+document.body.dataset.shape="round";paintCoin();
+
+renderApps();
 })();
 </script>
 
