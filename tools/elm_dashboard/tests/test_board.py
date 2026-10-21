@@ -20,7 +20,10 @@ class BoardTests(unittest.TestCase):
     def test_build_includes_roster_and_rules(self):
         board = build(include_cases=False)
         self.assertIn("roster_lanes", board)
+        self.assertIn("security", board)
         self.assertEqual(board["vault_ids"]["primary"], "JMR08241978202646902")
+        self.assertIn("pandora", board["security"]["channels"])
+        self.assertTrue(board["security"]["offline_only"])
         self.assertTrue(board["hard_rules"]["filing_joseph_gated"])
         self.assertIn("Kokomo", board["esign"])
 
