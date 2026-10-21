@@ -1,6 +1,13 @@
 # Project-ELM369
 Visioning advanced Technology of Today and the future and pre-developing programming code for it in advance and coming up with our own intellectual designs
 
+## Liquid Arcade (local, virtual credits only)
+
+Run `python3 -m tools.elm_arcade` and open `http://127.0.0.1:8369/`.
+The modular browser suite includes arcade games and simulated casino games;
+there are no payments or real-money features. See [arcade documentation](docs/arcade/architecture.md)
+for controls, plugin upgrades, mathematical assumptions, and prototype status.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today

@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "plugins": [
+    {"module": "./games/arcade.mjs", "export": "arcadePlugins"},
+    {"module": "./games/casino.mjs", "export": "casinoPlugins"}
+  ]
+}
