@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://elm369.local/schemas/identity-record.schema.json",
+  "title": "ELM369 Identity Provenance Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["canonical_anchor", "submitted_identifier", "identifier_role", "source_record_id", "provenance", "provenance_merge_permitted"],
+  "properties": {
+    "canonical_anchor": {"const": "JMR0824197846902"},
+    "submitted_identifier": {"enum": ["JMR0824197846902", "JMR08241978202646902"]},
+    "identifier_role": {"enum": ["canonical", "companion"]},
+    "source_record_id": {"type": "string", "minLength": 1},
+    "provenance": {"type": "object", "minProperties": 1},
+    "provenance_merge_permitted": {"const": false}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"submitted_identifier": {"const": "JMR0824197846902"}}},
+      "then": {"properties": {"identifier_role": {"const": "canonical"}}}
+    },
+    {
+      "if": {"properties": {"submitted_identifier": {"const": "JMR08241978202646902"}}},
+      "then": {"properties": {"identifier_role": {"const": "companion"}}}
+    }
+  ]
+}
