@@ -21,7 +21,7 @@ Summarized from issue [#38](https://github.com/elkabalatesla-coder/Project-ELM36
 | Time sync check | `tools/elm_orchestrator` `time-sync` |
 | Security log fan-out | `tools/pandora_vault` |
 | Geofence stamp | `tools/elm_policy` `location` / `stamp` |
-| Bot roster / delegation | `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.1.0.md` |
+| Bot roster / delegation | `docs/architecture/ELM369_GROK_BOT_ROSTER_v0.2.0.md` |
 
 External APIs still require their own TLS + credentials; ELM369 sits above that stack for operator logging and authorization gates.
 
