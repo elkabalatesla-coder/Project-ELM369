@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#081120">
+  <title>ELM369 Liquid Arcade</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>ELM369 <span>Liquid Arcade</span></h1>
+    <p class="notice">Entertainment only. Casino games use virtual play credits with no monetary value.
+      No deposits, purchases, withdrawals, prizes, or real-money gambling.</p>
+  </header>
+  <main>
+    <section id="lobby" aria-labelledby="lobby-title">
+      <h2 id="lobby-title">Choose a game</h2>
+      <p>Complete games and minimal prototypes are labeled separately. All content runs locally.</p>
+      <div id="catalog" class="catalog"></div>
+    </section>
+    <section id="play-area" hidden aria-labelledby="game-title">
+      <div class="toolbar">
+        <h2 id="game-title"></h2>
+        <button id="pause" type="button">Pause</button>
+        <button id="replay" type="button" disabled>Replay last arcade run</button>
+        <button id="back" type="button">Save &amp; menu</button>
+      </div>
+      <p id="instructions"></p>
+      <div class="stage">
+        <canvas id="liquid" width="960" height="540" aria-hidden="true"></canvas>
+        <canvas id="game" width="960" height="540" tabindex="0"
+          aria-label="Game screen. Instructions appear above. Use keyboard or touch controls below."></canvas>
+        <div id="overlay" class="overlay" hidden>
+          <h3 id="overlay-title"></h3><p id="overlay-message"></p>
+          <button id="resume" type="button">Resume</button>
+          <button id="restart" type="button">New game</button>
+        </div>
+      </div>
+      <div class="touch-controls" aria-label="Game controls">
+        <button data-action="left" aria-label="Move left">◀</button>
+        <button data-action="up" aria-label="Move up">▲</button>
+        <button data-action="down" aria-label="Move down">▼</button>
+        <button data-action="right" aria-label="Move right">▶</button>
+        <button data-action="fire">Action / hold</button>
+        <button data-action="confirm">Confirm / draw</button>
+      </div>
+      <details><summary>Scores &amp; upgrades</summary>
+        <ol id="scores"></ol><div id="upgrades"></div>
+      </details>
+      <details><summary>Poker strategy laboratory (exact, may take time)</summary>
+        <p>Enter five distinct card IDs 0–51 (rank = ID % 13 + 2). The solver
+          enumerates all draws and all 32 holds in a worker, never blocks gameplay,
+          and does not replace an exact result with a sample.</p>
+        <label>Hand <input id="solver-hand" value="8,9,10,11,12"></label>
+        <label>Variant <select id="solver-variant">
+          <option value="jacks">Jacks or Better</option>
+          <option value="deuces">Deuces Wild</option>
+        </select></label>
+        <button id="solve" type="button">Calculate holds</button>
+        <button id="cancel-solve" type="button">Cancel</button>
+        <output id="solver-result" aria-live="polite"></output>
+      </details>
+    </section>
+    <details id="settings">
+      <summary>Audio, visuals &amp; camera</summary>
+      <p>Audio starts only after a user gesture. Low quality disables WebGL and camera motion.</p>
+      <label>Quality <select id="quality"><option value="high">Liquid 3D</option>
+        <option value="low">Low / 2D</option></select></label>
+      <label>Camera <select id="camera-mode">
+        <option value="follow">Follow</option><option value="orbit">Orbit</option>
+        <option value="dolly">Dolly / track</option><option value="cinematic">4D timeline</option>
+      </select></label>
+      <label>Time scale <input id="time-scale" type="range" min="0.25" max="1.5" step="0.25" value="1"></label>
+      <label>Master <input data-volume="master" type="range" min="0" max="1" step="0.05" value="0.5"></label>
+      <label>Music <input data-volume="music" type="range" min="0" max="1" step="0.05" value="0.3"></label>
+      <label>SFX <input data-volume="sfx" type="range" min="0" max="1" step="0.05" value="0.6"></label>
+      <label>UI <input data-volume="ui" type="range" min="0" max="1" step="0.05" value="0.4"></label>
+    </details>
+    <p id="status" role="status" aria-live="polite">Loading local game plugins…</p>
+  </main>
+  <footer>Offline simulation · <a href="catalog.json">Plugin catalog</a> ·
+    Saves stay in this browser. Clearing site data resets progress.</footer>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>

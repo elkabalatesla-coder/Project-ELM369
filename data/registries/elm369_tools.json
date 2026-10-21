@@ -4,6 +4,14 @@
   "source_issue": 29,
   "tools": [
     {
+      "id": "ARCADE",
+      "name": "Liquid Arcade — virtual credits only",
+      "phase": "Playable core with minimal genre prototypes",
+      "category": "Games/Simulation",
+      "status": "SCAFFOLD",
+      "repo_path": "tools/elm_arcade"
+    },
+    {
       "id": "ELMDX",
       "name": "ELMDX Android Diagnostics",
       "phase": "Complete",
