@@ -17,6 +17,12 @@ class IdentityTests(unittest.TestCase):
         self.assertNotEqual(canonical["provenance"], companion["provenance"])
         self.assertFalse(companion["provenance_merge_permitted"])
 
+    def test_identity_provenance_is_detached(self):
+        provenance = {"source": {"file": "identity.md"}}
+        record = resolve_identity(CANONICAL_ANCHOR, source_record_id="r1", provenance=provenance)
+        provenance["source"]["file"] = "changed.md"
+        self.assertEqual(record["provenance"]["source"]["file"], "identity.md")
+
     def test_unknown_identifier_rejected(self):
         with self.assertRaisesRegex(ValueError, "unknown_project_identifier"):
             resolve_identity("unknown", source_record_id="r1", provenance={"source": "x"})
@@ -57,6 +63,20 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual(len(record["sha256"]), 64)
         with self.assertRaisesRegex(ValueError, "immutable_record_id_exists"):
             registry.register("artifact-1", {"version": "1.0.1"})
+
+    def test_nested_input_mutation_does_not_change_registered_record(self):
+        registry = AppendOnlyRegistry()
+        source = {"metadata": {"version": "1.0.0"}}
+        registry.register("artifact-2", source)
+        source["metadata"]["version"] = "9.9.9"
+        self.assertTrue(registry.verify("artifact-2"))
+        self.assertEqual(registry.get("artifact-2")["record"]["metadata"]["version"], "1.0.0")
+
+    def test_returned_record_mutation_does_not_change_registered_record(self):
+        registry = AppendOnlyRegistry()
+        returned = registry.register("artifact-3", {"metadata": {"version": "1.0.0"}})
+        returned["record"]["metadata"]["version"] = "9.9.9"
+        self.assertTrue(registry.verify("artifact-3"))
 
 
 class AuditTests(unittest.TestCase):
