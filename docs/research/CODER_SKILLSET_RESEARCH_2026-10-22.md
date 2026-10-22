@@ -1,6 +1,6 @@
 # Coding-agent skill set research
 
-**Research date:** 2026-10-22  
+**Research date:** 2026-10-22
 **Purpose:** Select high-value, repeatable skills for a coding agent working in Project-ELM369 and publish them in a portable format.
 
 ## Findings
