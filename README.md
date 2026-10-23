@@ -154,6 +154,41 @@ are timezone-aware UTC. The 15000-unit governance simulation reserves 150
 charity units and retains 14850, with no pool logging or actual funds transfer.
 The existing engineering tests cover this module; QEP/DHI behavior is unchanged.
 
+### Productivity and fleet availability estimates
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.productivity`, or import
+`ELM369ProductivityEngine` from `tools.elm_engineering`.
+
+`maximize_throughput_metrics` models a single serial batch: setup hours plus
+batch size × cycle minutes / 60. Throughput includes setup and uses the
+unrounded total. The supplied 500-unit, 4.5-minute cycle, 1.5-hour setup example
+produces **39 hours and 12.82 parts/hour**. Display metrics are rounded to two
+decimals; `unrounded_production_hours` retains the float total. Very small
+positive display values may round to zero. This is not a maximization algorithm,
+OEE calculation, measured efficiency, or verified production capacity.
+No downtime, rejects, parallel machines, transport, or scheduling is modeled.
+
+`execute_fleet_synchronization` only computes uptime-weighted equivalent units.
+Twelve units at 95% yield **11.4 equivalent units**; the compatibility field
+`effective_synchronized_fleet` floors that value to 11. This is neither a
+guarantee that eleven machines are simultaneously available nor evidence of
+actual fleet synchronization. No equipment, network, or live telemetry is used.
+Decimal-string rational arithmetic avoids intermediate rounding and integer
+floor errors; this assumes supplied decimal values are the intended inputs.
+
+Batch size and active-unit counts must be nonnegative integers (not booleans).
+Cycle time must be finite and positive, setup finite and nonnegative, and
+uptime finite within 0–100 inclusive. Empty batches produce zero throughput,
+retaining any supplied setup time; a zero-unit fleet has zero capacity.
+Nonrepresentable throughput/time results and positive results underflowing
+to zero raise `ValueError`.
+
+Governance is the fixed 1% simulation on 25000 resource units: 250 allocated
+to listed charity targets and 24750 retained, with no payments or pool logging.
+Existing engineering tests cover this module; QEP and DHI selectors remain
+planning metadata and do not automatically run these calculations.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today
