@@ -57,7 +57,34 @@ engine, optimizer, NIMS certification, or machine-safety validator.
 
 The demonstration uses the calculated spindle speed **and** feed rate, fixing
 the original `machining_spec` / `machining_specs` typo and silent fallback.
-The engineering test command above covers both modules.
+The engineering test command above covers all engineering modules.
+
+### Defined Human Input priority routing
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.dynamic MEDICAL` (omit the argument for CNC).
+Import `ELM369DynamicEngine` from `tools.elm_engineering` to call
+`process_human_input_priority` directly.
+
+Choices are `CNC`, `MEDICAL`, `AGRICULTURE`, and `FABRICATION`, ignoring case
+and surrounding whitespace. Unknown or empty strings actually select CNC
+**metadata**, with `used_fallback: true` and a warning, rather than merely claiming
+a fallback in an error message. Non-string API inputs raise `ValueError`.
+
+This selects a priority, **not an execution pipeline**. `ACTIVE_PRIMARY_VECTOR`
+means selected routing metadata only; every result has `executed: false`.
+CNC offline estimates/previews are available separately through the CNC module.
+Medical DICOM ingestion/HITL verification, agricultural CANbus J1939/hydraulics,
+and fabrication mesh parsing/layer monitoring are planned, not implemented or
+started by this selector. No medical data is ingested, machinery connected,
+clinical safety verified, or external service contacted.
+
+Each response includes the simulated baseline allocation: 10000 resource units,
+100 for the listed charity targets, and 9900 retained. The rate remains fixed
+at 1%; changing it raises `ValueError`. `purple_pool_status: PRIORITIZED` is a
+simulation label, not evidence of pool logging. No log is persisted or funds
+transferred. Calls are independent: the caller must explicitly retain a selected
+priority if needed; there is no background loop or persistent job scheduler.
 
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
