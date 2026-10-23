@@ -26,6 +26,39 @@ PID has no output saturation, anti-windup, or derivative filtering. Invalid
 numeric inputs raise `ValueError`; extreme unrepresentable link ratios do too.
 Test with `python3 -m unittest discover -s tools/elm_engineering/tests -v`.
 
+### CNC and industrial machining planning
+
+Run `python3 -m tools.elm_engineering.cnc` from
+`/home/runner/work/Project-ELM369/Project-ELM369` for the 4140 example, or import
+`ELM369CNCExecutionEngine` from `tools.elm_engineering`. Despite the compatibility
+class/method names, this is an **offline planning simulation**, not an execution
+engine, optimizer, NIMS certification, or machine-safety validator.
+
+- Inch-unit estimates use RPM = SFM × 3.82 / tool diameter, IPM = unrounded RPM ×
+  flute count × IPT, and MRR = unrounded IPM × 0.050-inch axial depth × half the
+  tool diameter. Rounding is for returned estimates only. The example yields
+  2292 RPM, 22.92 IPM, and 0.2865 cubic inches/minute.
+- Brinell hardness is validated and recorded but **does not select or validate**
+  cutting speeds or chip loads. Consult toolmaker data and qualified machining
+  review; no material suitability or safe tolerance is established.
+- `generate_validated_gcode` returns a list of **comment-only** candidate lines,
+  including the tool change, spindle commands, and axial plunge. No executable
+  motion is emitted and nothing is transmitted to a controller. The illustrative
+  plunge is not the lateral cut assumed by the MRR estimate. Do not strip the
+  comments and run it: work/tool offsets, tool length compensation, clearance,
+  stock, fixtures, machine limits, and controller dialect remain unresolved.
+- All numeric inputs must be finite; hardness, diameter, SFM, IPT, RPM, feed, and
+  integer flute/tool counts must be positive. Preview target depth must be
+  negative relative to the assumed Z0 stock top. Nonrepresentable results or
+  values rounding to zero at output precision raise `ValueError`. Identifier
+  text is restricted to prevent injecting commands through G-code comments.
+- The $5000-equivalent resource simulation allocates 50 to charity and retains
+  4950; it does not move money or establish charity affiliations.
+
+The demonstration uses the calculated spindle speed **and** feed rate, fixing
+the original `machining_spec` / `machining_specs` typo and silent fallback.
+The engineering test command above covers both modules.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today
