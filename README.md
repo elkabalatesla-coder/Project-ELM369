@@ -252,6 +252,32 @@ No financial impact is measured, recipients confirmed, transfers executed,
 or purple-pool log persisted. Timestamps are timezone-aware UTC. The engineering
 test suite covers composition as well as each individual model.
 
+### HTML simulation dashboard
+
+Create a self-contained browser report with the existing calculated scenarios:
+
+```bash
+cd /home/runner/work/Project-ELM369/Project-ELM369
+python3 -m tools.elm_engineering.dashboard > /tmp/elm369-dashboard.html
+```
+
+Open `/tmp/elm369-dashboard.html` in a browser. The responsive dashboard presents
+quality inspection and pending human review, CNC estimates, fleet availability,
+batch throughput, energy/material estimates, and the independent simulated 1%
+allocation. Expand each card for inputs and QEP weights or expand the full JSON
+report. Browser printing is supported. Each generation runs the master simulation
+once; refresh the data by re-running the command, not merely reloading the page.
+
+The HTML template is
+`/home/runner/work/Project-ELM369/Project-ELM369/tools/elm_engineering/dashboard.html`.
+Opening that template directly shows generation instructions; the command above
+fills it with actual model results. No dependencies, JavaScript, external assets,
+web server, authentication, or public deployment are added. This is a read-only
+offline snapshot, not a live portal, equipment controller, approval form, or
+payment interface. All report values are escaped as text. Existing JSON output
+and simulation APIs remain unchanged. The engineering test command covers the
+dashboard renderer and HTML safety checks.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today
