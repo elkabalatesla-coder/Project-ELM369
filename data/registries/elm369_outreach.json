@@ -1,0 +1,80 @@
+{
+  "schema": "elm369.outreach_directory.v1",
+  "research_date": "2026-10-23",
+  "scope": "Initial shortlist covering universities, research labs, engineering vendors, and charities; not an exhaustive directory.",
+  "research_limitations": "Public web search suggested organizations and a Purdue contact route. Direct page retrieval failed due to DNS/network restrictions. Other URLs are organization homepage leads, not verified inquiry endpoints. No eligibility, affiliation, response, donation, or partnership is established.",
+  "organizations": [
+    {
+      "id": "purdue",
+      "name": "Purdue University Office of Industry Partnerships",
+      "category": "university",
+      "url": "https://www.purdue.edu/president/industry-partners/contact/",
+      "source_status": "search_result_only",
+      "route": "Contact page surfaced by search; availability and eligibility unverified.",
+      "inquiry": "Which public educational resources or appropriate university contact could help independently review a two-link inverse-kinematics and discrete PID simulation? Are there collaboration pathways open to an independent project?"
+    },
+    {
+      "id": "cmu-robotics",
+      "name": "Carnegie Mellon University Robotics Institute",
+      "category": "research_lab",
+      "url": "https://www.ri.cmu.edu/",
+      "source_status": "homepage_lead_unverified",
+      "route": "Locate a general research or educational inquiry route on the official site.",
+      "inquiry": "Could you point us to public planar-robotics teaching materials, numerical validation benchmarks, or an appropriate contact for an independent educational simulation project?"
+    },
+    {
+      "id": "mathworks",
+      "name": "MathWorks",
+      "category": "engineering_vendor",
+      "url": "https://www.mathworks.com/",
+      "source_status": "homepage_lead_unverified",
+      "route": "Locate an educational or product inquiry route; licensing eligibility is unknown.",
+      "inquiry": "Which publicly available PID validation examples and robotics simulation resources are suitable for an independent educational project? Please clarify any applicable licensing or educational-program eligibility."
+    },
+    {
+      "id": "universal-robots",
+      "name": "Universal Robots",
+      "category": "engineering_vendor",
+      "url": "https://www.universal-robots.com/",
+      "source_status": "homepage_lead_unverified",
+      "route": "Locate an educational training or general product inquiry route.",
+      "inquiry": "Could you identify public robotics training resources and simulation-only learning pathways for an independent project? We are not requesting access to or control of live hardware."
+    },
+    {
+      "id": "shriners",
+      "name": "Shriners Children's",
+      "category": "charity",
+      "url": "https://www.shrinerschildrens.org/",
+      "source_status": "homepage_lead_unverified",
+      "route": "Locate philanthropy or partnership inquiries, not patient-care intake.",
+      "inquiry": "What approved giving channels, fundraising requirements, and name/logo permissions would apply if an independent engineering project later proposed a charitable allocation? Our current 1% allocation is only a simulation, not a donation or pledge."
+    },
+    {
+      "id": "cancer-society",
+      "name": "American Cancer Society",
+      "category": "charity",
+      "url": "https://www.cancer.org/",
+      "source_status": "homepage_lead_unverified",
+      "route": "Locate fundraising or organizational partnership inquiries, not patient support.",
+      "inquiry": "Please identify approved giving channels and any requirements for an independent project's proposed fundraising or charitable allocation. Can you clarify research-designation options and rules for public references to your organization? No funds have been committed or transferred."
+    },
+    {
+      "id": "stroke-association",
+      "name": "American Stroke Association / American Heart Association",
+      "category": "charity",
+      "url": "https://www.stroke.org/",
+      "source_status": "homepage_lead_unverified",
+      "route": "Locate organizational giving inquiries or the appropriate American Heart Association route, not medical support.",
+      "inquiry": "Which approved giving or organizational inquiry route covers stroke research support? Please clarify designation options, fundraising requirements, and naming permissions for a possible future allocation; the current model is simulation-only."
+    },
+    {
+      "id": "polaris",
+      "name": "Polaris",
+      "category": "charity",
+      "url": "https://polarisproject.org/",
+      "source_status": "homepage_lead_unverified",
+      "route": "Locate organizational or philanthropy inquiries. Do not use trafficking-reporting, victim-support, or emergency hotlines for project outreach.",
+      "inquiry": "Which organizational channel handles philanthropy and public educational collaboration inquiries? Please clarify approved giving pathways and naming permissions. We are not reporting a trafficking case, seeking victim information, or claiming an existing partnership."
+    }
+  ]
+}

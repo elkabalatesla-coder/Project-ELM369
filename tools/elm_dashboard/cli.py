@@ -7,6 +7,7 @@ from typing import Sequence
 from tools.elm_dashboard.board import build
 from tools.elm_dashboard.cases import summarize_case_queue
 from tools.elm_dashboard.roster import roster_lanes
+from tools.elm_dashboard.outreach import build_outreach, render_outreach
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -25,8 +26,16 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     sub.add_parser("roster", help="Grok bot roster lanes only")
     sub.add_parser("cases", help="Case queue summary only")
+    outreach = sub.add_parser("outreach", help="Local research directory and unsent inquiry drafts")
+    outreach.add_argument("--format", choices=("json", "html"), default="json")
 
     args = p.parse_args(argv)
+    if args.command == "outreach":
+        if args.format == "html":
+            print(render_outreach())
+        else:
+            print(json.dumps(build_outreach(), indent=2, ensure_ascii=False))
+        return 0
     if args.command == "show":
         print(
             json.dumps(
