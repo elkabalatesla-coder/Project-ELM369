@@ -86,6 +86,39 @@ simulation label, not evidence of pool logging. No log is persisted or funds
 transferred. Calls are independent: the caller must explicitly retain a selected
 priority if needed; there is no background loop or persistent job scheduler.
 
+### QEP pyramid planning profiles
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.qep EFFICIENCY` (defaults to `QUALITY`).
+Import `ELM369QEPShuffler` from `tools.elm_engineering` and call
+`shuffle_pyramid_focus` for programmatic use. Case and surrounding whitespace
+are normalized. Invalid/empty strings return an error dictionary without a
+profile, governance audit, or fallback; the CLI exits with status 1. Non-string
+API inputs raise `ValueError`.
+
+The supplied foundation, core mechanism, and apex target descriptions are
+preserved as **planning proposals**, with these quality/efficiency/productivity
+weight proportions:
+
+| Focus | Quality | Efficiency | Productivity |
+| --- | --- | --- | --- |
+| QUALITY | 0.60 | 0.20 | 0.20 |
+| PRODUCTIVITY | 0.20 | 0.20 | 0.60 |
+| EFFICIENCY | 0.25 | 0.50 | 0.25 |
+
+Weights sum to one in every mode. Selection does not reconfigure machinery,
+relax safety or quality requirements, activate interlocks/SPC/HITL/telemetry,
+or establish zero defects, zero waste, compliance, throughput, or ROI.
+Every successful response is marked `PLANNING_ONLY` and `executed: false`;
+results are independent with no retained focus or background optimization loop.
+DHI domain routing remains separate and unchanged.
+
+Governance reuses the baseline 10000-unit simulation: 100 charity units and
+9900 net operational units, with a fixed 1% rate. `purple_pool_status: ACTIVE`
+is only a simulation label, not an active fund or persistent log.
+No funds move and the weights do not distribute or spend the retained units.
+The existing engineering test command covers the QEP module too.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today

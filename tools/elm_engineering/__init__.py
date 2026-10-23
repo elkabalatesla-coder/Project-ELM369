@@ -2,7 +2,10 @@
 
 from .engine import ELM369EngineeringCore
 
-__all__ = ["ELM369EngineeringCore", "ELM369CNCExecutionEngine", "ELM369DynamicEngine"]
+__all__ = [
+    "ELM369EngineeringCore", "ELM369CNCExecutionEngine",
+    "ELM369DynamicEngine", "ELM369QEPShuffler",
+]
 
 
 def __getattr__(name):
@@ -14,4 +17,8 @@ def __getattr__(name):
         from .dynamic import ELM369DynamicEngine
 
         return ELM369DynamicEngine
+    if name == "ELM369QEPShuffler":
+        from .qep import ELM369QEPShuffler
+
+        return ELM369QEPShuffler
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
