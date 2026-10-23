@@ -4,6 +4,15 @@
   "source_issue": 29,
   "tools": [
     {
+      "id": "ENGINEERING",
+      "name": "University Engineering Simulations",
+      "phase": "Complete",
+      "completion": 100,
+      "category": "Engineering/Education",
+      "status": "DONE",
+      "repo_path": "tools/elm_engineering"
+    },
+    {
       "id": "ELMDX",
       "name": "ELMDX Android Diagnostics",
       "phase": "Complete",
