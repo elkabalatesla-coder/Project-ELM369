@@ -119,6 +119,41 @@ is only a simulation label, not an active fund or persistent log.
 No funds move and the weights do not distribute or spend the retained units.
 The existing engineering test command covers the QEP module too.
 
+### Dimensional inspection and human review declarations
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.quality`, or import
+`ELM369QualityInspectionEngine` from `tools.elm_engineering`.
+The demo checks nominal 2.000, measured 2.0004, and deviation limits ±0.001,
+then leaves the result pending human review.
+
+`audit_dimensional_tolerances` checks a single scalar dimension, **not full
+GD&T, certified metrology, or zero-defect delivery**. Inputs must be finite
+real numbers in one caller-consistent unit; lower tolerance must not exceed
+upper tolerance. Signed tolerances are deviations, not absolute dimensions.
+Comparisons use exact rational arithmetic on decimal-string representations
+of supplied numbers, with inclusive bounds and no rounding before pass/fail.
+`deviation` is the full float representation for reporting, while
+`display_deviation` is rounded to five places for display only.
+An unrepresentable deviation raises `ValueError`. Measurement uncertainty,
+calibration, units, sampling adequacy, and geometric tolerances are not verified.
+
+`execute_hitl_validation_gate` recomputes conformance from the report's nominal,
+measured, and allowable limits rather than trusting a supplied PASS label.
+It requires a nonempty inspector label. The keyword-only `human_approved`
+defaults to `False`: a passing dimension remains `PENDING_HUMAN_REVIEW`.
+Only explicit `human_approved=True` records `HUMAN_APPROVAL_DECLARED_UNVERIFIED`;
+out-of-tolerance measurements remain on hold regardless of that declaration.
+Non-boolean declarations and malformed numeric reports raise `ValueError`.
+
+Neither inspector identity nor supplied measurements/specifications are
+authenticated. Recalculation detects inconsistent result labels, not forged
+source data. No electronic signature, durable audit log, or production release
+is established; `production_release_authorized` is always false. Timestamps
+are timezone-aware UTC. The 15000-unit governance simulation reserves 150
+charity units and retains 14850, with no pool logging or actual funds transfer.
+The existing engineering tests cover this module; QEP/DHI behavior is unchanged.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today

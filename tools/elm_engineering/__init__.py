@@ -5,6 +5,7 @@ from .engine import ELM369EngineeringCore
 __all__ = [
     "ELM369EngineeringCore", "ELM369CNCExecutionEngine",
     "ELM369DynamicEngine", "ELM369QEPShuffler",
+    "ELM369QualityInspectionEngine",
 ]
 
 
@@ -21,4 +22,8 @@ def __getattr__(name):
         from .qep import ELM369QEPShuffler
 
         return ELM369QEPShuffler
+    if name == "ELM369QualityInspectionEngine":
+        from .quality import ELM369QualityInspectionEngine
+
+        return ELM369QualityInspectionEngine
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
