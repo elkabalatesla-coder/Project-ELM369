@@ -224,6 +224,34 @@ energy savings: 85 charity units and 8415 retained at the fixed 1% rate.
 No funds move or pool log is persisted. Existing engineering tests cover both
 the efficiency and productivity modules.
 
+### Master multi-domain simulation
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.master` for a JSON-only integrated report,
+or import `ELM369MasterSimulation` from `tools.elm_engineering` and call
+`run_full_simulation`. It composes the CNC, inspection, productivity, efficiency,
+and QEP modules rather than hard-coding passing or optimized results.
+
+- CNC uses the existing machining example and a 2.0003-inch measured dimension
+  against nominal 2.000 ±0.001 inch. The scalar check passes; human review stays
+  pending and G-code remains comment-only.
+- The agricultural example models ten units at 96.5% uptime, yielding 9.65
+  equivalent units (compatibility floor: 9), plus the 500-unit serial batch
+  example. This is not measured field productivity or a CANbus connection.
+- The fabrication scenario explicitly assumes 45 → 32.5 kW over 400 hours
+  at $0.13608/kWh, yielding 12.5 kW reduction and $680.40 modeled savings.
+  Fifty pounds gross / 41 pounds net yields 82% material yield, **not zero waste**.
+  These are generic estimates, not a printer or layer-monitoring simulation.
+
+Inputs are included beside calculated results. Completed status means the
+offline calculations returned, not that real operations succeeded or defects
+were eliminated. There is no authenticated sign-off or production release.
+The aggregate 50000-unit baseline produces 500 charity units and 49500 retained,
+independent of nested module audit examples; **do not sum their allocations**.
+No financial impact is measured, recipients confirmed, transfers executed,
+or purple-pool log persisted. Timestamps are timezone-aware UTC. The engineering
+test suite covers composition as well as each individual model.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today
