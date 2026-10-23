@@ -32,7 +32,11 @@ class ELM369EngineeringCore:
         scale = max(abs(x), abs(y), l1, l2)
         nx, ny, a, b = x / scale, y / scale, l1 / scale, l2 / scale
         radius = math.hypot(nx, ny)
-        if radius > a + b or radius < abs(a - b):
+        inner, outer = abs(a - b), a + b
+        # Independent normalization can shift an exact boundary by a few ulps.
+        beyond_outer = radius > outer and not math.isclose(radius, outer, rel_tol=1e-15)
+        inside_inner = radius < inner and not math.isclose(radius, inner, rel_tol=1e-15)
+        if beyond_outer or inside_inner:
             return {"error": "Target position is outside the robotic workspace boundary."}
         denominator = 2 * a * b
         if denominator == 0:

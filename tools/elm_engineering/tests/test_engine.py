@@ -47,6 +47,10 @@ class EngineeringTests(unittest.TestCase):
                 0.3 * scale, 0, 0.1 * scale, 0.2 * scale
             )
             self.assertEqual(result["theta_2_deg"], 0)
+        result = self.core.compute_2d_inverse_kinematics(1, 0, 3, 2)
+        self.assertEqual(result["theta_2_deg"], 180)
+        for x in [1 - 1e-9, 5 + 1e-9]:
+            self.assertIn("error", self.core.compute_2d_inverse_kinematics(x, 0, 3, 2))
         with self.assertRaises(ValueError):
             self.core.compute_2d_inverse_kinematics(1e300, 0, 1e300, 1e-300)
 
