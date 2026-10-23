@@ -278,6 +278,57 @@ payment interface. All report values are escaped as text. Existing JSON output
 and simulation APIs remain unchanged. The engineering test command covers the
 dashboard renderer and HTML safety checks.
 
+### Optional localhost simulation API
+
+The static dashboard command remains independent of FastAPI. For the optional
+service, use **Python 3.10 or newer** and install the checked versions:
+
+```bash
+cd /home/runner/work/Project-ELM369/Project-ELM369
+python3 -m pip install fastapi==0.162.0 uvicorn==0.54.0
+python3 -m tools.elm_engineering.telemetry_server
+```
+
+The same runtime dependencies are declared in the `telemetry` project extra
+(excluded on older Python). Install `httpx==0.28.1` for API tests (also declared
+in `telemetry-test`). The existing unittest discovery command tests the API
+when these optional dependencies are present and otherwise skips API tests.
+
+- `GET http://127.0.0.1:8000/api/status`: IDs, QEP state, tick count, active
+  streams, and the fixed simulated allocation baseline.
+- `GET http://127.0.0.1:8000/api/qep-mode`: read-only PRODUCTIVITY focus and the
+  proposed PRODUCTIVITY/QUALITY/EFFICIENCY sequence; no automatic shuffling.
+- `GET http://127.0.0.1:8000/api/telemetry`: refreshed random simulation values,
+  using existing scalar inspection, fleet capacity, energy and material models.
+  Medical is explicitly `PLANNED_NOT_IMPLEMENTED`: no DICOM or patient data.
+- `GET http://127.0.0.1:8000/api/simulation/stream?ticks=3`: bounded SSE, with
+  1–100 ticks (default 100), 1.5 seconds between ticks, and disconnect cleanup.
+  Each event has `event: simulation` and one JSON `data:` line. At most four
+  concurrent streams are allowed; extra requests return 429.
+
+For example, use `curl -N` with the stream URL. Each telemetry request or stream
+tick advances an in-memory counter; status and mode queries do not. State resets
+on restart and is per process. Dimensional drift can pass or reject ±0.001-inch
+limits, but is not full GD&T or human sign-off. No claimed attestation is attached.
+
+The service launcher binds only `127.0.0.1:8000`, disables forwarded-header
+trust, accepts only that IPv4 peer, restricts Host to `127.0.0.1:8000` or
+`localhost:8000`, and rejects foreign/null browser Origins and cross-site fetches.
+It has no credentialed CORS, write endpoints, or public API documentation assets.
+CORS alone would not provide this boundary. Approved origins are those exact
+two HTTP origins; other ports and `file://` dashboards cannot read the API.
+Use same-origin clients or curl. The existing static HTML has no polling loop.
+Do not expose through tunnels, proxies, remote bind addresses, or multiple
+workers; this is a local development simulation, not production-grade access
+control or user authentication. Other local processes can access it.
+
+The 1% "ledger" is a fixed 50000-unit scenario (500 allocated, 49500 retained),
+**not an accumulating fund or repeated charge**. The supplied 40/40/20 split
+(200/200/100) is illustrative, not approved giving instructions or established
+recipients. Nested model governance examples are not additional charges.
+No funds transfer, persistent purple-pool log, real sensor telemetry, or
+machine control occurs. Stream concurrency is bounded, not a general rate limit.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today
