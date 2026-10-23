@@ -41,7 +41,7 @@ class ProductivityTests(unittest.TestCase):
                 self.engine.maximize_throughput_metrics(*args)
 
     def test_extreme_results(self):
-        for args in [(2, 1e308, 1e308), (1, 1e-308, 0)]:
+        for args in [(120, 1e308, 1e308), (1, 1e-308, 0)]:
             with self.assertRaises(ValueError):
                 self.engine.maximize_throughput_metrics(*args)
         result = self.engine.maximize_throughput_metrics(60, 1e308, 0)

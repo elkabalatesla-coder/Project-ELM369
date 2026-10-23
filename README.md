@@ -189,6 +189,41 @@ to listed charity targets and 24750 retained, with no payments or pool logging.
 Existing engineering tests cover this module; QEP and DHI selectors remain
 planning metadata and do not automatically run these calculations.
 
+### Efficiency and resource conservation estimates
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.efficiency`, or import
+`ELM369EfficiencyEngine` from `tools.elm_engineering`.
+
+The energy model compares constant baseline/proposed kW over the same operating
+hours at one USD/kWh tariff. The example 45 → 34 kW over 200 hours at 0.12/kWh
+yields **11 kW reduction, 24.44% reduction, 2200 kWh saved, and $264 savings**.
+The compatibility field `efficiency_gain_percentage` means power reduction,
+not measured thermodynamic efficiency. Higher proposed power is allowed and
+returns negative savings, not a fabricated benefit. Zero hours or tariff are
+allowed; fractional hours are accepted. Baseline power must be positive; all
+other inputs must be finite and nonnegative. Zero baseline is rejected because
+its reduction percentage is undefined.
+
+The material model requires positive gross input and net mass between zero and
+gross inclusive, in pounds. Fifty pounds gross and 38 pounds net yield
+**12 pounds non-part material and 76% material yield**. `scrap_waste_lbs` is
+only the mass difference; recycling, reusable stock, and actual disposal are
+not determined. No zero-waste or optimization claim is established.
+
+Decimal-string rational calculations avoid intermediate rounding; estimates
+are reported to two decimals, with numeric percentage fields alongside the
+original percentage strings. Nonrepresentable results raise `ValueError`;
+small display values can round to zero. These are offline scenario comparisons,
+not actual equipment tuning, measured savings, investment ROI, or accounting
+records. No investment cost, demand charges, variable tariffs, or load profiles
+are modeled.
+
+Governance separately simulates an **8500-unit baseline**, not the computed
+energy savings: 85 charity units and 8415 retained at the fixed 1% rate.
+No funds move or pool log is persisted. Existing engineering tests cover both
+the efficiency and productivity modules.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today

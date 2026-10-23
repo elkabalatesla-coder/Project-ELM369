@@ -7,6 +7,7 @@ __all__ = [
     "ELM369DynamicEngine", "ELM369QEPShuffler",
     "ELM369QualityInspectionEngine",
     "ELM369ProductivityEngine",
+    "ELM369EfficiencyEngine",
 ]
 
 
@@ -31,4 +32,8 @@ def __getattr__(name):
         from .productivity import ELM369ProductivityEngine
 
         return ELM369ProductivityEngine
+    if name == "ELM369EfficiencyEngine":
+        from .efficiency import ELM369EfficiencyEngine
+
+        return ELM369EfficiencyEngine
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
