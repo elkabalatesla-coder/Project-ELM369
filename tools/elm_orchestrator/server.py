@@ -13,6 +13,8 @@ from tools.elm_orchestrator.esign import watermark
 from tools.elm_orchestrator.optimizer import suggest
 from tools.elm_orchestrator.time_sync import sync_report
 
+MAX_REQUEST_BYTES = 1024 * 1024
+
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt: str, *args: Any) -> None:  # quieter
@@ -27,11 +29,23 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(raw)
 
     def _read_json(self) -> dict[str, Any]:
+        if self.headers.get("Transfer-Encoding"):
+            raise ValueError("Transfer-Encoding is not supported")
         length = int(self.headers.get("Content-Length") or 0)
-        if length <= 0:
+        if length < 0:
+            raise ValueError("Content-Length must be non-negative")
+        if length > MAX_REQUEST_BYTES:
+            raise OverflowError("request body too large")
+        if length == 0:
             return {}
+        self.connection.settimeout(10)
         data = self.rfile.read(length)
-        return json.loads(data.decode("utf-8") or "{}")
+        if len(data) != length:
+            raise ValueError("incomplete request body")
+        body = json.loads(data.decode("utf-8"))
+        if not isinstance(body, dict):
+            raise ValueError("JSON object required")
+        return body
 
     def do_GET(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
@@ -51,27 +65,44 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
-        body = self._read_json()
+        try:
+            body = self._read_json()
+        except OverflowError:
+            self.close_connection = True
+            self._json(413, {"error": "request body too large"})
+            return
+        except (ValueError, OSError, RecursionError):
+            self.close_connection = True
+            self._json(400, {"error": "invalid JSON request"})
+            return
         if path == "/v1/vault-log":
-            event = str(body.get("event") or "")
-            if not event:
+            event = body.get("event")
+            if not isinstance(event, str) or not event.strip():
                 self._json(400, {"error": "event required"})
                 return
-            self._json(200, vault_log(event, body.get("detail") or {}))
+            detail = body.get("detail", {})
+            if not isinstance(detail, dict):
+                self._json(400, {"error": "detail object required"})
+                return
+            self._json(200, vault_log(event, detail))
             return
         if path == "/v1/heal":
-            issue = str(body.get("issue") or "")
-            if not issue:
+            issue = body.get("issue")
+            if not isinstance(issue, str) or not issue.strip():
                 self._json(400, {"error": "issue required"})
                 return
             self._json(200, heal_propose(issue))
             return
         if path == "/v1/heal/simulate":
-            pid = str(body.get("proposal_id") or "")
-            if not pid:
+            pid = body.get("proposal_id")
+            if not isinstance(pid, str) or not pid.strip():
                 self._json(400, {"error": "proposal_id required"})
                 return
-            self._json(200, simulate_apply(pid, authorize=bool(body.get("authorize"))))
+            authorize = body.get("authorize", False)
+            if not isinstance(authorize, bool):
+                self._json(400, {"error": "authorize boolean required"})
+                return
+            self._json(200, simulate_apply(pid, authorize=authorize))
             return
         if path == "/v1/sign/watermark":
             payload = body.get("payload")
@@ -81,8 +112,8 @@ class Handler(BaseHTTPRequestHandler):
             self._json(200, watermark(payload))
             return
         if path == "/v1/optimize/suggest":
-            workload = str(body.get("workload") or "")
-            if not workload:
+            workload = body.get("workload")
+            if not isinstance(workload, str) or not workload.strip():
                 self._json(400, {"error": "workload required"})
                 return
             self._json(200, suggest(workload))
