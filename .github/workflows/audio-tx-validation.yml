@@ -1,0 +1,28 @@
+name: AUDIO-TX Offline Validation
+
+on:
+  push:
+    branches:
+      - feature/audio-tx-offline-validation
+  pull_request:
+    branches:
+      - main
+      - feature/audio-tx-foundation
+
+permissions:
+  contents: read
+
+jobs:
+  audio-tx-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run AUDIO-TX regression tests
+        run: python -m unittest discover -s tests -p 'test_audio_tx_foundation.py' -v
+      - name: Compile translator modules
+        run: python -m compileall -q tools/elm_translator tests/test_audio_tx_foundation.py
