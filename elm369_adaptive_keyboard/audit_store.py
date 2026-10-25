@@ -2,6 +2,7 @@
 import json
 import sqlite3
 import threading
+from contextlib import contextmanager
 from hashlib import sha256
 from pathlib import Path
 from typing import Dict
@@ -14,7 +15,7 @@ class SQLiteAuditLedger:
         if self.path != ":memory:":
             Path(self.path).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
         self._lock = threading.RLock()
-        with self._connect() as db:
+        with self._session() as db:
             db.execute("""CREATE TABLE IF NOT EXISTS audit_events (
                 sequence INTEGER PRIMARY KEY,
                 previous_hash TEXT NOT NULL,
@@ -26,6 +27,18 @@ class SQLiteAuditLedger:
         db = sqlite3.connect(self.path, timeout=5.0)
         db.row_factory = sqlite3.Row
         return db
+
+    @contextmanager
+    def _session(self):
+        db = self._connect()
+        try:
+            yield db
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
+        finally:
+            db.close()
 
     @staticmethod
     def _canonical(value):
