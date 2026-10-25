@@ -28,4 +28,4 @@ jobs:
       - name: Compile package
         run: python -m compileall -q elm369_adaptive_keyboard
       - name: Run API, policy, and service tests
-        run: python -m unittest -v elm369_adaptive_keyboard.test_api elm369_adaptive_keyboard.test_policy_gate elm369_adaptive_keyboard.test_service
+        run: python -m unittest -v elm369_adaptive_keyboard.test_api elm369_adaptive_keyboard.test_audit_store elm369_adaptive_keyboard.test_policy_gate elm369_adaptive_keyboard.test_service
