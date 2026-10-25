@@ -5,6 +5,9 @@ info:
   description: >
     Additive HTTP surface for ELM369 orchestrator scaffolds.
     Safety: heal endpoints propose only; no credential or destructive operations.
+    POST bodies must be JSON objects with Content-Length, up to 1 MiB.
+    Invalid JSON, framing, or field types return 400; oversized bodies return 413.
+    Chunked transfer encoding is unsupported. Body reads time out after 10 seconds.
   contact:
     name: Joseph Michael Rose / Project ELM369
 servers:
@@ -140,4 +143,3 @@ paths:
       responses:
         '200':
           description: Simulation result
-
