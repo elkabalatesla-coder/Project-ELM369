@@ -46,7 +46,7 @@ class SQLiteAuditLedger:
 
     def append(self, event: Dict[str, object]) -> Dict[str, object]:
         event_json = self._canonical(event)
-        with self._lock, self._connect() as db:
+        with self._lock, self._session() as db:
             db.execute("BEGIN IMMEDIATE")
             row = db.execute("SELECT sequence,event_hash FROM audit_events ORDER BY sequence DESC LIMIT 1").fetchone()
             sequence = 1 if row is None else row["sequence"] + 1
@@ -59,7 +59,7 @@ class SQLiteAuditLedger:
 
     def verify(self) -> bool:
         previous = "0" * 64
-        with self._lock, self._connect() as db:
+        with self._lock, self._session() as db:
             rows = db.execute("SELECT sequence,previous_hash,event_json,event_hash FROM audit_events ORDER BY sequence").fetchall()
         for expected_sequence, row in enumerate(rows, start=1):
             if row["sequence"] != expected_sequence or row["previous_hash"] != previous:
@@ -76,7 +76,7 @@ class SQLiteAuditLedger:
         return True
 
     def events(self):
-        with self._lock, self._connect() as db:
+        with self._lock, self._session() as db:
             rows = db.execute("SELECT sequence,previous_hash,event_json,event_hash FROM audit_events ORDER BY sequence").fetchall()
         return tuple({"sequence": row["sequence"], "previous_hash": row["previous_hash"],
                       "event": json.loads(row["event_json"]), "event_hash": row["event_hash"]}
