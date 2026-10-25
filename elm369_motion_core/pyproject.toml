@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elm369-motion-core"
+version = "0.1.0"
+description = "Deterministic Matrix, quaternion, motion-state, and QBIT-inspired scoring core for Project ELM369."
+requires-python = ">=3.10"
+license = { text = "Proprietary / project-controlled; review repository license before distribution" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["elm369_motion_core*"]

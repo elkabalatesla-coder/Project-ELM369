@@ -1,0 +1,16 @@
+; ELM369 Motion Arena demo — isolated from the immutable baseline.
+config_version=5
+
+[application]
+config/name="ELM369 Motion Arena"
+run/main_scene="res://Main.tscn"
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.015, 0.025, 0.06, 1)
