@@ -4,8 +4,10 @@ This API resolves commands and evaluates policy. It never executes generated cod
 Run on loopback only; provide ELM369_API_TOKEN through the environment.
 """
 import hmac
+import ipaddress
 import json
 import os
+from urllib.parse import urlsplit
 from pathlib import Path
 from wsgiref.simple_server import make_server, WSGIServer
 from socketserver import ThreadingMixIn
@@ -31,8 +33,8 @@ class KeyboardAPI:
     def __call__(self, environ, start_response):
         method = environ.get("REQUEST_METHOD", "GET").upper()
         path = environ.get("PATH_INFO", "/")
-        host = environ.get("HTTP_HOST", "").lower()
-        if host and host.split(":", 1)[0].strip("[]") not in {"127.0.0.1", "localhost", "::1"}:
+        host = environ.get("HTTP_HOST", "").strip()
+        if host and not self._is_loopback_host(host):
             return self._respond(start_response, "421 Misdirected Request", {"status": "LOCAL_HOST_ONLY"})
         if path in {"/", "/ui"} and method == "GET":
             dashboard = Path(__file__).resolve().parent.parent / "demos" / "adaptive_keyboard_dashboard" / "index.html"
@@ -122,6 +124,20 @@ class KeyboardAPI:
                 return self._respond(start_response, "400 Bad Request", {"status": "INVALID_MANIFEST"})
         result = self.service.request(command, manifest, content, confirmed)
         return self._respond(start_response, "200 OK", result)
+
+    @staticmethod
+    def _is_loopback_host(host):
+        # Parse host:port and bracketed IPv6 correctly; reject malformed authority strings.
+        try:
+            hostname = urlsplit("//" + host).hostname
+            if not hostname:
+                return False
+            hostname = hostname.rstrip(".").lower()
+            if hostname == "localhost":
+                return True
+            return ipaddress.ip_address(hostname).is_loopback
+        except ValueError:
+            return False
 
     @staticmethod
     def _respond(start_response, status, payload):

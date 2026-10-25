@@ -26,6 +26,29 @@ class KeyboardAPITests(unittest.TestCase):
     def setUp(self):
         self.app = KeyboardAPI(token="test-token-that-is-long-enough")
 
+    def test_host_validation_rejects_dns_rebinding_style_host(self):
+        env = {}
+        setup_testing_defaults(env)
+        env.update({"PATH_INFO": "/health", "REQUEST_METHOD": "GET",
+                    "HTTP_HOST": "localhost.attacker.example"})
+        captured = {}
+        def start(status, headers):
+            captured["status"] = status
+        body = b"".join(self.app(env, start))
+        self.assertEqual(captured["status"], "421 Misdirected Request")
+        self.assertIn(b"LOCAL_HOST_ONLY", body)
+
+    def test_host_validation_accepts_bracketed_ipv6_loopback(self):
+        env = {}
+        setup_testing_defaults(env)
+        env.update({"PATH_INFO": "/health", "REQUEST_METHOD": "GET",
+                    "HTTP_HOST": "[::1]:8769"})
+        captured = {}
+        def start(status, headers):
+            captured["status"] = status
+        b"".join(self.app(env, start))
+        self.assertEqual(captured["status"], "200 OK")
+
     def test_health_is_read_only(self):
         response, body = self.request(self.app, "/health", "GET", token=None)
         self.assertEqual(response["status"], "200 OK")
