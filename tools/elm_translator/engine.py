@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 import re
-from typing import Dict, Iterable, Optional
+from typing import Iterable, Optional
 
 from .stt import STTResult, build_recognizer
 from .tts import TTSResult, build_synthesizer
@@ -38,17 +38,30 @@ class Glossary:
             return text, 0
         if source not in self.languages or target not in self.languages:
             raise ValueError(f"Unsupported glossary language pair: {source}->{target}")
-        result, hits = text, 0
-        # Longest phrases first; preserve original casing and punctuation.
+
         pairs = []
         for entry in self.entries:
             if source in entry and target in entry:
-                pairs.append((entry[source], entry[target]))
-        for term, replacement in sorted(pairs, key=lambda p: len(p[0]), reverse=True):
-            pattern = re.compile(r"(?<!\w)" + re.escape(term) + r"(?!\w)", re.IGNORECASE)
-            result, count = pattern.subn(lambda m: _match_case(m.group(0), replacement), result)
-            hits += count
-        return result, hits
+                term = entry[source]
+                replacement = entry[target]
+                if isinstance(term, str) and term and isinstance(replacement, str):
+                    pairs.append((term, replacement))
+        # One-pass matching prevents a replacement from being reprocessed by a
+        # shorter glossary term later in the same translation.
+        pairs.sort(key=lambda pair: len(pair[0]), reverse=True)
+        if not pairs:
+            return text, 0
+
+        replacement_by_term = {term.casefold(): replacement for term, replacement in pairs}
+        alternatives = "|".join(re.escape(term) for term, _ in pairs)
+        pattern = re.compile(r"(?<!\w)(" + alternatives + r")(?!\w)", re.IGNORECASE)
+
+        def replace_match(match: re.Match[str]) -> str:
+            replacement = replacement_by_term[match.group(0).casefold()]
+            return _match_case(match.group(0), replacement)
+
+        translated, hits = pattern.subn(replace_match, text)
+        return translated, hits
 
 
 def _match_case(original: str, replacement: str) -> str:
