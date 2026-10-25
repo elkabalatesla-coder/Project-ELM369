@@ -6,11 +6,13 @@ Run on loopback only; provide ELM369_API_TOKEN through the environment.
 import hmac
 import json
 import os
+from pathlib import Path
 from wsgiref.simple_server import make_server, WSGIServer
 from socketserver import ThreadingMixIn
 
 from .policy_gate import ArtifactManifest
 from .service import KeyboardCommandService
+from .audit_store import SQLiteAuditLedger
 
 MAX_BODY_BYTES = 16 * 1024
 MAX_COMMAND_CHARS = 256
@@ -29,6 +31,20 @@ class KeyboardAPI:
     def __call__(self, environ, start_response):
         method = environ.get("REQUEST_METHOD", "GET").upper()
         path = environ.get("PATH_INFO", "/")
+        host = environ.get("HTTP_HOST", "").lower()
+        if host and host.split(":", 1)[0].strip("[]") not in {"127.0.0.1", "localhost", "::1"}:
+            return self._respond(start_response, "421 Misdirected Request", {"status": "LOCAL_HOST_ONLY"})
+        if path in {"/", "/ui"} and method == "GET":
+            dashboard = Path(__file__).resolve().parent.parent / "demos" / "adaptive_keyboard_dashboard" / "index.html"
+            try:
+                body = dashboard.read_bytes()
+            except OSError:
+                return self._respond(start_response, "503 Service Unavailable", {"status": "DASHBOARD_UNAVAILABLE"})
+            start_response("200 OK", [("Content-Type", "text/html; charset=utf-8"),
+                                      ("Content-Length", str(len(body))), ("Cache-Control", "no-store"),
+                                      ("X-Content-Type-Options", "nosniff"),
+                                      ("Content-Security-Policy", "default-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'")])
+            return [body]
         if path == "/health" and method == "GET":
             return self._respond(start_response, "200 OK", {"status": "ok", "execution": "disabled"})
         if path not in {"/v1/command", "/v1/audit"}:
@@ -125,10 +141,13 @@ def main():
     token = os.environ.get("ELM369_API_TOKEN", "")
     if len(token) < 24:
         raise SystemExit("Set ELM369_API_TOKEN to a random secret of at least 24 characters.")
-    app = KeyboardAPI(token=token)
-    # Loopback only. Use an authenticated local bridge for a device UI; do not expose this server publicly.
+    audit_path = os.environ.get("ELM369_AUDIT_DB", "elm369_audit.sqlite3")
+    service = KeyboardCommandService(ledger=SQLiteAuditLedger(audit_path))
+    app = KeyboardAPI(service=service, token=token)
+    # Loopback-only same-origin dashboard/API bridge. Do not expose publicly.
     with make_server("127.0.0.1", 8769, app, server_class=ThreadingWSGIServer) as server:
-        print("ELM369 keyboard API listening on http://127.0.0.1:8769")
+        print("ELM369 keyboard dashboard/API listening on http://127.0.0.1:8769/ui")
+        print("Durable audit database:", audit_path)
         server.serve_forever()
 
 
