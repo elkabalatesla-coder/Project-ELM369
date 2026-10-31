@@ -1,10 +1,10 @@
 from dataclasses import replace
 import unittest
 
-from pcc_psyonic.canonical import canonical_json, hash_block, seal_block
-from pcc_psyonic.models import Block, Transaction
-from pcc_psyonic.provenance import ANCHOR_MAP, CANONICAL_ID, COMPANION_ID, IDENTIFIER_RECORDS
-from pcc_psyonic.validation import ZERO_HASH, validate_chain
+from integrations.pcc_psyonic.canonical import canonical_json, hash_block, seal_block
+from integrations.pcc_psyonic.models import Block, Transaction
+from integrations.pcc_psyonic.provenance import ANCHOR_MAP, CANONICAL_ID, COMPANION_ID, IDENTIFIER_RECORDS
+from integrations.pcc_psyonic.validation import ZERO_HASH, validate_chain
 
 
 def tx(txid="tx-1", payload=None):
