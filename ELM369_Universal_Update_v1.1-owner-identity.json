@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "elm369://universal/update/v1.1-owner-identity",
+  "framework": "ELM369",
+  "version": "v1.1-owner-identity",
+  "timestamp": "2026-09-30",
+  "change_class": "candidate_update",
+  "baseline_policy": "immutable",
+  "owner": {
+    "legal_name": "Joseph Michael Rose",
+    "e_sign": "Joseph Michael Rose IX JR 🌹",
+    "initials": [
+      "JMR",
+      "IX",
+      "JR"
+    ],
+    "symbol": "🌹"
+  },
+  "payments": {
+    "payee": "Joseph Michael Rose",
+    "purpose": "Tax purposes",
+    "instruction": "Payments associated with ELM369 commercial licensing and monetization are designated to Joseph Michael Rose for tax purposes.",
+    "pii_policy": "Do not store home address, tax ID, bank account, or other sensitive tax/payment credentials in repository files."
+  },
+  "licensing": {
+    "community": "MIT",
+    "commercial_license_file": "COMMERCIAL_LICENSE.md",
+    "commercial_license_status": "requires verification before being treated as authoritative"
+  },
+  "ingestion": {
+    "mode": "declarative",
+    "auto_execute": false,
+    "note": "This JSON records the requested ELM369 owner/payee amendment. It does not itself establish legal ownership, tax status, payment-account control, or authorization in external systems."
+  },
+  "integrity": {
+    "identity_conflict_resolution": "Joseph Michael Rose is the requested canonical owner value for this candidate update.",
+    "provenance": "Preserve prior conflicting artifacts unchanged; do not rewrite historical source records.",
+    "authorization": "User-authorized repository change; external legal/payment systems require their own authorization and verification."
+  }
+}
