@@ -236,6 +236,15 @@
       "category": "Archive",
       "status": "DONE",
       "repo_path": "tools/elm_archive_snapshot"
+    },
+    {
+      "id": "SEC-CTRL",
+      "name": "ELM Security Control Plane",
+      "phase": "Scaffold",
+      "completion": 72,
+      "category": "Security",
+      "status": "SCAFFOLD",
+      "repo_path": "tools/elm_security"
     }
   ]
 }
