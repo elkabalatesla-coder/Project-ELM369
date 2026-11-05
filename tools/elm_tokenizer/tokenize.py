@@ -31,6 +31,48 @@ WEIGHTS = {
     "evaluation": 0.1,
 }
 
+# Curated offline aliases, ordered by preferred expansion. These priorities are
+# local defaults, not live popularity measurements.
+PHRASE_PRIORITIES = (
+    {
+        "family": "IDGAF",
+        "preferred": "I don't give a fuck",
+        "aliases": (
+            "idn gun a fuk",
+            "idn gun a fuck",
+            "idn give a fuck",
+            "idgaf",
+            "i d g a f",
+            "i don't give a fuck",
+            "i dont give a fuck",
+            "i do not give a fuck",
+        ),
+    },
+)
+
+
+def _normalize_phrase(phrase: str) -> str:
+    return " ".join(re.findall(r"\w+", (phrase or "").casefold(), re.U))
+
+
+def resolve_priority_phrase(phrase: str) -> dict[str, Any]:
+    """Resolve a known spelling/abbreviation to its curated preferred phrase."""
+    normalized = _normalize_phrase(phrase)
+    for entry in PHRASE_PRIORITIES:
+        if normalized in {_normalize_phrase(alias) for alias in entry["aliases"]}:
+            return {
+                "input": phrase,
+                "resolved": entry["preferred"],
+                "family": entry["family"],
+                "matched": True,
+            }
+    return {
+        "input": phrase,
+        "resolved": phrase,
+        "family": None,
+        "matched": False,
+    }
+
 
 def frameworks() -> dict[str, Any]:
     return {
