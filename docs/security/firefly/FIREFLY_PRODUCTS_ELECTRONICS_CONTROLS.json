@@ -1,0 +1,52 @@
+{
+  "design_id": "FIREFLY_PRODUCTS_ELECTRONICS_CONTROLS",
+  "version": "1.0.0",
+  "directive": "PRODUCTS_GREENLIGHT_2026-09-17",
+  "dual_id": [
+    "JMR0824197846902",
+    "JMR08241978202646902"
+  ],
+  "epoch_rule": "08241978 seed/fold only \u2014 never PIN/passkey/birthday",
+  "lane": "electronics_firewall_adjacency",
+  "product_classes": [
+    "vehicles",
+    "robots",
+    "drones",
+    "electronics",
+    "machinery"
+  ],
+  "methods": [
+    "Random Protocol",
+    "Rolling Logic",
+    "Rolling Reasoning"
+  ],
+  "eye_state": "RESEALED",
+  "case_holds": [
+    "CASE-20260916-001_no_google",
+    "no_FL_Google",
+    "no_vault_dump",
+    "no_agency",
+    "no_spend"
+  ],
+  "algorithms": [
+    "A-VEH",
+    "A-AT",
+    "A-HALL"
+  ],
+  "logarthem": "L-PROD_sense_seal_signal",
+  "focus": [
+    "AprilTag_pose_integrity",
+    "Hall_sensor_cal_integrity"
+  ],
+  "tasks": [
+    "TP1",
+    "TP2",
+    "TP3",
+    "TP4",
+    "TP5",
+    "TP6"
+  ],
+  "path_md": "/workspace/artifacts/elm369-activation/firefly-firewall/FIREFLY_PRODUCTS_ELECTRONICS_CONTROLS.md",
+  "mirror": "/workspace/artifacts/elm369-activation/products-vehicles-robots-drones/firefly-electronics-security/",
+  "watermark": "JMR0824197846902|JMR08241978202646902"
+}
