@@ -12,6 +12,7 @@ from tools.elm_devtools.inventory import list_tools
 from tools.elm_policy.geofence import stamp_line
 from tools.elm_progress.engine import summarize, verify_paths
 from tools.grok_archive.status import vault_status
+from tools.pandora_vault.logs import channel_stats
 
 VAULT_PRIMARY = "JMR08241978202646902"
 VAULT_COMPANION = "JMR0824197846902"
@@ -25,6 +26,7 @@ def build(*, include_cases: bool = True) -> dict[str, Any]:
     tools = list_tools()
     lanes = roster_lanes()
     case_queue = summarize_case_queue() if include_cases else {"skipped": True}
+    security_logs = channel_stats()
     return {
         "schema": "elm369.mission_control_dashboard.v1",
         "title": "Project ELM369 Mission Control Dashboard",
@@ -44,6 +46,12 @@ def build(*, include_cases: bool = True) -> dict[str, Any]:
             "tool_count": progress["tool_count"],
         },
         "path_verify": {"present": paths["present"], "missing": paths["missing"]},
+        "security": {
+            "channels": security_logs["channels"],
+            "offline_only": True,
+            "geo": "Kokomo IN 46902 only",
+            "filing_joseph_gated": True,
+        },
         "vault": vault.get("totals"),
         "artifacts": artifacts,
         "devtools": {"tool_dirs": len(tools)},
