@@ -1,0 +1,85 @@
+name: ELM369 Core Engine Integration CI
+
+on:
+  push:
+    branches: [ "main", "metadata/**" ]
+  pull_request:
+    branches: [ "main" ]
+
+concurrency:
+  group: elm369-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  infrastructure-build-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository Source
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Cache Docker layers (GHA backend)
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile', 'docker-compose.yml') }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile', 'docker-compose.yml') }}-
+          ${{ runner.os }}-buildx-
+
+    - name: Initialize Docker Compose Stack (with BuildKit cache)
+      env:
+        DOCKER_BUILDKIT: 1
+        COMPOSE_DOCKER_CLI_BUILD: 1
+      run: |
+        docker compose build --progress=plain
+        docker compose up -d
+
+    - name: Wait for Backend Health
+      run: |
+        echo "Waiting for backend healthcheck..."
+        for i in {1..30}; do
+          if curl --fail --silent http://localhost:8000/api/query?seq=394; then
+            echo "Backend healthy"
+            break
+          fi
+          sleep 2
+        done
+
+    - name: Verify Backend Integrity & Pipeline Bindings
+      run: curl --fail http://localhost:8000/api/query?seq=394 || exit 1
+
+    - name: Verify Frontend Webserver + Proxy
+      run: |
+        curl --fail http://localhost:8080 || exit 1
+        curl --fail http://localhost:8080/health || exit 1
+        curl --fail http://localhost:8080/api/query?seq=394 || exit 1
+
+    - name: Inspect Network Topology
+      run: |
+        docker network ls
+        docker network inspect elm369-net || true
+        docker compose ps
+
+    - name: Terminate Validation Matrix Containers
+      if: always()
+      run: docker compose down -v
+
+  # Optional deploy skeleton (requires secrets)
+  deploy:
+    needs: infrastructure-build-validation
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy placeholder
+        env:
+          # Set these in repository Secrets when ready:
+          # DOCKER_HOST, SSH_PRIVATE_KEY, REGISTRY_TOKEN, etc.
+          DEPLOY_TARGET: ${{ secrets.DEPLOY_TARGET }}
+        run: |
+          echo "Deploy job ready. Configure secrets (DEPLOY_TARGET, SSH keys, registry) to activate."
+          echo "Example: scp + remote docker compose up, or docker context use + compose push."

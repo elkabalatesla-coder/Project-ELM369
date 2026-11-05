@@ -2,7 +2,9 @@
   "project_metadata": {
     "project_id": "ELM369",
     "tracking_code": "JMR08241978202646902",
+    "version": "2.0.0",
     "architecture_type": "Quantum-Assisted Adaptive System (Qbit Framework)",
+    "dashboard_status": "upgraded-networking-healthchecks-ci-caching",
     "digital_signature": {
       "signatory": "Joseph Michael Rose",
       "initials": "IX JR",
@@ -147,6 +149,8 @@
       "Primary-Vault-Alpha",
       "Security-Log-Vault-Beta",
       "System-State-Archive-Gamma"
-    ]
+    ],
+    "docker_networking": "elm369-net bridge with healthchecks and Nginx reverse-proxy",
+    "ci_caching": "GitHub Actions Buildx + actions/cache@v4 for Docker layers"
   }
 }
