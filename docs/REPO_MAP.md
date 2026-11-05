@@ -14,6 +14,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 | Tool | Path | Purpose | Run |
 |------|------|---------|-----|
 | AI outage monitor | `tools/ai_outage_monitor/` | Probe AI service status pages; JSONL history | `python3 -m tools.ai_outage_monitor check [--dry-run]` |
+| AI task contracts | `tools/elm_ai_tasks/` | Offline-first task registry, evaluation gates, redacted audit/monitoring | `python3 -m tools.elm_ai_tasks list` |
 | Daily automation | `tools/elm_daily_automation/` | Outage probe + checklists + vault backlog counts | `python3 -m tools.elm_daily_automation run [--dry-run]` |
 | DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize + indexed recall | `python3 -m tools.dax_memory irecall "…"` |
 | QBIT / QSTATE | `tools/qbit/` | Decision evidence scoring (never bypasses safety) | `python3 -m tools.qbit score L M R H` |
@@ -41,6 +42,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 
 - Daily automation schedule: `.github/workflows/elm-daily-automation-schedule.yml` (13:00 UTC ≈ 9am Indianapolis; also `workflow_dispatch`)
 - Remaining design inventory: `docs/architecture/ELM369_REMAINING_DESIGN_v0.1.0.md`
+- AI capability map and task boundary: `docs/architecture/ELM369_AI_CAPABILITY_MAP_v1.0.0.md`
 - Evolution layer: `docs/architecture/ELM369_AUTOMATED_EVOLUTION_SPEC_v1.0.0.md` + `schemas/evolution/`
 - QBIT design: `docs/architecture/ELM369_QBIT_DESIGN_v0.1.0.md`
 - Liquid-3D prompting: `docs/architecture/ELM369_LIQUID3D_PROMPTING_v0.1.0.md`
