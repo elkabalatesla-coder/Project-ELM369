@@ -229,6 +229,15 @@
       "repo_path": "tools/elm_policy"
     },
     {
+      "id": "SKILLSETS",
+      "name": "AI and Writing Skillsets",
+      "phase": "Production",
+      "completion": 70,
+      "category": "AI/Governance",
+      "status": "SCAFFOLD",
+      "repo_path": "tools/elm_skillsets"
+    },
+    {
       "id": "ARCHIVE-SNAP",
       "name": "Archive Snapshot Zip",
       "phase": "Production",

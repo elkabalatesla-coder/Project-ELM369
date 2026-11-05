@@ -1,0 +1,129 @@
+{
+  "version": "1.0.0",
+  "sources": [
+    {
+      "name": "UNESCO AI competency framework for students",
+      "url": "https://unesdoc.unesco.org/ark:/48223/pf0000391105",
+      "basis": "Human-centred mindset, ethics of AI, AI techniques and applications, and AI system design."
+    },
+    {
+      "name": "NIST AI Risk Management Framework",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "basis": "Trustworthy AI risk management through governance, context mapping, measurement, and ongoing management."
+    },
+    {
+      "name": "Purdue OWL: Proofreading",
+      "url": "https://owl.purdue.edu/owl/general_writing/the_writing_process/proofreading/index.html",
+      "basis": "Separate proofreading passes and deliberate review of written work."
+    }
+  ],
+  "skillsets": [
+    {
+      "id": "AI-LITERACY",
+      "category": "AI",
+      "name": "AI literacy and human-centred use",
+      "guidance": [
+        "Clarify the human goal and decide whether AI is appropriate for it.",
+        "Treat model output as fallible; distinguish generated claims from verified facts.",
+        "Keep a human accountable for consequential decisions and final approval."
+      ]
+    },
+    {
+      "id": "AI-RESEARCH",
+      "category": "AI",
+      "name": "AI-assisted research and fact checking",
+      "guidance": [
+        "Break the question into answerable parts and identify what evidence would resolve each part.",
+        "Prefer primary, authoritative sources; verify dates, quotations, and important claims against the source.",
+        "Cite sources clearly and say when evidence is incomplete or conflicting.",
+        "Do not invent sources, quotations, statistics, or certainty."
+      ]
+    },
+    {
+      "id": "AI-PROMPTING",
+      "category": "AI",
+      "name": "Prompting and task framing",
+      "guidance": [
+        "State the goal, relevant context, constraints, and expected output format.",
+        "Separate known facts, assumptions, and open questions.",
+        "For complex work, decompose the task and check intermediate results.",
+        "Use only the minimum sensitive information needed."
+      ]
+    },
+    {
+      "id": "AI-REASONING",
+      "category": "AI",
+      "name": "Reasoning and problem solving",
+      "guidance": [
+        "Define the problem and success criteria before proposing a solution.",
+        "Check assumptions, edge cases, and alternative explanations.",
+        "Show concise, verifiable rationale rather than unsupported conclusions.",
+        "Use tools or calculations to verify results when appropriate."
+      ]
+    },
+    {
+      "id": "AI-CREATION",
+      "category": "AI",
+      "name": "AI system design and creation",
+      "guidance": [
+        "Design for a specific user need and consider accessibility and foreseeable harms.",
+        "Document data sources, limitations, and intended use.",
+        "Test representative cases, failure cases, and bias risks before relying on a system.",
+        "Iterate from evidence and keep deployment subject to appropriate human review."
+      ]
+    },
+    {
+      "id": "AI-SAFETY",
+      "category": "AI",
+      "name": "Responsible and safe AI use",
+      "guidance": [
+        "Respect privacy, consent, intellectual property, and applicable policy.",
+        "Assess the impact and reversibility of actions before acting on AI output.",
+        "Do not expose secrets or use AI output as a substitute for qualified professional advice.",
+        "Escalate high-impact, uncertain, or safety-critical decisions to a qualified human."
+      ]
+    },
+    {
+      "id": "WRITING-SPELLING",
+      "category": "Writing",
+      "name": "Spelling and word choice",
+      "guidance": [
+        "Check spelling in context, including names, technical terms, and commonly confused words.",
+        "Preserve the author's intended meaning; flag uncertain terms instead of silently replacing them.",
+        "Apply the requested language variety consistently, such as US or UK English."
+      ]
+    },
+    {
+      "id": "WRITING-GRAMMAR",
+      "category": "Writing",
+      "name": "Grammar and syntax",
+      "guidance": [
+        "Check subject–verb agreement, tense consistency, pronoun reference, and sentence boundaries.",
+        "Review modifiers and parallel structure for clear relationships between ideas.",
+        "Prefer direct, readable sentences without changing the author's voice.",
+        "Treat grammar suggestions as context-sensitive; do not overcorrect dialect or quoted text."
+      ]
+    },
+    {
+      "id": "WRITING-PUNCTUATION",
+      "category": "Writing",
+      "name": "Punctuation and mechanics",
+      "guidance": [
+        "Check commas, apostrophes, quotation marks, capitalization, and end punctuation.",
+        "Apply a consistent style for lists, numbers, abbreviations, and headings.",
+        "Check punctuation against sentence meaning, not just a fixed pattern."
+      ]
+    },
+    {
+      "id": "WRITING-PROOFREAD",
+      "category": "Writing",
+      "name": "Clarity and proofreading",
+      "guidance": [
+        "Review one class of issues at a time: meaning, organization, sentence clarity, then mechanics.",
+        "Check that the draft meets its audience, purpose, and format.",
+        "Read carefully for omitted words, repetition, ambiguous references, and inconsistent terminology.",
+        "Return proposed corrections with enough context to review; do not silently alter factual meaning."
+      ]
+    }
+  ]
+}
