@@ -22,7 +22,7 @@
     "elm369"
   ],
   "author": "elkabalatesla-coder",
-  "license": "Other",
+  "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "fastify": "^4.24.3",
     "uuid": "^9.0.0"
