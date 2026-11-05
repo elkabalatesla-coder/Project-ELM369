@@ -17,7 +17,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 | Daily automation | `tools/elm_daily_automation/` | Outage probe + checklists + vault backlog counts | `python3 -m tools.elm_daily_automation run [--dry-run]` |
 | DAX memory | `tools/dax_memory/` | Portable AI state store/recall/organize + indexed recall | `python3 -m tools.dax_memory irecall "…"` |
 | QBIT / QSTATE | `tools/qbit/` | Decision evidence scoring (never bypasses safety) | `python3 -m tools.qbit score L M R H` |
-| Liquid-3D prompting | `tools/liquid3d_prompting/` | Visual/audio/animation prompt composer | `python3 -m tools.liquid3d_prompting compose --mode visual --subject "…"` |
+| Liquid-3D prompting | `tools/liquid3d_prompting/` | Visual/audio/animation prompt composer + image/video/art skillsets | `python3 -m tools.liquid3d_prompting list-skills` |
 | Grok archive intake | `tools/grok_archive/` + `vault/.../sources/grok/` | Ingest, backlog, search, multi-source status | `python3 -m tools.grok_archive status` |
 | ELM orchestrator | `tools/elm_orchestrator/` | Diag / vault-log / QBIT-gated heal / OpenAPI serve / NTP / watermark / optimize | `python3 -m tools.elm_orchestrator diag` |
 | ELM evolution | `tools/elm_evolution/` | Gated DISCOVER→PROPOSE→… lifecycle (no auto prod mutation) | `python3 -m tools.elm_evolution discover` |
@@ -44,6 +44,7 @@ Last updated: 2026-09-06 (round 15 — finish bot/assistant scaffolds + Grok bot
 - Evolution layer: `docs/architecture/ELM369_AUTOMATED_EVOLUTION_SPEC_v1.0.0.md` + `schemas/evolution/`
 - QBIT design: `docs/architecture/ELM369_QBIT_DESIGN_v0.1.0.md`
 - Liquid-3D prompting: `docs/architecture/ELM369_LIQUID3D_PROMPTING_v0.1.0.md`
+- Visual-media skillsets research and practice guide: `docs/research/ELM369_VISUAL_MEDIA_SKILLSETS_2026-10-11.md`
 - Issue HTML artifacts: `artifacts/from-issues/`
 - Master backlog: `docs/BACKLOG.md`
 - Identity: `docs/ELM369_IDENTITY.md`
