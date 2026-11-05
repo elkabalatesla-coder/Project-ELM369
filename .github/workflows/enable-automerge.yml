@@ -1,16 +1,15 @@
-name: Enable auto-merge for Dependabot and automated-fix PRs
+name: Enable auto-merge for Dependabot PRs
 
+# H08 harden (Joseph greenlit 2026-09-07): use pull_request (not pull_request_target)
+# so the job does not run with base-repo privileges on untrusted PR context.
+# Actor allowlist is Dependabot only — do not gate on attacker-controllable labels.
 on:
-  pull_request_target:
-    types: [opened, labeled, ready_for_review, synchronize]
+  pull_request:
+    types: [opened, ready_for_review, synchronize]
 
 jobs:
   enable-automerge:
-    # Only run when the PR author is dependabot[bot] or the PR has the label 'auto-fix' or 'dependabot'
-    if: |
-      github.event.pull_request.user.login == 'dependabot[bot]' ||
-      contains(github.event.pull_request.labels.*.name, 'auto-fix') ||
-      contains(github.event.pull_request.labels.*.name, 'dependabot')
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
