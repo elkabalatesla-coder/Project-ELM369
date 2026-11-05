@@ -1,0 +1,29 @@
+:root { font-family: system-ui, sans-serif; color: #e9faff; background: #080b19; }
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(ellipse at top, #281747, #080b19 70%); }
+main { max-width: 1100px; padding: 1.5rem; margin: auto; }
+h1 { font-size: clamp(2rem, 6vw, 3.8rem); margin: .3rem 0; color: #00d4ff; }
+.eyebrow { letter-spacing: .15em; color: #a8b4d5; font-size: .8rem; }
+.notice { padding: .8rem; border-left: 3px solid #00ff88; background: #112e2b; }
+.toolbar { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; margin: 1rem 0; }
+label { display: inline-flex; gap: .5rem; align-items: center; }
+button, select, input { font: inherit; color: inherit; background: #171c36; border: 1px solid #6476a9; border-radius: .5rem; padding: .65rem; }
+button { cursor: pointer; min-height: 44px; }
+button:hover { border-color: #00d4ff; background: #203653; }
+button[aria-pressed="true"] { border-color: #00ff88; color: #00ff88; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+:focus-visible { outline: 3px solid #ffb800; outline-offset: 3px; }
+input[type="number"] { width: 6rem; }
+input[type="range"] { width: 7rem; }
+.stage { position: relative; border: 1px solid #53648f; border-radius: 1rem; overflow: hidden; background: #080b19; }
+canvas { display: block; width: 100%; aspect-ratio: 8 / 5; touch-action: none; }
+#overlay { position: absolute; top: 40%; width: 100%; text-align: center; pointer-events: none; font-size: clamp(1rem, 3vw, 2rem); text-shadow: 0 2px 4px black; }
+#directions { justify-content: center; }
+#directions button { min-width: 64px; }
+.cards { display: flex; flex-wrap: wrap; gap: .7rem; margin: 1rem 0; }
+.card { min-width: 80px; min-height: 100px; background: #e9faff; color: #122034; font-weight: bold; font-size: 1.4rem; }
+.card[aria-pressed="true"] { color: #122034; background: #9dffd2; border: 3px solid #00bb77; }
+details { background: #151a30; padding: 1rem; border-radius: .6rem; line-height: 1.6; }
+footer { color: #a8b4d5; font-size: .85rem; line-height: 1.6; margin-top: 2rem; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }

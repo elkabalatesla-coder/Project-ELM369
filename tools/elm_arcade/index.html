@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'">
+  <title>ELM369 Liquid Arcade</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="engine.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">PROJECT ELM369 · ARCADE ENGINE v1</p>
+      <h1>Liquid Arcade</h1>
+      <p>Action, cards, and chance in a luminous liquid cabinet.</p>
+      <p class="notice">Play-money simulations only. No deposits, purchases, prizes, cash-out, or real-money services.</p>
+    </header>
+    <section class="toolbar" aria-label="Cabinet settings">
+      <label>Game <select id="game"></select></label>
+      <label>Camera <select id="camera">
+        <option value="still">Still 3D</option>
+        <option value="orbit">3D orbit</option>
+        <option value="4d">4D projection</option>
+      </select></label>
+      <label><input id="motion" type="checkbox"> Reduced motion</label>
+      <button id="sound" type="button" aria-pressed="false">Enable audio</button>
+      <label>Volume <input id="volume" type="range" min="0" max="0.5" step="0.01" value="0.15"></label>
+    </section>
+    <section id="action-panel" aria-label="Action arcade">
+      <div class="toolbar">
+        <button id="restart" type="button">Start / restart</button>
+        <button id="pause" type="button" aria-pressed="false">Pause</button>
+        <span id="score" role="status">Score 0</span>
+      </div>
+      <p id="instructions"></p>
+    </section>
+    <div class="stage">
+      <canvas id="screen" width="960" height="600" tabindex="0" aria-label="Arcade playfield. Focus here to use keyboard controls."></canvas>
+      <p id="overlay">Press Start to play</p>
+    </div>
+    <div id="directions" class="toolbar" aria-label="Directional controls">
+      <button type="button" data-direction="up" aria-label="Move up">↑</button>
+      <button type="button" data-direction="left" aria-label="Move left">←</button>
+      <button type="button" data-direction="down" aria-label="Move down">↓</button>
+      <button type="button" data-direction="right" aria-label="Move right">→</button>
+    </div>
+    <section id="casino-panel" aria-label="Play-money casino" hidden>
+      <div class="toolbar">
+        <label>Bet <input id="bet" type="number" min="1" max="100" step="1" value="2"></label>
+        <label id="choice-label">Choice <select id="choice"></select></label>
+        <button id="deal" type="button">Play</button>
+        <button id="hit" type="button" hidden>Hit</button>
+        <button id="stand" type="button" hidden>Stand</button>
+        <span id="balance" role="status">1000 demo credits</span>
+      </div>
+      <div id="cards" class="cards" aria-label="Cards; select poker cards to hold"></div>
+      <p id="result" role="status" aria-live="polite"></p>
+      <details open><summary>Rules and payouts</summary><p id="rules"></p></details>
+    </section>
+    <p id="message" role="status" aria-live="polite"></p>
+    <footer>Liquid3D-inspired procedural art and sound. “4D” means a mathematical projection, not physical four-dimensional display. No external assets or network services.</footer>
+  </main>
+</body>
+</html>
