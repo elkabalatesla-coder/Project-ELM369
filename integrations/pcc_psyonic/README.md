@@ -1,6 +1,15 @@
-# ELM369 PCC / PSYONIC integration — v0.1.1
+# ELM369 PCC / PSYONIC integration — v0.2.0
 
 This package is a derived, non-destructive integration layer. It does not replace the original PCC source or alter the immutable ELM369 baseline.
+
+## v0.2.0 spatial-index layer
+
+- Adds an immutable four-dimensional bucket index over integer microunit coordinates.
+- The index stores only references (height, block ID, block hash, bucket key), never canonical Block records.
+- Bucket collisions retain every reference; no record is overwritten.
+- Queries resolve references against the caller-supplied canonical chain and return the original ledger records.
+- Index construction rejects invalid chains. Query-time freshness checks detect appended, missing, reordered, or modified canonical records.
+- Negative coordinates use deterministic floor-division buckets.
 
 ## v0.1.1 integrity hardening
 
@@ -24,7 +33,7 @@ This package is a derived, non-destructive integration layer. It does not replac
 - PASS from validate_chain means structural and content-hash integrity only; it is not a consensus verdict.
 - consensus_type and consensus_proof are committed into the block hash, but no consensus protocol or proof verifier is implemented.
 - Transaction signatures are represented and hash-committed, but not cryptographically verified.
-- The spatial index, AI-evidence attestation, quantum-simulation evidence, quantum-hardware evidence, Merkle checkpointing, witness controls, authority bridge, human-authorization gate, safety governor, and recovery controls remain unimplemented.
+- AI-evidence attestation, quantum-simulation evidence, quantum-hardware evidence, Merkle checkpointing, witness controls, authority bridge, human-authorization gate, safety governor, and recovery controls remain unimplemented.
 - Coordinates use integer microunits; no physical gyroscope interpretation or hardware stability certification is asserted.
 - This is an integrity-focused prototype, not production cryptocurrency software.
 
