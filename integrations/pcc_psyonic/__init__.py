@@ -9,4 +9,4 @@ __all__ = [
     "hash_block", "hash_transaction", "seal_block", "validate_chain",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"

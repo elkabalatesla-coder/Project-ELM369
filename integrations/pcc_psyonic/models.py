@@ -4,7 +4,6 @@ Coordinates are integers in microunits; JSON floating-point values are
 prohibited in hashed payloads to avoid cross-runtime serialization ambiguity.
 """
 from __future__ import annotations
-
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
@@ -55,10 +54,15 @@ class Transaction:
     signature_hex: str = ""
 
     def __post_init__(self) -> None:
-        if self.schema_version != TRANSACTION_SCHEMA_VERSION:
+        if (isinstance(self.schema_version, bool)
+                or not isinstance(self.schema_version, int)
+                or self.schema_version != TRANSACTION_SCHEMA_VERSION):
             raise ValueError("unsupported transaction schema_version")
-        if not self.transaction_id.strip() or not self.issuer_id.strip():
-            raise ValueError("transaction_id and issuer_id are required")
+        if (not isinstance(self.transaction_id, str) or not self.transaction_id.strip()
+                or not isinstance(self.issuer_id, str) or not self.issuer_id.strip()):
+            raise ValueError("transaction_id and issuer_id must be non-empty strings")
+        if not isinstance(self.payload_json, str):
+            raise TypeError("payload_json must be a string")
         _validate_utc(self.created_at_utc, "created_at_utc")
         try:
             payload = json.loads(self.payload_json)
@@ -68,14 +72,17 @@ class Transaction:
         from .canonical import canonical_json
         if self.payload_json != canonical_json(payload):
             raise ValueError("payload_json must already be canonical JSON")
-        if self.signature_hex and not re.fullmatch(r"[0-9a-fA-F]+", self.signature_hex):
-            raise ValueError("signature_hex must be hexadecimal when provided")
+        if (not isinstance(self.signature_hex, str)
+                or (self.signature_hex and (
+                    len(self.signature_hex) % 2 != 0
+                    or not re.fullmatch(r"[0-9a-fA-F]+", self.signature_hex)
+                ))):
+            raise ValueError("signature_hex must be even-length hexadecimal when provided")
 
     @classmethod
-    def from_payload(
-        cls, *, transaction_id: str, created_at_utc: str, issuer_id: str,
-        payload: Mapping[str, Any], signature_hex: str = "",
-    ) -> "Transaction":
+    def from_payload(cls, *, transaction_id: str, created_at_utc: str,
+                     issuer_id: str, payload: Mapping[str, Any],
+                     signature_hex: str = "") -> "Transaction":
         from .canonical import canonical_json
         materialized = dict(payload)
         _validate_json_value(materialized)
@@ -118,12 +125,21 @@ class Block:
     block_hash: str = ""
 
     def __post_init__(self) -> None:
-        if self.schema_version != BLOCK_SCHEMA_VERSION:
+        if (isinstance(self.schema_version, bool)
+                or not isinstance(self.schema_version, int)
+                or self.schema_version != BLOCK_SCHEMA_VERSION):
             raise ValueError("unsupported block schema_version")
-        if not self.block_id.strip() or self.height < 0 or self.nonce < 0:
-            raise ValueError("block_id is required; height and nonce must be non-negative")
+        if not isinstance(self.block_id, str) or not self.block_id.strip():
+            raise ValueError("block_id must be a non-empty string")
+        for name in ("height", "nonce"):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+                raise ValueError(f"{name} must be a non-negative integer")
+        if (not isinstance(self.consensus_type, str) or not self.consensus_type
+                or not isinstance(self.consensus_proof, str) or not self.consensus_proof):
+            raise ValueError("consensus_type and consensus_proof must be non-empty strings")
         _validate_utc(self.timestamp_utc, "timestamp_utc")
-        if not re.fullmatch(r"[0-9a-f]{64}", self.previous_hash):
+        if not isinstance(self.previous_hash, str) or not re.fullmatch(r"[0-9a-f]{64}", self.previous_hash):
             raise ValueError("previous_hash must be a 32-byte lowercase hexadecimal digest")
         if not isinstance(self.transactions, tuple) or not all(isinstance(t, Transaction) for t in self.transactions):
             raise TypeError("transactions must be a tuple of Transaction objects")
@@ -133,11 +149,14 @@ class Block:
             value = getattr(self, name)
             if isinstance(value, bool) or not isinstance(value, int):
                 raise TypeError(f"{name} must be an integer in microunits")
-        if self.block_hash and not re.fullmatch(r"[0-9a-f]{64}", self.block_hash):
+        if self.block_hash and (
+            not isinstance(self.block_hash, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", self.block_hash)
+        ):
             raise ValueError("block_hash must be a 32-byte lowercase hexadecimal digest")
 
     def hash_material(self) -> dict[str, Any]:
-        """Return every integrity-relevant block field, excluding only block_hash."""
+        """Return every integrity-relevant field except the stored block hash."""
         return {
             "schema_version": self.schema_version,
             "block_id": self.block_id,
