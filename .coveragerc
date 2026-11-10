@@ -1,0 +1,20 @@
+[run]
+branch = True
+source =
+    tools.elm_orchestrator.heal
+    tools.elm_tokenizer.tokenize
+omit =
+    */tests/*
+    */__pycache__/*
+
+[report]
+show_missing = True
+skip_covered = False
+precision = 1
+fail_under = 80
+
+[html]
+directory = htmlcov
+
+[xml]
+output = coverage.xml
