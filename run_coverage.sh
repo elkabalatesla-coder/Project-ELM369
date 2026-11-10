@@ -27,7 +27,7 @@ fi
 if ! "$PYTHON_BIN" -c 'import pytest, pytest_cov, coverage, openapi_spec_validator' >/dev/null 2>&1; then
   echo "[ERROR] Test dependencies are missing." >&2
   echo "Install the pinned toolchain with:" >&2
-  echo "  $PYTHON_BIN -m pip install -r requirements-ci.txt" >&2
+  echo "  $PYTHON_BIN -m pip install -r requirements.txt -r requirements-ci.txt" >&2
   exit 2
 fi
 
