@@ -24,7 +24,7 @@ if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
   exit 127
 fi
 
-if ! "$PYTHON_BIN" -c 'import pytest, pytest_cov, coverage' >/dev/null 2>&1; then
+if ! "$PYTHON_BIN" -c 'import pytest, pytest_cov, coverage, openapi_spec_validator' >/dev/null 2>&1; then
   echo "[ERROR] Test dependencies are missing." >&2
   echo "Install the pinned toolchain with:" >&2
   echo "  $PYTHON_BIN -m pip install -r requirements-ci.txt" >&2
@@ -39,7 +39,10 @@ fi
 rm -f .coverage coverage.xml
 rm -rf "$REPORT_DIR"
 
-echo "[1/2] Running tests and measuring line + branch coverage..."
+echo "[1/3] Validating the OpenAPI 3.1 contract..."
+"$PYTHON_BIN" -m openapi_spec_validator docs/openapi/elm369-openapi.yaml
+
+echo "[2/3] Running tests and measuring line + branch coverage..."
 "$PYTHON_BIN" -m pytest \
   -v \
   --cov \
@@ -49,7 +52,7 @@ echo "[1/2] Running tests and measuring line + branch coverage..."
   --cov-report=xml:coverage.xml \
   --cov-fail-under="$COVERAGE_THRESHOLD"
 
-echo "[2/2] Coverage reports generated:"
+echo "[3/3] Coverage reports generated:"
 echo "  HTML: $REPORT_DIR/index.html"
 echo "  XML:  coverage.xml"
 
