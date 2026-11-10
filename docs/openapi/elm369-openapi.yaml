@@ -1,0 +1,288 @@
+openapi: 3.1.0
+info:
+  title: Project ELM369 Artifact Registry API
+  version: 0.1.0
+  summary: Proposed API contract for registering and inspecting ELM369 artifacts.
+  description: |
+    This is a contract/example document, not evidence that a production API
+    server is deployed. The artifact registration endpoint is a proposed
+    interface for the ELM369 registry. Live financial transfers, licensing
+    actions, and legal filings are explicitly outside this API contract.
+  contact:
+    name: Project ELM369
+servers:
+  - url: https://api.example.invalid/elm369/v1
+    description: Placeholder only; replace after an authorized deployment.
+tags:
+  - name: Artifacts
+    description: Artifact registration and provenance.
+  - name: Health
+    description: Service health.
+paths:
+  /health:
+    get:
+      tags: [Health]
+      operationId: getHealth
+      summary: Read service health
+      responses:
+        "200":
+          description: Service health response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+              examples:
+                healthy:
+                  value:
+                    status: healthy
+                    service: elm369-artifact-registry
+                    api_version: v1
+  /artifacts/register:
+    post:
+      tags: [Artifacts]
+      operationId: registerArtifact
+      summary: Register an artifact with provenance metadata
+      description: |
+        Proposed registration contract. Registration records metadata and
+        hashes; it does not execute the artifact or authorize external actions.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArtifactRegisterRequest"
+            examples:
+              algorithmArtifact:
+                summary: Register a versioned algorithm artifact
+                value:
+                  artifact_id: ELM369-ALG-000184
+                  project_id: ELM369
+                  canonical_anchor: JMR0824197846902
+                  companion_anchor: JMR08241978202646902
+                  artifact_type: algorithm
+                  name: rolling-logic-evaluator
+                  version: 1.0.0
+                  source_hash:
+                    algorithm: sha256
+                    value: 8b6f7d4c2a1e9f0b8d6c4a2e1f9b7d5c3a8e6f4b2d0c1a9e7f5b3d1c8a6e4f20
+                  provenance:
+                    source: local-sandbox
+                    created_at: "2026-11-10T12:00:00Z"
+                    environment: senero
+                  metadata:
+                    module: observable-discussion-workflow
+                    evidence_status: PARTIAL
+      responses:
+        "201":
+          description: Artifact metadata accepted and registered.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtifactRegisterResponse"
+              examples:
+                created:
+                  value:
+                    artifact_id: ELM369-ALG-000184
+                    registry_status: REGISTERED
+                    source_hash:
+                      algorithm: sha256
+                      value: 8b6f7d4c2a1e9f0b8d6c4a2e1f9b7d5c3a8e6f4b2d0c1a9e7f5b3d1c8a6e4f20
+                    registered_at: "2026-11-10T12:00:02Z"
+                    evidence_status: PARTIAL
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: Artifact identifier already exists with conflicting provenance.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                provenanceConflict:
+                  value:
+                    error:
+                      code: ARTIFACT_PROVENANCE_CONFLICT
+                      message: Existing artifact identifier has different provenance.
+                      request_id: req_01JMR00000000000000000001
+        "422":
+          $ref: "#/components/responses/ValidationError"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required: [status, service, api_version]
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unavailable]
+        service:
+          type: string
+        api_version:
+          type: string
+    ArtifactRegisterRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - artifact_id
+        - project_id
+        - canonical_anchor
+        - companion_anchor
+        - artifact_type
+        - name
+        - version
+        - source_hash
+        - provenance
+      properties:
+        artifact_id:
+          type: string
+          minLength: 1
+          maxLength: 128
+        project_id:
+          type: string
+          const: ELM369
+        canonical_anchor:
+          type: string
+          const: JMR0824197846902
+        companion_anchor:
+          type: string
+          const: JMR08241978202646902
+        artifact_type:
+          type: string
+          enum: [algorithm, model, report, dataset, media, software, document]
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        version:
+          type: string
+          pattern: '^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$'
+        source_hash:
+          $ref: "#/components/schemas/ContentHash"
+        provenance:
+          $ref: "#/components/schemas/Provenance"
+        metadata:
+          type: object
+          additionalProperties: true
+    ContentHash:
+      type: object
+      additionalProperties: false
+      required: [algorithm, value]
+      properties:
+        algorithm:
+          type: string
+          const: sha256
+        value:
+          type: string
+          pattern: '^[a-f0-9]{64}$'
+    Provenance:
+      type: object
+      additionalProperties: false
+      required: [source, created_at, environment]
+      properties:
+        source:
+          type: string
+          minLength: 1
+        created_at:
+          type: string
+          format: date-time
+        environment:
+          type: string
+          enum: [senero, denero, development, staging, production]
+    ArtifactRegisterResponse:
+      type: object
+      additionalProperties: false
+      required: [artifact_id, registry_status, source_hash, registered_at, evidence_status]
+      properties:
+        artifact_id:
+          type: string
+        registry_status:
+          type: string
+          enum: [REGISTERED, PENDING_REVIEW]
+        source_hash:
+          $ref: "#/components/schemas/ContentHash"
+        registered_at:
+          type: string
+          format: date-time
+        evidence_status:
+          $ref: "#/components/schemas/EvidenceStatus"
+    EvidenceStatus:
+      type: string
+      enum: [PASS, FAIL, PARTIAL, UNKNOWN, NOT_APPLICABLE, ACCEPTED_RISK]
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, request_id]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            request_id:
+              type: string
+    ValidationErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, details, request_id]
+          properties:
+            code:
+              type: string
+              const: VALIDATION_ERROR
+            message:
+              type: string
+            details:
+              type: array
+              items:
+                type: object
+                required: [field, issue]
+                properties:
+                  field:
+                    type: string
+                  issue:
+                    type: string
+            request_id:
+              type: string
+  responses:
+    BadRequest:
+      description: Malformed request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Missing or invalid authentication.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: Authenticated caller lacks required permission.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ValidationError:
+      description: Request body failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ValidationErrorResponse"
