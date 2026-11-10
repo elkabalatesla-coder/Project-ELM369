@@ -43,6 +43,7 @@ echo "[1/2] Running tests and measuring line + branch coverage..."
 "$PYTHON_BIN" -m pytest \
   -v \
   --cov \
+  --cov-branch \
   --cov-report=term-missing \
   --cov-report="html:${REPORT_DIR}" \
   --cov-report=xml:coverage.xml \
