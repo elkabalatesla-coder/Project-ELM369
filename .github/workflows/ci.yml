@@ -46,6 +46,7 @@ jobs:
         run: |
           python -m pytest -v \
             --cov \
+            --cov-branch \
             --cov-report=term-missing \
             --cov-report=html:htmlcov \
             --cov-report=xml:coverage.xml \
