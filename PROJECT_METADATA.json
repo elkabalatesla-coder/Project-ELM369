@@ -2,13 +2,41 @@
   "project_metadata": {
     "project_id": "ELM369",
     "tracking_code": "JMR08241978202646902",
+    "identifiers": {
+      "primary": "JMR0824197846902",
+      "companion": "JMR08241978202646902"
+    },
     "architecture_type": "Quantum-Assisted Adaptive System (Qbit Framework)",
+    "timestamp_iso8601": "2026-09-26T22:37:45Z",
     "digital_signature": {
+      "model": "detached",
+      "signature": null,
+      "status": "pending_external_generation",
       "signatory": "Joseph Michael Rose",
       "initials": "IX JR",
       "e_symbol": "🌹",
-      "auto_esign": true,
-      "auto_watermark": true
+      "auto_esign": false,
+      "auto_watermark": true,
+      "public_key_path": "vault/public/provenance-signing.pub",
+      "documentation": "docs/PROVENANCE_SIGNATURES.md",
+      "notes": [
+        "Generate the detached signature outside the repository using an authorized private key.",
+        "Store the real signature artifact separately from PROJECT_METADATA.json so the signed JSON does not change after signing.",
+        "Do not commit private keys, credentials, or other secret signing material to this repository."
+      ]
+    }
+  },
+  "provenance_review_policy": {
+    "access": "pull_request_only_recommended",
+    "policy": "PROVENANCE_FIRST_REVIEW_REQUIRED",
+    "disallowed_auto_actions": [
+      "push_to_github_when_authenticated",
+      "ingest_local_state_without_explicit_consent"
+    ],
+    "branch_protection": {
+      "require_pull_request": true,
+      "require_codeowner_review": true,
+      "block_direct_push_to_main": true
     }
   },
   "ai_ecosystem_and_orchestration": {
@@ -61,8 +89,8 @@
         "toolbox_name": "Compliance & Cryptography Suite",
         "tools": [
           "JSON Schema Draft-07 Validator",
-          "Geo-NTP Precision Sync",
-          "Digital Signature Enforcer (🌹)"
+          "Detached Signature Verification",
+          "Provenance Review Policy Enforcement"
         ]
       }
     ],
