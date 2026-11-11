@@ -6,14 +6,15 @@ import json
 from pathlib import Path
 from typing import Any
 
-REGISTRY = Path("data/registries/elm369_tools.json")
+REPO_ROOT = Path(__file__).resolve().parents[2]
 WATERMARK = "Joseph Michael Rose · IX JR · 🌹 / Kokomo IN 46902"
 
 
-def _registry_by_path() -> dict[str, dict[str, Any]]:
-    if not REGISTRY.is_file():
+def _registry_by_path(root: Path | None = None) -> dict[str, dict[str, Any]]:
+    registry = (root or REPO_ROOT) / "data" / "registries" / "elm369_tools.json"
+    if not registry.is_file():
         return {}
-    data = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    data = json.loads(registry.read_text(encoding="utf-8"))
     out: dict[str, dict[str, Any]] = {}
     for t in data.get("tools") or []:
         rp = str(t.get("repo_path") or "").rstrip("/")
@@ -25,8 +26,9 @@ def _registry_by_path() -> dict[str, dict[str, Any]]:
 
 
 def list_tools(root: Path | None = None) -> list[dict[str, Any]]:
-    base = (root or Path(".")) / "tools"
-    reg = _registry_by_path()
+    repo_root = root or REPO_ROOT
+    base = repo_root / "tools"
+    reg = _registry_by_path(repo_root)
     out: list[dict[str, Any]] = []
     if not base.is_dir():
         return out
@@ -37,10 +39,14 @@ def list_tools(root: Path | None = None) -> list[dict[str, Any]]:
         tests = p / "tests"
         entry = p / "__main__.py"
         meta = reg.get(f"tools/{p.name}") or reg.get(p.name) or {}
+        try:
+            path_value = str(p.relative_to(repo_root)).replace("\\", "/")
+        except ValueError:
+            path_value = str(p).replace("\\", "/")
         out.append(
             {
                 "id": p.name,
-                "path": str(p).replace("\\", "/"),
+                "path": path_value,
                 "has_readme": readme.is_file(),
                 "has_tests": tests.is_dir() and any(tests.glob("test_*.py")),
                 "entry": entry.is_file(),
