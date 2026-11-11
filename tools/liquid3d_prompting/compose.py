@@ -11,6 +11,7 @@ from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_CONFIG = ROOT / "config.json"
+DEFAULT_SKILLSETS = ROOT / "skillsets.json"
 MODES = {"visual", "audio", "animation", "combo"}
 
 
@@ -25,10 +26,15 @@ class PromptPacket:
     palette: list[str] = field(default_factory=list)
     tags: list[str] = field(default_factory=list)
     constraints: list[str] = field(default_factory=list)
+    skills: list[str] = field(default_factory=list)
 
 
 def load_config(path: Path | None = None) -> dict[str, Any]:
     return json.loads((path or DEFAULT_CONFIG).read_text(encoding="utf-8"))
+
+
+def load_skillsets(path: Path | None = None) -> dict[str, dict[str, str]]:
+    return json.loads((path or DEFAULT_SKILLSETS).read_text(encoding="utf-8"))
 
 
 def compose(
@@ -38,7 +44,9 @@ def compose(
     tags: Iterable[str] | None = None,
     palette: Iterable[str] | None = None,
     constraints: Iterable[str] | None = None,
+    skills: Iterable[str] | None = None,
     config: dict[str, Any] | None = None,
+    skillsets: dict[str, dict[str, str]] | None = None,
 ) -> PromptPacket:
     if mode not in MODES:
         raise ValueError(f"mode must be one of {sorted(MODES)}")
@@ -58,12 +66,23 @@ def compose(
     )
     palette_text = ", ".join(colors) if colors else "cyan/magenta liquid defaults"
     constr_text = "; ".join(constr) if constr else "none"
+    catalog = skillsets if skillsets is not None else load_skillsets()
+    selected_skills = list(dict.fromkeys(skills or []))
+    unknown_skills = [skill for skill in selected_skills if skill not in catalog]
+    if unknown_skills:
+        raise ValueError(f"unknown skillsets: {', '.join(unknown_skills)}")
 
     rendered = template.format(
         subject=subject.strip(),
         palette=palette_text,
         constraints=constr_text,
     )
+    if selected_skills:
+        guidance = " ".join(catalog[skill]["guidance"] for skill in selected_skills)
+        rendered += (
+            "\n\nELM369 skill guidance (apply as relevant): "
+            f"{guidance}"
+        )
     return PromptPacket(
         prompt_id=str(uuid.uuid4()),
         project_id=str(cfg.get("project_id", "")),
@@ -74,6 +93,7 @@ def compose(
         palette=colors,
         tags=[t.strip() for t in (tags or []) if t and t.strip()],
         constraints=constr,
+        skills=selected_skills,
     )
 
 
@@ -84,3 +104,9 @@ def packet_to_json(packet: PromptPacket) -> str:
 def list_templates(config: dict[str, Any] | None = None) -> dict[str, str]:
     cfg = config or load_config()
     return dict(cfg.get("templates") or {})
+
+
+def list_skillsets(
+    skillsets: dict[str, dict[str, str]] | None = None,
+) -> dict[str, dict[str, str]]:
+    return dict(skillsets if skillsets is not None else load_skillsets())

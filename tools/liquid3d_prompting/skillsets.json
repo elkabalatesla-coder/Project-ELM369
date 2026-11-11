@@ -1,0 +1,107 @@
+{
+  "camera-capture": {
+    "name": "Camera capture and cinematography",
+    "guidance": "Choose shot size, viewpoint, lens, camera position, movement, focus, exposure, and frame rate to serve the subject and intended attention. Distinguish physical camera movement from zoom; preserve continuity and use motion only when it supports the scene.",
+    "practice": "Plan and capture the same subject as a locked wide, a motivated moving shot, and a detail; compare perspective, attention, exposure, and continuity."
+  },
+  "composition": {
+    "name": "Composition and visual storytelling",
+    "guidance": "Arrange subject, negative space, foreground, background, lines, shape, contrast, and visual balance to establish hierarchy and guide the eye. Treat grids such as thirds as options, not rules.",
+    "practice": "Create three distinct crops of one scene and explain how each changes hierarchy, balance, and implied meaning."
+  },
+  "optics-focus": {
+    "name": "Optics, lenses, and focus",
+    "guidance": "Select focal length and camera distance deliberately; perspective changes primarily with camera position. Control depth of field, focus transitions, distortion, filters, and close-focus limits for the intended result.",
+    "practice": "Photograph one subject at multiple camera distances and focal lengths; compare perspective, field of view, focus falloff, and distortion."
+  },
+  "exposure-motion": {
+    "name": "Exposure and motion rendering",
+    "guidance": "Balance aperture, exposure time or shutter angle, ISO or gain, and available light. Choose motion blur or freeze intentionally, retain important highlight detail, and match capture and playback frame rates to the intended motion.",
+    "practice": "Capture a moving subject with a fast exposure, a panning exposure, and a longer exposure; assess sharpness, blur, noise, and exposure."
+  },
+  "lighting": {
+    "name": "Lighting and light shaping",
+    "guidance": "Read direction, size, intensity, color, and quality of light. Shape key, fill, backlight, practicals, and reflectors to reveal form and preserve the desired mood; distinguish lighting choices from camera exposure choices.",
+    "practice": "Light a three-dimensional object with one source, then add controlled fill or bounce; compare form, shadow edges, and contrast."
+  },
+  "video-storyboarding": {
+    "name": "Video planning and storyboarding",
+    "guidance": "Translate purpose into a sequence of shots with clear subject, action, framing, viewpoint, movement, duration, and transition. Establish geography and screen direction, and plan coverage and accessible deliverables before capture.",
+    "practice": "Storyboard a short action in an establishing shot, action coverage, and a detail; check eyelines, screen direction, and whether the sequence is understandable without dialogue."
+  },
+  "video-editing": {
+    "name": "Video editing and continuity",
+    "guidance": "Organize footage, select purposeful takes, maintain spatial and temporal continuity, control pacing, and use cuts, dissolves, or other transitions only when they help meaning. Review picture, dialogue, ambience, captions, and final exports together.",
+    "practice": "Edit the same short sequence for continuity and for deliberate montage; compare clarity, rhythm, and how transitions affect meaning."
+  },
+  "animation-motion": {
+    "name": "Animation and motion design",
+    "guidance": "Define timing, key poses, spacing, easing, arcs, anticipation, follow-through, and loop boundaries. Keep movement legible, physically or stylistically coherent, and synchronized with sound only when useful.",
+    "practice": "Animate a simple object through anticipation, a main action, and settling; review timing, spacing, arcs, and loop seams frame by frame."
+  },
+  "image-editing": {
+    "name": "Image editing and retouching",
+    "guidance": "Use nondestructive edits and reversible layers where possible. Correct exposure and color before local retouching, preserve natural texture, avoid misleading alterations, and keep an original or versioned source.",
+    "practice": "Make a reversible tonal and color correction, compare it with the source, and record each change and its purpose."
+  },
+  "drawing": {
+    "name": "Observational drawing",
+    "guidance": "Observe proportions, angles, negative shapes, gesture, and large value masses before details. Construct forms with clear perspective and use line weight to separate overlap and emphasis.",
+    "practice": "Draw one object as gesture, block-in, and refined study; compare proportions and negative shapes against observation."
+  },
+  "sketching": {
+    "name": "Sketching and ideation",
+    "guidance": "Use rapid thumbnails to explore silhouette, composition, camera framing, and alternatives before polishing. Prioritize clear shapes and readable action over surface detail.",
+    "practice": "Generate a page of small variations, select two contrasting compositions, and develop each into a clear rough."
+  },
+  "etching-printmaking": {
+    "name": "Etching and printmaking",
+    "guidance": "Plan mark direction, line density, plate or block process, ink behavior, and paper. Build value through deliberate marks and test proofs; follow material-specific ventilation, tool, and chemical safety guidance.",
+    "practice": "Make a small line-density test with parallel, crosshatched, and varied marks; compare proof values before producing a final print."
+  },
+  "color-theory": {
+    "name": "Color selection and color theory",
+    "guidance": "Set palette relationships using hue, value, saturation, temperature, and contrast. Check colors in context and across intended display or print conditions; do not rely on color alone to communicate essential meaning.",
+    "practice": "Create limited analogous and complementary palettes for the same subject; compare hierarchy, mood, and legibility in grayscale and color."
+  },
+  "shading-values": {
+    "name": "Shading and value structure",
+    "guidance": "Establish a readable value range and light direction. Model form with planes or gradual transitions, preserve the light family, and use edges and value grouping to separate forms.",
+    "practice": "Render a sphere, cube, and cylinder from one light source using a small value scale; check cast and form shadows separately."
+  },
+  "shadowing": {
+    "name": "Cast shadows and occlusion",
+    "guidance": "Anchor cast shadows to the light source, object geometry, and receiving surface. Distinguish cast shadow, form shadow, contact shadow, and ambient occlusion; keep shadow softness and direction consistent.",
+    "practice": "Draw one object under two light positions and compare cast-shadow direction, length, edge softness, and contact points."
+  },
+  "painting": {
+    "name": "Painting and paint handling",
+    "guidance": "Choose a medium-appropriate sequence for ground, underpainting, block-in, edges, layers, and finish. Manage opacity, transparency, brush shape, water or binder, drying, and surface while preserving a clear value and color plan.",
+    "practice": "Paint a simple subject first as large color masses, then refine edges and accents; compare the result to the initial value and palette plan."
+  },
+  "digital-illustration": {
+    "name": "Digital illustration and rendering",
+    "guidance": "Separate sketch, construction, values, color, and finish into purposeful layers. Use selection, masks, brushes, and transforms carefully; preserve source files and check the final image at intended output size.",
+    "practice": "Create a layered illustration from thumbnail through final, then inspect silhouette, values, edges, and readability at thumbnail scale."
+  },
+  "texture-material": {
+    "name": "Texture and material rendering",
+    "guidance": "Communicate material through shape, value, edge, reflection, roughness, and mark behavior rather than repeating surface detail. Vary texture with form and viewing distance.",
+    "practice": "Render metal, glass, fabric, and matte material under the same light; compare the cues that make each material recognizable."
+  },
+  "image-accessibility": {
+    "name": "Image and video accessibility",
+    "guidance": "Provide context-appropriate text alternatives for informative images and omit redundant descriptions for decorative images. Plan accurate captions for speech and meaningful sounds, transcripts, and descriptions of important visual information in video.",
+    "practice": "Review an image set for informative, functional, and decorative purpose; create concise alternatives, then review a video for captions, transcript, and visual description needs."
+  },
+  "provenance": {
+    "name": "Media provenance and rights",
+    "guidance": "Record source, creator, permissions, edits, and synthetic or generated contributions accurately. Preserve available provenance metadata; do not invent verification or imply that provenance alone proves a work is truthful.",
+    "practice": "Create a source-and-edit log for a sample asset and check that each claim is supported; distinguish metadata provenance from factual verification."
+  },
+  "quality-delivery": {
+    "name": "Visual quality and delivery",
+    "guidance": "Check focus, exposure, artifacts, color, cropping, stabilization, aspect ratio, resolution, compression, playback, and audio on the intended target. Keep an editable master and export suitable derivatives without discarding needed accessibility or provenance information.",
+    "practice": "Export one image or video for two target contexts; compare legibility, crop, compression artifacts, playback, captions, and retained metadata."
+  }
+}
