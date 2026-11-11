@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "name": "ELM369 Liquid Geometry",
+  "description": "Offline generative geometry with ELM369 Liquid-3D creative prompts.",
+  "seed": "elm369-genesis",
+  "supply": 12,
+  "image_base_uri": "",
+  "layers": [
+    {
+      "name": "background",
+      "options": [
+        {"value": "#101030", "weight": 6},
+        {"value": "#203060", "weight": 3},
+        {"value": "#602040", "weight": 1}
+      ]
+    },
+    {
+      "name": "shape",
+      "options": [
+        {"value": "circle", "weight": 6},
+        {"value": "diamond", "weight": 3},
+        {"value": "square", "weight": 2},
+        {"value": "triangle", "weight": 1}
+      ]
+    },
+    {
+      "name": "color",
+      "options": [
+        {"value": "#00ffff", "weight": 6},
+        {"value": "#ff00ff", "weight": 3},
+        {"value": "#ffcc00", "weight": 1}
+      ]
+    }
+  ]
+}
