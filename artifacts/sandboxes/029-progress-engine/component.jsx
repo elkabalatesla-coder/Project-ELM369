@@ -1,7 +1,12 @@
 -import { useState, useEffect, useRef, useCallback } from "react";
 
 // ─── ELM369 BRAND CONSTANTS ────────────────────────────────────────────────
-const OWNER = "Joseph";
+const OWNER = "Joseph Michael Rose";
+const OWNER_INITIALS = ["JMR", "IX", "JR"];
+const OWNER_ESIGN = "Joseph Michael Rose IX JR 🌹";
+const OWNER_SYMBOL = "🌹";
+const PAYMENT_PAYEE = "Joseph Michael Rose";
+const PAYMENT_PURPOSE = "Tax purposes";
 const PROJECT_ID = "ELM369";
 const JMR = "JMR0824197846902";
 const UUID = "1550e4d5-9ee3-49cd-8af8-7c9d630f84ad";
@@ -351,12 +356,18 @@ export default function QuantumSuperEngine() {
                 PROJECT {PROJECT_ID} — QUANTUM SUPER ENGINE
               </div>
               <div style={{ fontFamily: "'Share Tech Mono'", fontSize: "0.6rem", color: "#3a6070", letterSpacing: 2 }}>
-                {JMR} · UUID:{UUID} · NET:{NETWORK}
+                {JMR} · UUID:{UUID} · NET:{NETWORK} · OWNER:{OWNER} 🌹
               </div>
             </div>
           </div>
         </div>
         <div style={{ textAlign: "right" }}>
+          <div style={{ fontFamily: "'Share Tech Mono'", fontSize: "0.62rem", color: "#ffd700", letterSpacing: 1 }}>
+            OWNER · {OWNER_ESIGN}
+          </div>
+          <div style={{ fontFamily: "'Share Tech Mono'", fontSize: "0.56rem", color: "#6a8290", letterSpacing: 1 }}>
+            PAYEE · {PAYMENT_PAYEE} · {PAYMENT_PURPOSE}
+          </div>
           <div style={{ fontFamily: "'Share Tech Mono'", fontSize: "0.65rem", color: "#00e5ff88" }}>
             <span style={{ animation: "blink 1s infinite", color: "#00ff88" }}>●</span> QUANTUM LINK ACTIVE
           </div>
