@@ -4,11 +4,13 @@ on:
   push:
     paths:
       - 'tools/qbit/**'
+      - 'tools/elm369_dual_magic/**'
       - 'schemas/qbit/**'
       - '.github/workflows/qbit.yml'
   pull_request:
     paths:
       - 'tools/qbit/**'
+      - 'tools/elm369_dual_magic/**'
       - 'schemas/qbit/**'
       - '.github/workflows/qbit.yml'
 
@@ -23,4 +25,6 @@ jobs:
         with:
           python-version: '3.x'
       - name: Unit tests
-        run: python -m unittest discover -s tools/qbit/tests -v
+        run: |
+          python -m unittest discover -s tools/qbit/tests -v
+          python -m unittest discover -s tools/elm369_dual_magic/tests -v
