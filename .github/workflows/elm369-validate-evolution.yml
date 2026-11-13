@@ -21,7 +21,19 @@ jobs:
 
       - name: Compile Python sources
         run: |
-          python -m compileall -q .
+          python -m compileall -q tools scripts ELM369_Engine_Logic ELM369_VIDEO_PIPELINE_JMR0824197846902.py enforcement
+
+      - name: Run all Python tool tests
+        run: |
+          for tests in tools/*/tests; do
+            python -m unittest discover -s "$tests" -v
+          done
+
+      - name: Verify installed Python package
+        run: |
+          python -m pip install --no-deps --target "$RUNNER_TEMP/elm369-package" .
+          cd "$RUNNER_TEMP"
+          PYTHONPATH="$RUNNER_TEMP/elm369-package" python -c "import tools.elm_orchestrator.server, tools.github_issues.sync"
 
       - name: Validate JSON documents
         run: |
@@ -57,3 +69,22 @@ jobs:
           assert data['safety_boundary']['credential_change'] == 'authorized_only'
           print('ELM369 automated evolution policy: PASS')
           PY
+
+  node:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        node-version: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
+      - run: npm test -- --runInBand
+      - run: npm start
