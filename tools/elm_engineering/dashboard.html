@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>ELM369 Engineering Simulation Dashboard</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #101322; color: #eef0ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1200px; margin: auto; padding: clamp(1rem, 4vw, 3rem); }
+    h1 { font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: .5rem; }
+    h2 { font-size: 1.35rem; }
+    h3 { font-size: 1.1rem; }
+    p, li { line-height: 1.65; }
+    .eyebrow, .badge { color: #d6b9ff; font-weight: 700; letter-spacing: .05em; }
+    .notice { border-left: 4px solid #ffc56d; padding: .8rem 1.2rem; background: #302638; }
+    .muted, dt { color: #c0c5df; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1.2rem; }
+    article, section.panel { background: #1a1f34; border: 1px solid #424862; border-radius: 14px; padding: 1.3rem; margin: 1.2rem 0; min-width: 0; }
+    .grid article { margin: 0; }
+    dl { margin: 0; }
+    dt { font-size: .9rem; margin-top: 1rem; }
+    dd { margin: .25rem 0 0; font-size: 1.15rem; overflow-wrap: anywhere; }
+    .metric { font-size: 1.6rem; font-weight: 700; }
+    a { color: #e0c5ff; }
+    a:focus-visible, summary:focus-visible { outline: 3px solid #ffc56d; outline-offset: 4px; }
+    nav { display: flex; flex-wrap: wrap; gap: 1.2rem; margin: 1.5rem 0; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #101322; padding: 1rem; border-radius: 8px; line-height: 1.55; }
+    summary { cursor: pointer; padding: .5rem 0; font-weight: 600; }
+    footer { margin-top: 2rem; color: #c0c5df; }
+    @media print {
+      :root { color-scheme: light; background: white; color: black; }
+      article, section.panel, .notice { background: white; border-color: #777; }
+      .eyebrow, .badge, .muted, dt, footer, a { color: #333; }
+      pre { background: #eee; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">PROJECT ELM369 · ENGINEERING WORKSPACE</p>
+    <h1>Multi-domain simulation dashboard</h1>
+    <p class="muted">Quality · Productivity · Efficiency</p>
+    <p class="notice"><strong>Offline simulation only.</strong> No equipment control, authenticated human sign-off,
+      production release, or funds transfer. Calculated examples are not verified operational performance.</p>
+  </header>
+  <nav aria-label="Report sections">
+    <a href="#domains">Domain results</a>
+    <a href="#governance">Governance</a>
+    <a href="#report">Full report</a>
+  </nav>
+  <!-- ELM369_REPORT -->
+  <section class="panel">
+    <h2>Generate your calculated report</h2>
+    <p>This file is the offline dashboard template. From the repository root, run:</p>
+    <pre>python3 -m tools.elm_engineering.dashboard &gt; /tmp/elm369-dashboard.html</pre>
+    <p>Open the generated file in a browser to see calculated domain results and review details.</p>
+  </section>
+  <!-- /ELM369_REPORT -->
+  <footer>This is a generated snapshot, not live telemetry. Re-run the generator to refresh it.
+    Expand report details for source inputs and model limitations. No external assets or scripts are loaded.</footer>
+</main>
+</body>
+</html>

@@ -1,6 +1,334 @@
 # Project-ELM369
 Visioning advanced Technology of Today and the future and pre-developing programming code for it in advance and coming up with our own intellectual designs
 
+## University engineering simulations
+
+From the repository root, run `python3 -m tools.elm_engineering` for the supplied
+robotics, PID, and 1% charity-allocation examples. Import `ELM369EngineeringCore`
+from `tools.elm_engineering` for programmatic use. The default project identifier
+is `JMR0824197846902`; callers may also pass `JMR08241978202646902`.
+No NumPy or other additional dependency is required.
+
+- Inverse kinematics returns the positive-second-joint solution in degrees,
+  rounded to two decimals. Both inner and outer unreachable targets return an
+  error dictionary. Link lengths must be positive and all inputs finite.
+  At the equal-link origin singularity, the arbitrary first angle is set to zero.
+- PID returns a four-decimal control signal, but keeps integral and error state
+  unrounded for subsequent steps. Feed `new_integral` and `current_error` into
+  the next call. Unlike the original sketch, zero/negative timesteps and
+  non-finite inputs or results raise `ValueError`.
+- Resource allocation models 1% of a finite, nonnegative simulation value,
+  listing the supplied charity targets. It does not transfer funds or establish
+  charity affiliations; floating-point results are not accounting records.
+
+These are educational simulations, not a production hardware controller:
+PID has no output saturation, anti-windup, or derivative filtering. Invalid
+numeric inputs raise `ValueError`; extreme unrepresentable link ratios do too.
+Test with `python3 -m unittest discover -s tools/elm_engineering/tests -v`.
+
+### CNC and industrial machining planning
+
+Run `python3 -m tools.elm_engineering.cnc` from
+`/home/runner/work/Project-ELM369/Project-ELM369` for the 4140 example, or import
+`ELM369CNCExecutionEngine` from `tools.elm_engineering`. Despite the compatibility
+class/method names, this is an **offline planning simulation**, not an execution
+engine, optimizer, NIMS certification, or machine-safety validator.
+
+- Inch-unit estimates use RPM = SFM × 3.82 / tool diameter, IPM = unrounded RPM ×
+  flute count × IPT, and MRR = unrounded IPM × 0.050-inch axial depth × half the
+  tool diameter. Rounding is for returned estimates only. The example yields
+  2292 RPM, 22.92 IPM, and 0.2865 cubic inches/minute.
+- Brinell hardness is validated and recorded but **does not select or validate**
+  cutting speeds or chip loads. Consult toolmaker data and qualified machining
+  review; no material suitability or safe tolerance is established.
+- `generate_validated_gcode` returns a list of **comment-only** candidate lines,
+  including the tool change, spindle commands, and axial plunge. No executable
+  motion is emitted and nothing is transmitted to a controller. The illustrative
+  plunge is not the lateral cut assumed by the MRR estimate. Do not strip the
+  comments and run it: work/tool offsets, tool length compensation, clearance,
+  stock, fixtures, machine limits, and controller dialect remain unresolved.
+- All numeric inputs must be finite; hardness, diameter, SFM, IPT, RPM, feed, and
+  integer flute/tool counts must be positive. Preview target depth must be
+  negative relative to the assumed Z0 stock top. Nonrepresentable results or
+  values rounding to zero at output precision raise `ValueError`. Identifier
+  text is restricted to prevent injecting commands through G-code comments.
+- The $5000-equivalent resource simulation allocates 50 to charity and retains
+  4950; it does not move money or establish charity affiliations.
+
+The demonstration uses the calculated spindle speed **and** feed rate, fixing
+the original `machining_spec` / `machining_specs` typo and silent fallback.
+The engineering test command above covers all engineering modules.
+
+### Defined Human Input priority routing
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.dynamic MEDICAL` (omit the argument for CNC).
+Import `ELM369DynamicEngine` from `tools.elm_engineering` to call
+`process_human_input_priority` directly.
+
+Choices are `CNC`, `MEDICAL`, `AGRICULTURE`, and `FABRICATION`, ignoring case
+and surrounding whitespace. Unknown or empty strings actually select CNC
+**metadata**, with `used_fallback: true` and a warning, rather than merely claiming
+a fallback in an error message. Non-string API inputs raise `ValueError`.
+
+This selects a priority, **not an execution pipeline**. `ACTIVE_PRIMARY_VECTOR`
+means selected routing metadata only; every result has `executed: false`.
+CNC offline estimates/previews are available separately through the CNC module.
+Medical DICOM ingestion/HITL verification, agricultural CANbus J1939/hydraulics,
+and fabrication mesh parsing/layer monitoring are planned, not implemented or
+started by this selector. No medical data is ingested, machinery connected,
+clinical safety verified, or external service contacted.
+
+Each response includes the simulated baseline allocation: 10000 resource units,
+100 for the listed charity targets, and 9900 retained. The rate remains fixed
+at 1%; changing it raises `ValueError`. `purple_pool_status: PRIORITIZED` is a
+simulation label, not evidence of pool logging. No log is persisted or funds
+transferred. Calls are independent: the caller must explicitly retain a selected
+priority if needed; there is no background loop or persistent job scheduler.
+
+### QEP pyramid planning profiles
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.qep EFFICIENCY` (defaults to `QUALITY`).
+Import `ELM369QEPShuffler` from `tools.elm_engineering` and call
+`shuffle_pyramid_focus` for programmatic use. Case and surrounding whitespace
+are normalized. Invalid/empty strings return an error dictionary without a
+profile, governance audit, or fallback; the CLI exits with status 1. Non-string
+API inputs raise `ValueError`.
+
+The supplied foundation, core mechanism, and apex target descriptions are
+preserved as **planning proposals**, with these quality/efficiency/productivity
+weight proportions:
+
+| Focus | Quality | Efficiency | Productivity |
+| --- | --- | --- | --- |
+| QUALITY | 0.60 | 0.20 | 0.20 |
+| PRODUCTIVITY | 0.20 | 0.20 | 0.60 |
+| EFFICIENCY | 0.25 | 0.50 | 0.25 |
+
+Weights sum to one in every mode. Selection does not reconfigure machinery,
+relax safety or quality requirements, activate interlocks/SPC/HITL/telemetry,
+or establish zero defects, zero waste, compliance, throughput, or ROI.
+Every successful response is marked `PLANNING_ONLY` and `executed: false`;
+results are independent with no retained focus or background optimization loop.
+DHI domain routing remains separate and unchanged.
+
+Governance reuses the baseline 10000-unit simulation: 100 charity units and
+9900 net operational units, with a fixed 1% rate. `purple_pool_status: ACTIVE`
+is only a simulation label, not an active fund or persistent log.
+No funds move and the weights do not distribute or spend the retained units.
+The existing engineering test command covers the QEP module too.
+
+### Dimensional inspection and human review declarations
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.quality`, or import
+`ELM369QualityInspectionEngine` from `tools.elm_engineering`.
+The demo checks nominal 2.000, measured 2.0004, and deviation limits ±0.001,
+then leaves the result pending human review.
+
+`audit_dimensional_tolerances` checks a single scalar dimension, **not full
+GD&T, certified metrology, or zero-defect delivery**. Inputs must be finite
+real numbers in one caller-consistent unit; lower tolerance must not exceed
+upper tolerance. Signed tolerances are deviations, not absolute dimensions.
+Comparisons use exact rational arithmetic on decimal-string representations
+of supplied numbers, with inclusive bounds and no rounding before pass/fail.
+`deviation` is the full float representation for reporting, while
+`display_deviation` is rounded to five places for display only.
+An unrepresentable deviation raises `ValueError`. Measurement uncertainty,
+calibration, units, sampling adequacy, and geometric tolerances are not verified.
+
+`execute_hitl_validation_gate` recomputes conformance from the report's nominal,
+measured, and allowable limits rather than trusting a supplied PASS label.
+It requires a nonempty inspector label. The keyword-only `human_approved`
+defaults to `False`: a passing dimension remains `PENDING_HUMAN_REVIEW`.
+Only explicit `human_approved=True` records `HUMAN_APPROVAL_DECLARED_UNVERIFIED`;
+out-of-tolerance measurements remain on hold regardless of that declaration.
+Non-boolean declarations and malformed numeric reports raise `ValueError`.
+
+Neither inspector identity nor supplied measurements/specifications are
+authenticated. Recalculation detects inconsistent result labels, not forged
+source data. No electronic signature, durable audit log, or production release
+is established; `production_release_authorized` is always false. Timestamps
+are timezone-aware UTC. The 15000-unit governance simulation reserves 150
+charity units and retains 14850, with no pool logging or actual funds transfer.
+The existing engineering tests cover this module; QEP/DHI behavior is unchanged.
+
+### Productivity and fleet availability estimates
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.productivity`, or import
+`ELM369ProductivityEngine` from `tools.elm_engineering`.
+
+`maximize_throughput_metrics` models a single serial batch: setup hours plus
+batch size × cycle minutes / 60. Throughput includes setup and uses the
+unrounded total. The supplied 500-unit, 4.5-minute cycle, 1.5-hour setup example
+produces **39 hours and 12.82 parts/hour**. Display metrics are rounded to two
+decimals; `unrounded_production_hours` retains the float total. Very small
+positive display values may round to zero. This is not a maximization algorithm,
+OEE calculation, measured efficiency, or verified production capacity.
+No downtime, rejects, parallel machines, transport, or scheduling is modeled.
+
+`execute_fleet_synchronization` only computes uptime-weighted equivalent units.
+Twelve units at 95% yield **11.4 equivalent units**; the compatibility field
+`effective_synchronized_fleet` floors that value to 11. This is neither a
+guarantee that eleven machines are simultaneously available nor evidence of
+actual fleet synchronization. No equipment, network, or live telemetry is used.
+Decimal-string rational arithmetic avoids intermediate rounding and integer
+floor errors; this assumes supplied decimal values are the intended inputs.
+
+Batch size and active-unit counts must be nonnegative integers (not booleans).
+Cycle time must be finite and positive, setup finite and nonnegative, and
+uptime finite within 0–100 inclusive. Empty batches produce zero throughput,
+retaining any supplied setup time; a zero-unit fleet has zero capacity.
+Nonrepresentable throughput/time results and positive results underflowing
+to zero raise `ValueError`.
+
+Governance is the fixed 1% simulation on 25000 resource units: 250 allocated
+to listed charity targets and 24750 retained, with no payments or pool logging.
+Existing engineering tests cover this module; QEP and DHI selectors remain
+planning metadata and do not automatically run these calculations.
+
+### Efficiency and resource conservation estimates
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.efficiency`, or import
+`ELM369EfficiencyEngine` from `tools.elm_engineering`.
+
+The energy model compares constant baseline/proposed kW over the same operating
+hours at one USD/kWh tariff. The example 45 → 34 kW over 200 hours at 0.12/kWh
+yields **11 kW reduction, 24.44% reduction, 2200 kWh saved, and $264 savings**.
+The compatibility field `efficiency_gain_percentage` means power reduction,
+not measured thermodynamic efficiency. Higher proposed power is allowed and
+returns negative savings, not a fabricated benefit. Zero hours or tariff are
+allowed; fractional hours are accepted. Baseline power must be positive; all
+other inputs must be finite and nonnegative. Zero baseline is rejected because
+its reduction percentage is undefined.
+
+The material model requires positive gross input and net mass between zero and
+gross inclusive, in pounds. Fifty pounds gross and 38 pounds net yield
+**12 pounds non-part material and 76% material yield**. `scrap_waste_lbs` is
+only the mass difference; recycling, reusable stock, and actual disposal are
+not determined. No zero-waste or optimization claim is established.
+
+Decimal-string rational calculations avoid intermediate rounding; estimates
+are reported to two decimals, with numeric percentage fields alongside the
+original percentage strings. Nonrepresentable results raise `ValueError`;
+small display values can round to zero. These are offline scenario comparisons,
+not actual equipment tuning, measured savings, investment ROI, or accounting
+records. No investment cost, demand charges, variable tariffs, or load profiles
+are modeled.
+
+Governance separately simulates an **8500-unit baseline**, not the computed
+energy savings: 85 charity units and 8415 retained at the fixed 1% rate.
+No funds move or pool log is persisted. Existing engineering tests cover both
+the efficiency and productivity modules.
+
+### Master multi-domain simulation
+
+From `/home/runner/work/Project-ELM369/Project-ELM369`, run
+`python3 -m tools.elm_engineering.master` for a JSON-only integrated report,
+or import `ELM369MasterSimulation` from `tools.elm_engineering` and call
+`run_full_simulation`. It composes the CNC, inspection, productivity, efficiency,
+and QEP modules rather than hard-coding passing or optimized results.
+
+- CNC uses the existing machining example and a 2.0003-inch measured dimension
+  against nominal 2.000 ±0.001 inch. The scalar check passes; human review stays
+  pending and G-code remains comment-only.
+- The agricultural example models ten units at 96.5% uptime, yielding 9.65
+  equivalent units (compatibility floor: 9), plus the 500-unit serial batch
+  example. This is not measured field productivity or a CANbus connection.
+- The fabrication scenario explicitly assumes 45 → 32.5 kW over 400 hours
+  at $0.13608/kWh, yielding 12.5 kW reduction and $680.40 modeled savings.
+  Fifty pounds gross / 41 pounds net yields 82% material yield, **not zero waste**.
+  These are generic estimates, not a printer or layer-monitoring simulation.
+
+Inputs are included beside calculated results. Completed status means the
+offline calculations returned, not that real operations succeeded or defects
+were eliminated. There is no authenticated sign-off or production release.
+The aggregate 50000-unit baseline produces 500 charity units and 49500 retained,
+independent of nested module audit examples; **do not sum their allocations**.
+No financial impact is measured, recipients confirmed, transfers executed,
+or purple-pool log persisted. Timestamps are timezone-aware UTC. The engineering
+test suite covers composition as well as each individual model.
+
+### HTML simulation dashboard
+
+Create a self-contained browser report with the existing calculated scenarios:
+
+```bash
+cd /home/runner/work/Project-ELM369/Project-ELM369
+python3 -m tools.elm_engineering.dashboard > /tmp/elm369-dashboard.html
+```
+
+Open `/tmp/elm369-dashboard.html` in a browser. The responsive dashboard presents
+quality inspection and pending human review, CNC estimates, fleet availability,
+batch throughput, energy/material estimates, and the independent simulated 1%
+allocation. Expand each card for inputs and QEP weights or expand the full JSON
+report. Browser printing is supported. Each generation runs the master simulation
+once; refresh the data by re-running the command, not merely reloading the page.
+
+The HTML template is
+`/home/runner/work/Project-ELM369/Project-ELM369/tools/elm_engineering/dashboard.html`.
+Opening that template directly shows generation instructions; the command above
+fills it with actual model results. No dependencies, JavaScript, external assets,
+web server, authentication, or public deployment are added. This is a read-only
+offline snapshot, not a live portal, equipment controller, approval form, or
+payment interface. All report values are escaped as text. Existing JSON output
+and simulation APIs remain unchanged. The engineering test command covers the
+dashboard renderer and HTML safety checks.
+
+### Optional localhost simulation API
+
+The static dashboard command remains independent of FastAPI. For the optional
+service, use **Python 3.10 or newer** and install the checked versions:
+
+```bash
+cd /home/runner/work/Project-ELM369/Project-ELM369
+python3 -m pip install fastapi==0.162.0 uvicorn==0.54.0
+python3 -m tools.elm_engineering.telemetry_server
+```
+
+The same runtime dependencies are declared in the `telemetry` project extra
+(excluded on older Python). Install `httpx==0.28.1` for API tests (also declared
+in `telemetry-test`). The existing unittest discovery command tests the API
+when these optional dependencies are present and otherwise skips API tests.
+
+- `GET http://127.0.0.1:8000/api/status`: IDs, QEP state, tick count, active
+  streams, and the fixed simulated allocation baseline.
+- `GET http://127.0.0.1:8000/api/qep-mode`: read-only PRODUCTIVITY focus and the
+  proposed PRODUCTIVITY/QUALITY/EFFICIENCY sequence; no automatic shuffling.
+- `GET http://127.0.0.1:8000/api/telemetry`: refreshed random simulation values,
+  using existing scalar inspection, fleet capacity, energy and material models.
+  Medical is explicitly `PLANNED_NOT_IMPLEMENTED`: no DICOM or patient data.
+- `GET http://127.0.0.1:8000/api/simulation/stream?ticks=3`: bounded SSE, with
+  1–100 ticks (default 100), 1.5 seconds between ticks, and disconnect cleanup.
+  Each event has `event: simulation` and one JSON `data:` line. At most four
+  concurrent streams are allowed; extra requests return 429.
+
+For example, use `curl -N` with the stream URL. Each telemetry request or stream
+tick advances an in-memory counter; status and mode queries do not. State resets
+on restart and is per process. Dimensional drift can pass or reject ±0.001-inch
+limits, but is not full GD&T or human sign-off. No claimed attestation is attached.
+
+The service launcher binds only `127.0.0.1:8000`, disables forwarded-header
+trust, accepts only that IPv4 peer, restricts Host to `127.0.0.1:8000` or
+`localhost:8000`, and rejects foreign/null browser Origins and cross-site fetches.
+It has no credentialed CORS, write endpoints, or public API documentation assets.
+CORS alone would not provide this boundary. Approved origins are those exact
+two HTTP origins; other ports and `file://` dashboards cannot read the API.
+Use same-origin clients or curl. The existing static HTML has no polling loop.
+Do not expose through tunnels, proxies, remote bind addresses, or multiple
+workers; this is a local development simulation, not production-grade access
+control or user authentication. Other local processes can access it.
+
+The 1% "ledger" is a fixed 50000-unit scenario (500 allocated, 49500 retained),
+**not an accumulating fund or repeated charge**. The supplied 40/40/20 split
+(200/200/100) is illustrative, not approved giving instructions or established
+recipients. Nested model governance examples are not additional charges.
+No funds transfer, persistent purple-pool log, real sensor telemetry, or
+machine control occurs. Stream concurrency is bounded, not a general rate limit.
+
 Category / Subcomponent                        Completion
 ──────────────────────────────────────────────────────────────
 1. Available Technologies & Facts Today
