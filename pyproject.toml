@@ -4,11 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "project-elm369"
-version = "0.0.1"
+version = "0.2.0"
 description = "Project-ELM369 Python tooling and runtime helpers"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 dependencies = [
   "requests>=2.32.0,<3.0.0",
   "pydantic>=2.0,<3.0",
-  "backports.zoneinfo>=0.2 ; python_version < '3.9'",
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["elm369*"]
+
+[tool.setuptools.package-data]
+elm369 = ["*.json"]
